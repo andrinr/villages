@@ -1,33 +1,20 @@
 <script lang="ts">
-	import { Camera, Scene, Renderer, BoxGeometry, Material, Mesh, Object3D, PointLight } from 'three';
+	import { Camera, Scene, Renderer, Material, HemisphereLight, Raycaster } from 'three';
 	import { onMount } from 'svelte';
 
 	import * as THREE from 'three';
-	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-	import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+	import { loadGLTF } from './ts/loader';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'; 
 	import { EffectComposer, RenderPass, EffectPass,  DepthOfFieldEffect, SSAOEffect, SelectiveBloomEffect, GlitchEffect} from 'postprocessing';
-
 	let camera: Camera;
 	let scene: Scene;
 	let renderer: Renderer;
-	let box: BoxGeometry;
 	let material: Material;
-	let mesh: Mesh;
 	let prevTime: number;
 	let ambientLight: THREE.AmbientLight;
 	let controls: OrbitControls;
 	let composer: EffectComposer;
 
-	const loadGLTF = () => {
-		const dracoLoader = new DRACOLoader();
-		dracoLoader.setDecoderPath("/models/draco/");
-		const gltfLoader = new GLTFLoader();
-		gltfLoader.setDRACOLoader(dracoLoader);
-			
-		return gltfLoader.loadAsync(
-			"models/map.glb");
-	}
 
 	onMount( async() => {
 
@@ -37,7 +24,7 @@
 				powerPreference: "high-performance",
 				stencil: true,
 				depth: true,
-				antialias: false 
+				antialias: true 
 			} );
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			const parentDiv = document.getElementById("three");
@@ -54,40 +41,21 @@
 				camera, renderer.domElement
 			);
 			controls.update();
-
-			box = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
 			material = new THREE.MeshPhongMaterial();
 
-			mesh = new THREE.Mesh( box, material );
-			//scene.add( mesh );
-
-			ambientLight = new THREE.AmbientLight(0x404040);
-			scene.add(ambientLight);
-			const pointLightA = new THREE.PointLight();
-			scene.add(pointLightA);
-
-			const pointLightB = new THREE.PointLight();
-			pointLightB.translateX(100);
-			scene.add(pointLightB);
-
-			const pointLightC = new THREE.PointLight();
-			pointLightC.translateZ(100);
-			scene.add(pointLightC);
+			const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+			scene.add( light );
 
 			prevTime = Date.now();
 			
-			const dracoLoader = new DRACOLoader();
-			dracoLoader.setDecoderPath("/draco/");
-			const gltfLoader = new GLTFLoader();
-			gltfLoader.setDRACOLoader(dracoLoader);
-			
-			loadGLTF().then((gltf) => {
+			loadGLTF('models/map_6.glb', 'models/draco/').then((gltf) => {
 				console.log(gltf);
-				gltf.scene.children.forEach(element => {
+				scene.add(gltf.scene);
+				/*gltf.scene.children.forEach(element => {
 					//@ts-ignore
-					element.material = material;
+					//element.material = material;
 					scene.add(element);
-				});
+				});*/
 			});
 
 			// @ts-ignore
@@ -114,6 +82,16 @@
 			//box.rotateX(dt * 0.2 / 1000);
 			controls.update();
 			composer.render();
+
+			const pos = new THREE.Vector3(10.0,0,0);
+			pos.project(camera);
+			const element = document.getElementById('sample-content');
+
+			const w = document.body.clientWidth;
+			const h = document.body.clientHeight;
+			element.style.top = String(-pos.y *  h/2.0 + h/2.0) + 'px';
+			element.style.left = String(pos.x * w/2.0 + w/2.0) + 'px';
+
 			//renderer.render( scene, camera );
 		}
 
@@ -124,25 +102,19 @@
 </script>
 
 <main>
-	<div id="three">
+
+	<div class="visualization">
+		<div id='sample-content' >
+			Object A
+		</div>
+	
+		<div id="three">
+		</div>
 	</div>
+
 </main>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
 	#three {
 		position: absolute;
 		width: 100vw;
@@ -151,9 +123,18 @@
 		left: 0;
 	}
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	#sample-content {
+		text-align: center;
+		opacity: 0.9;
+		border-radius: 5px;
+		z-index: 10;
+		position:absolute;
+		padding: 10px;
+		background-color: white;
+		overscroll-behavior: none;
+	}
+
+	.visualization {
+		overflow: hidden;
 	}
 </style>
