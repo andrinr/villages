@@ -48,7 +48,7 @@
 
 			prevTime = Date.now();
 			
-			loadGLTF('models/map_6.glb', 'models/draco/').then((gltf) => {
+			loadGLTF('models/map_7.glb', 'models/draco/').then((gltf) => {
 				console.log(gltf);
 				scene.add(gltf.scene);
 				/*gltf.scene.children.forEach(element => {
