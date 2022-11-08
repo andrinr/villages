@@ -50,8 +50,8 @@
 
 			scene = new THREE.Scene();
 			const color = 0xFFFFFF;  // white
-			const near = 4;
-			const far = 8;
+			const near = 8;
+			const far = 12;
 
 			scene.fog = new THREE.Fog(color, near, far);
 			scene.background =  new THREE.Color(0xffffff);
@@ -84,30 +84,16 @@
 			light.shadow.camera.far = 10; // default
 
 			const helper = new THREE.CameraHelper( light.shadow.camera );
-			//scene.add( helper );
+			scene.add( helper );
 
 			prevTime = Date.now();
 			
-			loadGLTF('models/map_9.gltf', 'models/draco/').then((gltf) => {
-				
-				//scene.add(gltf.scene);
-		
-				gltf.scene.children.forEach((child) => {
-					child.castShadow = true;
-					child.receiveShadow = true;
-					child.material = material;
-					scene.add(child);
-				});
-				
-				scene.scale.x = 0.04;
-				scene.scale.y = 0.04;
-				scene.scale.z = 0.04;
-				//scene.add(gltf.scene);
-
-				console.log(scene.children);
-
-			});
-
+			loadGLTF('models/map_9.gltf', 'models/draco/', scene);
+			loadGLTF('models/map_9.gltf', 'models/draco/', scene);
+			loadGLTF('models/map_9.gltf', 'models/draco/', scene);
+			scene.scale.x = 0.04;
+			scene.scale.y = 0.04;
+			scene.scale.z = 0.04;
 	
 
 			// @ts-ignore
@@ -152,11 +138,11 @@
 
 			// calculate objects intersecting the picking ray
 			const intersects = raycaster.intersectObjects( scene.children );
-			console.log(intersects);
+			//console.log(intersects);
 
 			for ( let i = 0; i < intersects.length; i ++ ) {
 				//@ts-ignore
-				intersects[ i ].object.material.color.set( 0xff0000 );
+				//intersects[ i ].object.material.color.set( 0xff0000 );
 			}
 
 			renderer.render( scene, camera );
