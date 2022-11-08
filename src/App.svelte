@@ -15,6 +15,21 @@
 	let controls: OrbitControls;
 	let composer: EffectComposer;
 
+	let raycaster: THREE.Raycaster;
+	let pointer: THREE.Vector2;
+
+	let m = { x: 0, y: 0 };
+
+	function onPointerMove( event ) {
+
+		// calculate pointer position in normalized device coordinates
+		// (-1 to +1) for both components
+
+		pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+	}
+	window.addEventListener( 'pointermove', onPointerMove );
 
 	onMount( async() => {
 
@@ -26,16 +41,27 @@
 				depth: true,
 				antialias: true 
 			} );
+			renderer.shadowMap.enabled = true;
+			renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
+
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			const parentDiv = document.getElementById("three");
 			parentDiv.appendChild( renderer.domElement );
 
 			scene = new THREE.Scene();
-			//scene.background =  new THREE.Color(0x404040);
+			const color = 0xFFFFFF;  // white
+			const near = 4;
+			const far = 8;
+
+			scene.fog = new THREE.Fog(color, near, far);
+			scene.background =  new THREE.Color(0xffffff);
 
 			camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
-			camera.position.z = 10;
-			//camera.position.y = 100;
+			camera.position.z = 3;
+			camera.position.y = 3;
+
+			raycaster = new THREE.Raycaster();
+			pointer = new THREE.Vector2();
 
 			controls = new OrbitControls(
 				camera, renderer.domElement
@@ -43,20 +69,46 @@
 			controls.update();
 			material = new THREE.MeshPhongMaterial();
 
-			const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+			//const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+			//scene.add( light );
+
+			const light = new THREE.DirectionalLight( 0xffffff, 1 );
+			light.position.set( 0, 5, 5 ); //default; light shining from top
+			light.castShadow = true; // default false
 			scene.add( light );
+
+			//Set up shadow properties for the light
+			light.shadow.mapSize.width = 512; // default
+			light.shadow.mapSize.height = 512; // default
+			light.shadow.camera.near = 0.5; // default
+			light.shadow.camera.far = 10; // default
+
+			const helper = new THREE.CameraHelper( light.shadow.camera );
+			//scene.add( helper );
 
 			prevTime = Date.now();
 			
-			loadGLTF('models/map_7.glb', 'models/draco/').then((gltf) => {
-				console.log(gltf);
-				scene.add(gltf.scene);
-				/*gltf.scene.children.forEach(element => {
-					//@ts-ignore
-					//element.material = material;
-					scene.add(element);
-				});*/
+			loadGLTF('models/map_9.gltf', 'models/draco/').then((gltf) => {
+				
+				//scene.add(gltf.scene);
+		
+				gltf.scene.children.forEach((child) => {
+					child.castShadow = true;
+					child.receiveShadow = true;
+					child.material = material;
+					scene.add(child);
+				});
+				
+				scene.scale.x = 0.04;
+				scene.scale.y = 0.04;
+				scene.scale.z = 0.04;
+				//scene.add(gltf.scene);
+
+				console.log(scene.children);
+
 			});
+
+	
 
 			// @ts-ignore
 			composer = new EffectComposer(renderer);
@@ -81,7 +133,7 @@
 			//box.rotateX(dt * 0.5 / 1000);
 			//box.rotateX(dt * 0.2 / 1000);
 			controls.update();
-			composer.render();
+			//.render();
 
 			const pos = new THREE.Vector3(10.0,0,0);
 			pos.project(camera);
@@ -92,7 +144,22 @@
 			element.style.top = String(-pos.y *  h/2.0 + h/2.0) + 'px';
 			element.style.left = String(pos.x * w/2.0 + w/2.0) + 'px';
 
-			//renderer.render( scene, camera );
+
+			// update the picking ray with the camera and pointer position
+			pointer.x = m.x;
+			pointer.y = m.y;
+			raycaster.setFromCamera( pointer, camera );
+
+			// calculate objects intersecting the picking ray
+			const intersects = raycaster.intersectObjects( scene.children );
+			console.log(intersects);
+
+			for ( let i = 0; i < intersects.length; i ++ ) {
+				//@ts-ignore
+				intersects[ i ].object.material.color.set( 0xff0000 );
+			}
+
+			renderer.render( scene, camera );
 		}
 
 		init();
