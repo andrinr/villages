@@ -1,6 +1,6 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import * as THREE from 'three';
+import type * as THREE from 'three';
 
 const loadGLTF = (modelPath, dracoPath, scene : THREE.Scene) => {
     const dracoLoader = new DRACOLoader();

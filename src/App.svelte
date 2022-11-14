@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Camera, Scene, Renderer, Material, HemisphereLight, Raycaster } from 'three';
+	import type { Camera, Scene, Renderer, Material, HemisphereLight, Raycaster } from 'three';
 	import { onMount } from 'svelte';
 
 	import * as THREE from 'three';
@@ -41,7 +41,9 @@
 				depth: true,
 				antialias: true 
 			} );
+			// @ts-ignore
 			renderer.shadowMap.enabled = true;
+			// @ts-ignore
 			renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
 
 			renderer.setSize( window.innerWidth, window.innerHeight );
