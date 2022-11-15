@@ -80,8 +80,8 @@
 			scene.add( light );
 
 			//Set up shadow properties for the light
-			light.shadow.mapSize.width = 512; // default
-			light.shadow.mapSize.height = 512; // default
+			light.shadow.mapSize.width = 1024; // default
+			light.shadow.mapSize.height = 1024; // default
 			light.shadow.camera.near = 0.5; // default
 			light.shadow.camera.far = 10; // default
 
