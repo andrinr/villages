@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Camera, Scene, Renderer, Material, HemisphereLight, Raycaster } from 'three';
+	import { MeshBasicMaterial } from 'three';
 	import { onMount } from 'svelte';
 
 	import * as THREE from 'three';
@@ -44,7 +45,7 @@
 			// @ts-ignore
 			renderer.shadowMap.enabled = true;
 			// @ts-ignore
-			renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
+			renderer.shadowMap.type = THREE.VSMShadowMap; // default THREE.PCFShadowMap
 
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			const parentDiv = document.getElementById("three");
@@ -57,7 +58,7 @@
 
 			scene.fog = new THREE.Fog(color, near, far);
 			scene.background =  new THREE.Color(0xffffff);
-
+	
 			camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
 			camera.position.z = 3;
 			camera.position.y = 3;
@@ -75,7 +76,7 @@
 			//scene.add( light );
 
 			const light = new THREE.DirectionalLight( 0xffffff, 1 );
-			light.position.set( 0, 5, 5 ); //default; light shining from top
+			light.position.set( 0, 150, 150 ); //default; light shining from top
 			light.castShadow = true; // default false
 			scene.add( light );
 
@@ -83,19 +84,20 @@
 			light.shadow.mapSize.width = 1024; // default
 			light.shadow.mapSize.height = 1024; // default
 			light.shadow.camera.near = 0.5; // default
-			light.shadow.camera.far = 10; // default
-
-			const helper = new THREE.CameraHelper( light.shadow.camera );
-			scene.add( helper );
+			light.shadow.camera.far = 200; // default
+			light.shadow.bias = -0.0001;
 
 			prevTime = Date.now();
 			
 			loadGLTF('models/map_9.gltf', 'models/draco/', scene);
-			loadGLTF('models/map_9.gltf', 'models/draco/', scene);
-			loadGLTF('models/map_9.gltf', 'models/draco/', scene);
+			//loadGLTF('models/map_9.gltf', 'models/draco/', scene);
+			//loadGLTF('models/map_9.gltf', 'models/draco/', scene);
 			scene.scale.x = 0.04;
 			scene.scale.y = 0.04;
 			scene.scale.z = 0.04;
+
+			const helper = new THREE.CameraHelper( light.shadow.camera );
+			scene.add( helper );
 	
 
 			// @ts-ignore
