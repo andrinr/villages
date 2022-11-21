@@ -53,7 +53,7 @@
 			parentDiv.appendChild( renderer.domElement );
 
 			scene = new THREE.Scene();
-			const color = 0xFFFFFF;  // white
+			const color = 0xbbb4c2;  // white
 			const near = 1;
 			const far = 18;
 
@@ -92,7 +92,7 @@
 			scene.children[0].scale.z = 0.03;
 
 			const light = new THREE.DirectionalLight( 0xf59e33, 1 );
-			light.position.set(1, 1.3, 2 ); //default; light shining from top
+			light.position.set(2, 2.6, 4 ); //default; light shining from top
 
 			light.castShadow = true; // default false
 			scene.add( light );
