@@ -6,7 +6,9 @@
 	import * as THREE from 'three';
 	import { loadGLTF } from './ts/loader';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'; 
-	import { EffectComposer, RenderPass, EffectPass,  DepthOfFieldEffect, SSAOEffect, SelectiveBloomEffect, GlitchEffect} from 'postprocessing';
+	import { EffectComposer, BlendFunction, SelectiveBloomEffect, EdgeDetectionMode, SMAAPreset, EffectPass, RenderPass, BloomEffect} from 'postprocessing';
+	import { Sky } from 'three/examples/jsm/objects/Sky.js';
+	import { Water } from 'three/examples/jsm/objects/Water.js';
 	let camera: Camera;
 	let scene: Scene;
 	let renderer: Renderer;
@@ -36,28 +38,27 @@
 
 		const init = async () =>
 		{
-			renderer = new THREE.WebGLRenderer( { 
-				powerPreference: "high-performance",
-				stencil: true,
-				depth: true,
-				antialias: true 
-			} );
+			renderer = new THREE.WebGLRenderer();
 			// @ts-ignore
 			renderer.shadowMap.enabled = true;
 			// @ts-ignore
 			renderer.shadowMap.type = THREE.VSMShadowMap; // default THREE.PCFShadowMap
 
 			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.outputEncoding = THREE.sRGBEncoding;
+			renderer.toneMapping = THREE.ACESFilmicToneMapping;
+			renderer.toneMappingExposure = 0.3;
+
 			const parentDiv = document.getElementById("three");
 			parentDiv.appendChild( renderer.domElement );
 
 			scene = new THREE.Scene();
 			const color = 0xFFFFFF;  // white
-			const near = 8;
-			const far = 12;
+			const near = 1;
+			const far = 18;
 
 			scene.fog = new THREE.Fog(color, near, far);
-			scene.background =  new THREE.Color(0xffffff);
+			//scene.background =  new THREE.Color(0x97dede);
 	
 			camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
 			camera.position.z = 3;
@@ -75,42 +76,76 @@
 			//const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
 			//scene.add( light );
 
-			const light = new THREE.DirectionalLight( 0xffffff, 1 );
-			light.position.set( 0, 150, 150 ); //default; light shining from top
+			prevTime = Date.now();
+
+			await loadGLTF('models/map_collection.glb', 'models/draco/', scene);
+			console.log(scene.children);
+
+            scene.children[0].children.forEach((child) => {
+                child.castShadow = true;
+                child.receiveShadow = true;
+				child.roughness = 0.6;
+            });
+			
+			scene.children[0].scale.x = 0.03;
+			scene.children[0].scale.y = 0.03;
+			scene.children[0].scale.z = 0.03;
+
+			const light = new THREE.DirectionalLight( 0xf59e33, 1 );
+			light.position.set(1, 1.3, 2 ); //default; light shining from top
+
 			light.castShadow = true; // default false
 			scene.add( light );
+			//const helper = new THREE.CameraHelper( light.shadow.camera );
+			//scene.add( helper );
 
 			//Set up shadow properties for the light
-			light.shadow.mapSize.width = 1024; // default
-			light.shadow.mapSize.height = 1024; // default
-			light.shadow.camera.near = 0.5; // default
-			light.shadow.camera.far = 200; // default
+			light.shadow.mapSize.width = 512; 
+			light.shadow.mapSize.height = 512;
+			light.shadow.camera.near = 0.5;
+			light.shadow.camera.far = 20;
 			light.shadow.bias = -0.0001;
 
-			prevTime = Date.now();
-			
-			loadGLTF('models/map_9.gltf', 'models/draco/', scene);
-			//loadGLTF('models/map_9.gltf', 'models/draco/', scene);
-			//loadGLTF('models/map_9.gltf', 'models/draco/', scene);
-			scene.scale.x = 0.04;
-			scene.scale.y = 0.04;
-			scene.scale.z = 0.04;
+			const ambientLight = new THREE.AmbientLight( 0x4c6061 );
+			scene.add( ambientLight );
+						
+			const sky = new Sky();
+			sky.scale.setScalar( 450000 );
+			scene.add( sky );
 
-			const helper = new THREE.CameraHelper( light.shadow.camera );
-			scene.add( helper );
-	
+			const uniforms = sky.material.uniforms;
+			uniforms[ 'turbidity' ].value = 10;
+			uniforms[ 'rayleigh' ].value = 1.8;
+			uniforms[ 'mieCoefficient' ].value = 0.0;
+			uniforms[ 'mieDirectionalG' ].value = 0.7;
+
+			const phi = THREE.MathUtils.degToRad( 90 - 10 );
+			const theta = THREE.MathUtils.degToRad( 30 );
+			
+			const sun = new THREE.Vector3();
+			sun.setFromSphericalCoords( 1, phi, theta );
+
+			uniforms[ 'sunPosition' ].value.copy( sun );
+
+			console.log(uniforms);
+			//uniforms[ 'exposure' ].value = 0.5;
+
+			console.log(scene);
 
 			// @ts-ignore
 			composer = new EffectComposer(renderer);
-			composer.addPass(new RenderPass(scene, camera));
-			const dofEffect = new DepthOfFieldEffect(camera);
-			//dofEffect.
-			const effectPass = new EffectPass(camera, dofEffect);
-			//composer.addPass(effectPass);
+			const effect = new SelectiveBloomEffect(scene, camera, {
+				blendFunction: BlendFunction.ADD,
+				mipmapBlur: true,
+				luminanceThreshold: 0.7,
+				luminanceSmoothing: 0.3,
+				intensity: 3.0
+			});
 
-			//const ssaoEffect = new SSAOEffect(camera);
-			//const effectPass = new EffectPass(camera, dofEffect);
-			//composer.addPass(effectPass);
+			composer.addPass(new RenderPass(scene, camera));
+			//composer.addPass(new EffectPass(camera, effect));
+
+			animate();
 
 		}
 
@@ -123,7 +158,6 @@
 			//box.rotateX(dt * 0.5 / 1000);
 			//box.rotateX(dt * 0.2 / 1000);
 			controls.update();
-			//.render();
 
 			const pos = new THREE.Vector3(10.0,0,0);
 			pos.project(camera);
@@ -149,11 +183,11 @@
 				//intersects[ i ].object.material.color.set( 0xff0000 );
 			}
 
+			//composer.render();
 			renderer.render( scene, camera );
 		}
 
 		init();
-		animate();
 	});
 
 </script>

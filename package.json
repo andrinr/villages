@@ -28,6 +28,7 @@
     "@types/three": "^0.131.0",
     "postprocessing": "^6.29.1",
     "sirv-cli": "^1.0.0",
-    "three": "^0.146.0"
+    "three": "^0.146.0",
+    "three-sky": "^1.1.3"
   }
 }
