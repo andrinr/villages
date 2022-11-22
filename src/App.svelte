@@ -1,22 +1,37 @@
 <script lang="ts">
-	import type { Camera, Scene, Renderer, Material, HemisphereLight, Raycaster } from 'three';
-	import { MeshBasicMaterial } from 'three';
-	import { onMount } from 'svelte';
-
-	import * as THREE from 'three';
-	import { loadGLTF } from './ts/loader';
-	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'; 
-	import { EffectComposer, BlendFunction, SelectiveBloomEffect, EdgeDetectionMode, SMAAPreset, EffectPass, RenderPass, BloomEffect} from 'postprocessing';
+	// THREE imports
+	import type { Camera, Material } from 'three';
+	import { 
+		sRGBEncoding, 
+		WebGLRenderer, 
+		Renderer, 
+		ACESFilmicToneMapping, 
+		Scene, 
+		Fog, 
+		Raycaster, 
+		PerspectiveCamera, 
+		Vector2, 
+		Vector3,
+		DirectionalLight, 
+		AmbientLight,
+		MathUtils,
+		VSMShadowMap,
+		AnimationMixer} from 'three';
 	import { Sky } from 'three/examples/jsm/objects/Sky.js';
-	import { Water } from 'three/examples/jsm/objects/Water.js';
+	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'; 
+	// Animaions
+	import { Easing } from "@tweenjs/tween.js";
+	// Svelte imports
+	import { onMount } from 'svelte';
+	// Local imports
+	import { loadGLTF } from './ts/loader';
+
 	let camera: Camera;
 	let scene: Scene;
 	let renderer: Renderer;
-	let material: Material;
 	let prevTime: number;
-	let ambientLight: THREE.AmbientLight;
 	let controls: OrbitControls;
-	let composer: EffectComposer;
+	let mixer: AnimationMixer;
 
 	let raycaster: THREE.Raycaster;
 	let pointer: THREE.Vector2;
@@ -38,112 +53,48 @@
 
 		const init = async () =>
 		{
-			renderer = new THREE.WebGLRenderer();
+			createjs.TweenJS.get()
+			renderer = new WebGLRenderer();
 			// @ts-ignore
 			renderer.shadowMap.enabled = true;
 			// @ts-ignore
-			renderer.shadowMap.type = THREE.VSMShadowMap; // default THREE.PCFShadowMap
+			renderer.shadowMap.type = VSMShadowMap; // default THREE.PCFShadowMap
 
 			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.outputEncoding = THREE.sRGBEncoding;
-			renderer.toneMapping = THREE.ACESFilmicToneMapping;
+			// @ts-ignore
+			renderer.outputEncoding = sRGBEncoding;
+			// @ts-ignore
+			renderer.toneMapping = ACESFilmicToneMapping;
+			// @ts-ignore
 			renderer.toneMappingExposure = 0.3;
 
 			const parentDiv = document.getElementById("three");
 			parentDiv.appendChild( renderer.domElement );
 
-			scene = new THREE.Scene();
-			const color = 0xbbb4c2;  // white
-			const near = 1;
-			const far = 18;
-
-			scene.fog = new THREE.Fog(color, near, far);
+			scene = new Scene();
+			scene.fog = new Fog(0xbbb4c2, 1, 18);
 			//scene.background =  new THREE.Color(0x97dede);
 	
-			camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
+			camera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
 			camera.position.z = 3;
 			camera.position.y = 3;
-
-			raycaster = new THREE.Raycaster();
-			pointer = new THREE.Vector2();
-
 			controls = new OrbitControls(
 				camera, renderer.domElement
 			);
+			mixer = new AnimationMixer( camera );
 			controls.update();
-			material = new THREE.MeshPhongMaterial();
 
-			//const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
-			//scene.add( light );
+			raycaster = new Raycaster();
+			pointer = new Vector2();
 
 			prevTime = Date.now();
 
-			await loadGLTF('models/map_collection.glb', 'models/draco/', scene);
-			console.log(scene.children);
 
-            scene.children[0].children.forEach((child) => {
-                child.castShadow = true;
-                child.receiveShadow = true;
-				child.roughness = 0.6;
-            });
+			addLights(scene);
+
+			addSky(scene);
 			
-			scene.children[0].scale.x = 0.03;
-			scene.children[0].scale.y = 0.03;
-			scene.children[0].scale.z = 0.03;
-
-			const light = new THREE.DirectionalLight( 0xf59e33, 1 );
-			light.position.set(2, 2.6, 4 ); //default; light shining from top
-
-			light.castShadow = true; // default false
-			scene.add( light );
-			//const helper = new THREE.CameraHelper( light.shadow.camera );
-			//scene.add( helper );
-
-			//Set up shadow properties for the light
-			light.shadow.mapSize.width = 512; 
-			light.shadow.mapSize.height = 512;
-			light.shadow.camera.near = 0.5;
-			light.shadow.camera.far = 20;
-			light.shadow.bias = -0.0001;
-
-			const ambientLight = new THREE.AmbientLight( 0x4c6061 );
-			scene.add( ambientLight );
-						
-			const sky = new Sky();
-			sky.scale.setScalar( 450000 );
-			scene.add( sky );
-
-			const uniforms = sky.material.uniforms;
-			uniforms[ 'turbidity' ].value = 10;
-			uniforms[ 'rayleigh' ].value = 1.8;
-			uniforms[ 'mieCoefficient' ].value = 0.0;
-			uniforms[ 'mieDirectionalG' ].value = 0.7;
-
-			const phi = THREE.MathUtils.degToRad( 90 - 10 );
-			const theta = THREE.MathUtils.degToRad( 30 );
-			
-			const sun = new THREE.Vector3();
-			sun.setFromSphericalCoords( 1, phi, theta );
-
-			uniforms[ 'sunPosition' ].value.copy( sun );
-
-			console.log(uniforms);
-			//uniforms[ 'exposure' ].value = 0.5;
-
-			console.log(scene);
-
-			// @ts-ignore
-			composer = new EffectComposer(renderer);
-			const effect = new SelectiveBloomEffect(scene, camera, {
-				blendFunction: BlendFunction.ADD,
-				mipmapBlur: true,
-				luminanceThreshold: 0.7,
-				luminanceSmoothing: 0.3,
-				intensity: 3.0
-			});
-
-			composer.addPass(new RenderPass(scene, camera));
-			//composer.addPass(new EffectPass(camera, effect));
+			addModels(scene);
 
 			animate();
 
@@ -159,7 +110,7 @@
 			//box.rotateX(dt * 0.2 / 1000);
 			controls.update();
 
-			const pos = new THREE.Vector3(10.0,0,0);
+			const pos = new Vector3(10.0,0,0);
 			pos.project(camera);
 			const element = document.getElementById('sample-content');
 
@@ -176,20 +127,72 @@
 
 			// calculate objects intersecting the picking ray
 			const intersects = raycaster.intersectObjects( scene.children );
-			//console.log(intersects);
 
 			for ( let i = 0; i < intersects.length; i ++ ) {
 				//@ts-ignore
 				//intersects[ i ].object.material.color.set( 0xff0000 );
 			}
 
-			//composer.render();
 			renderer.render( scene, camera );
 		}
 
 		init();
 	});
 
+	const addSky = (scene) => {
+		const sky = new Sky();
+		sky.scale.setScalar( 450000 );
+		scene.add( sky );
+
+		const uniforms = sky.material.uniforms;
+		uniforms[ 'turbidity' ].value = 10;
+		uniforms[ 'rayleigh' ].value = 1.8;
+		uniforms[ 'mieCoefficient' ].value = 0.0;
+		uniforms[ 'mieDirectionalG' ].value = 0.7;
+
+		const phi = MathUtils.degToRad( 90 - 10 );
+		const theta = MathUtils.degToRad( 30 );
+		
+		const sun = new Vector3();
+		sun.setFromSphericalCoords( 1, phi, theta );
+
+		uniforms[ 'sunPosition' ].value.copy( sun );
+	}
+
+	const addLights = (scene) => {
+		const light = new DirectionalLight( 0xf59e33, 1 );
+		light.position.set(2, 2.6, 4 ); //default; light shining from top
+
+		light.castShadow = true; // default false
+		scene.add( light );
+		//const helper = new THREE.CameraHelper( light.shadow.camera );
+		//scene.add( helper );
+
+		//Set up shadow properties for the light
+		light.shadow.mapSize.width = 512; 
+		light.shadow.mapSize.height = 512;
+		light.shadow.camera.near = 0.5;
+		light.shadow.camera.far = 20;
+		light.shadow.bias = -0.0001;
+
+		const ambientLight = new AmbientLight( 0x4c6061 );
+		scene.add( ambientLight );
+	}
+
+	const addModels = async (scene) => {
+		const id = scene.children.length;
+		await loadGLTF('models/map_collection.glb', 'models/draco/', scene);
+
+		scene.children[id].children.forEach((child) => {
+			child.castShadow = true;
+			child.receiveShadow = true;
+			child.roughness = 0.6;
+		});
+		
+		scene.children[id].scale.x = 0.03;
+		scene.children[id].scale.y = 0.03;
+		scene.children[id].scale.z = 0.03;
+	}
 </script>
 
 <main>
