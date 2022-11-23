@@ -20,7 +20,7 @@
 	import { Sky } from 'three/examples/jsm/objects/Sky.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'; 
 	// Animaions
-	import { Easing } from "@tweenjs/tween.js";
+	import { Tween, Easing } from "@tweenjs/tween.js";
 	// Svelte imports
 	import { onMount } from 'svelte';
 	// Local imports
@@ -36,9 +36,11 @@
 	let raycaster: THREE.Raycaster;
 	let pointer: THREE.Vector2;
 
-	let m = { x: 0, y: 0 };
+	let tween: Tween;
 
-	function onPointerMove( event ) {
+	let m : {x : number, y : number } = { x: 0, y: 0 };
+
+	function onPointerMove( event : MouseEvent ) {
 
 		// calculate pointer position in normalized device coordinates
 		// (-1 to +1) for both components
@@ -77,11 +79,24 @@
 			camera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
 			camera.position.z = 3;
 			camera.position.y = 3;
-			controls = new OrbitControls(
+			/*controls = new OrbitControls(
 				camera, renderer.domElement
 			);
-			mixer = new AnimationMixer( camera );
-			controls.update();
+			controls.update();*/
+
+			tween = new Tween(camera.position)
+				.to({ x: 0, y: 0, z: 0 }, 10000)
+				.repeat(Infinity)
+				.easing(Easing.Quadratic.InOut);
+
+			/*tween.onUpdate(() => {
+				camera.position.x = tween.x;
+				camera.position.y = tween.y;
+				camera.position.z = tween.z;
+				console.log(camera.position);
+			});*/
+
+			tween.start();
 
 			raycaster = new Raycaster();
 			pointer = new Vector2();
@@ -108,10 +123,7 @@
 			requestAnimationFrame( animate );
 			const dt : number = Date.now() - prevTime;
 			prevTime = Date.now();
-			//box.rotateY(dt * 1 / 1000);
-			//box.rotateX(dt * 0.5 / 1000);
-			//box.rotateX(dt * 0.2 / 1000);
-			controls.update();
+			//controls.update();
 
 			const pos = new Vector3(10.0,0,0);
 			pos.project(camera);
@@ -121,7 +133,6 @@
 			const h = document.body.clientHeight;
 			element.style.top = String(-pos.y *  h/2.0 + h/2.0) + 'px';
 			element.style.left = String(pos.x * w/2.0 + w/2.0) + 'px';
-
 
 			// update the picking ray with the camera and pointer position
 			pointer.x = m.x;
@@ -135,6 +146,8 @@
 				//@ts-ignore
 				//intersects[ i ].object.material.color.set( 0xff0000 );
 			}
+
+			tween.update();
 
 			renderer.render( scene, camera );
 		}
