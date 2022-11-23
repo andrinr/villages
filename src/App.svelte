@@ -18,7 +18,6 @@
 		VSMShadowMap,
 		AnimationMixer} from 'three';
 	import { Sky } from 'three/examples/jsm/objects/Sky.js';
-	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'; 
 	// Animaions
 	import { Tween, Easing } from "@tweenjs/tween.js";
 	// Svelte imports
@@ -30,7 +29,6 @@
 	let scene: Scene;
 	let renderer: Renderer;
 	let prevTime: number;
-	let controls: OrbitControls;
 	let mixer: AnimationMixer;
 
 	let raycaster: THREE.Raycaster;
@@ -74,27 +72,16 @@
 
 			scene = new Scene();
 			scene.fog = new Fog(0xbbb4c2, 1, 18);
-			//scene.background =  new THREE.Color(0x97dede);
 	
 			camera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
 			camera.position.z = 3;
 			camera.position.y = 3;
-			/*controls = new OrbitControls(
-				camera, renderer.domElement
-			);
-			controls.update();*/
 
 			tween = new Tween(camera.position)
 				.to({ x: 0, y: 0, z: 0 }, 10000)
 				.repeat(Infinity)
-				.easing(Easing.Quadratic.InOut);
+				.easing(Easing.Exponential.InOut);
 
-			/*tween.onUpdate(() => {
-				camera.position.x = tween.x;
-				camera.position.y = tween.y;
-				camera.position.z = tween.z;
-				console.log(camera.position);
-			});*/
 
 			tween.start();
 
@@ -197,6 +184,7 @@
 		scene.children[id].children.forEach((child) => {
 			child.castShadow = true;
 			child.receiveShadow = true;
+			// @ts-ignore
 			child.roughness = 0.6;
 		});
 		
