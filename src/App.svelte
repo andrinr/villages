@@ -53,7 +53,6 @@
 
 		const init = async () =>
 		{
-			createjs.TweenJS.get()
 			renderer = new WebGLRenderer();
 			// @ts-ignore
 			renderer.shadowMap.enabled = true;
