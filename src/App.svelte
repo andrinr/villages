@@ -65,9 +65,9 @@
 			// @ts-ignore
 			renderer.toneMapping = ACESFilmicToneMapping;
 			// @ts-ignore
-			renderer.toneMappingExposure = 0.3;
+			renderer.toneMappingExposure = 0.4;
 
-			const parentDiv = document.getElementById("three");
+			const parentDiv : HTMLElement = document.getElementById("three");
 			parentDiv.appendChild( renderer.domElement );
 
 			scene = new Scene();
@@ -88,10 +88,14 @@
 
 			prevTime = Date.now();
 
+			const sunPosition : Vector3 = new Vector3(0, 0, 0);
+			const phi : number = MathUtils.degToRad( 90 - 20 );
+			const theta : number = MathUtils.degToRad( 30 );
+			sunPosition.setFromSphericalCoords( 1, phi, theta );
 
-			addLights(scene);
+			addLights(scene, sunPosition);
 
-			addSky(scene);
+			addSky(scene, sunPosition);
 			
 			addModels(scene);
 
@@ -138,8 +142,8 @@
 		init();
 	});
 
-	const addSky = (scene) => {
-		const sky = new Sky();
+	const addSky = (scene : Scene, sunPosition : Vector3) => {
+		const sky : Sky = new Sky();
 		sky.scale.setScalar( 450000 );
 		scene.add( sky );
 
@@ -149,20 +153,15 @@
 		uniforms[ 'mieCoefficient' ].value = 0.0;
 		uniforms[ 'mieDirectionalG' ].value = 0.7;
 
-		const phi = MathUtils.degToRad( 90 - 10 );
-		const theta = MathUtils.degToRad( 30 );
-		
-		const sun = new Vector3();
-		sun.setFromSphericalCoords( 1, phi, theta );
-
-		uniforms[ 'sunPosition' ].value.copy( sun );
+		uniforms[ 'sunPosition' ].value.copy( sunPosition );
 	}
 
-	const addLights = (scene) => {
+	const addLights = (scene : Scene, sunPosition : Vector3) => {
 		const light = new DirectionalLight( 0xf59e33, 1 );
-		light.position.set(2, 2.6, 4 ); //default; light shining from top
+		const scale : number = 4.0;
+		light.position.set(sunPosition.x * scale, sunPosition.y * scale, sunPosition.z * scale);
 
-		light.castShadow = true; // default false
+		light.castShadow = true;
 		scene.add( light );
 		//const helper = new THREE.CameraHelper( light.shadow.camera );
 		//scene.add( helper );
@@ -178,7 +177,7 @@
 		scene.add( ambientLight );
 	}
 
-	const addModels = async (scene) => {
+	const addModels = async (scene : Scene) => {
 		const id = scene.children.length;
 		await loadGLTF('models/map_collection.glb', 'models/draco/', scene);
 
