@@ -11,31 +11,26 @@
 
 	let villageAnimation : VillageAnimation;
 
+	const getAndSetCamera = () => {
+		let cameraPos = data.content[contentId].cameraPosition;
+		let cameraTarget = data.content[contentId].cameraTarget;
+		villageAnimation.animateCamera(
+			new Vector3(cameraPos.x, cameraPos.y, cameraPos.z),
+			new Vector3(cameraTarget.x, cameraTarget.y, cameraTarget.z),
+			2000
+		);
+	}
+
 	function onKeyDown(e) {
-		let cameraPos : {x: number, y: number, z: number};
-		let cameraLookAt : {x: number, y: number, z: number};
-		const duration = 2000;
 		switch(e.keyCode) {
 			case 38:
 				contentId = (contentId + 1) % data.content.length;
-				cameraPos = data.content[contentId].cameraPosition;
-				cameraLookAt = data.content[contentId].cameraTarget;
-				console.log(cameraPos);
-				villageAnimation.animateCamera(
-					new Vector3(cameraPos.x, cameraPos.y, cameraPos.z),
-					new Vector3(cameraLookAt.x, cameraLookAt.y, cameraLookAt.z),
-					duration
-				);
+				getAndSetCamera();
 				break;
 			case 40:
+				// Make sure there are no negative numbers
 				contentId = (contentId - 1  + data.content.length) % data.content.length;
-				cameraPos = data.content[contentId].cameraPosition;
-				cameraLookAt = data.content[contentId].cameraTarget;
-				villageAnimation.animateCamera(
-					new Vector3(cameraPos.x, cameraPos.y, cameraPos.z),
-					new Vector3(cameraLookAt.x, cameraLookAt.y, cameraLookAt.z),
-					duration
-				);
+				getAndSetCamera();
 				break;
 		}
 	}
@@ -43,7 +38,6 @@
 	onMount( async() => {
 		const parentDiv : HTMLElement = document.getElementById("three");
 		villageAnimation = new VillageAnimation(parentDiv);
-		//villageAnimation.camera.position.set(
 
 		console.log(data);
 	});

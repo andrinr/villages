@@ -1,5 +1,4 @@
-import { ThreeAnimation } from "./animation";
-
+// Three.js
 import { 
     sRGBEncoding, 
     ACESFilmicToneMapping, 
@@ -12,17 +11,21 @@ import {
     VSMShadowMap} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 // Animaions
 import { Tween, Easing } from "@tweenjs/tween.js";
 // Local imports
 import { loadGLTF } from './loader';
+import { ThreeAnimation } from "./animation";
 
 export class VillageAnimation extends ThreeAnimation {
 
 	scene: Scene;
-	prevTime: number;
-	tweenPos: Tween;
-    tweenLookAt: Tween;
+	private prevTime: number;
+	private tweenPos: Tween;
+    private tweenLookAt: Tween;
+    private prevLookAt : Vector3;
+    private controls : OrbitControls;
 
     public init(): void {
         // @ts-ignore
@@ -47,6 +50,8 @@ export class VillageAnimation extends ThreeAnimation {
         this.camera.position.z = 3;
         this.camera.position.y = 3;
 
+        this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+
         this.tweenPos = new Tween(this.camera.position);
         this.tweenPos.start();
         this.tweenLookAt = new Tween(this.camera.lookAt);
@@ -67,7 +72,6 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public animateCamera(nexPosition : Vector3, nextLookAt : Vector3, duration : number) {
-        console.log("animateCamera", nexPosition, nextLookAt, duration);
         this.tweenPos.stop();
         this.tweenPos = new Tween(this.camera.position)
             .to(nexPosition, duration)
@@ -76,7 +80,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.tweenPos.start();
 
         this.tweenLookAt.stop();
-        this.tweenLookAt = new Tween(this.camera.lookAt)
+        this.tweenLookAt = new Tween(this.controls.target)
             .to(nextLookAt, duration)
             .easing(Easing.Cubic.InOut);
 
@@ -88,6 +92,7 @@ export class VillageAnimation extends ThreeAnimation {
     public update(delta: number): void {
         this.tweenPos.update();
         this.tweenLookAt.update();
+        this.controls.update();
         this.renderer.render( this.scene, this.camera );
     }
 
