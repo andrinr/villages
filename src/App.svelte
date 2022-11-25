@@ -12,24 +12,29 @@
 	let villageAnimation : VillageAnimation;
 
 	function onKeyDown(e) {
-		console.log(e);
+		let cameraPos : {x: number, y: number, z: number};
+		let cameraLookAt : {x: number, y: number, z: number};
+		const duration = 2000;
 		switch(e.keyCode) {
 			case 38:
 				contentId = (contentId + 1) % data.content.length;
+				cameraPos = data.content[contentId].cameraPosition;
+				cameraLookAt = data.content[contentId].cameraTarget;
+				console.log(cameraPos);
 				villageAnimation.animateCamera(
-					new Vector3(data.content[contentId].camera),
-					new Vector3(data.content[contentId].target),
-					1000
+					new Vector3(cameraPos.x, cameraPos.y, cameraPos.z),
+					new Vector3(cameraLookAt.x, cameraLookAt.y, cameraLookAt.z),
+					duration
 				);
-				console.log(contentId);
 				break;
 			case 40:
 				contentId = (contentId - 1  + data.content.length) % data.content.length;
-				console.log(contentId);
+				cameraPos = data.content[contentId].cameraPosition;
+				cameraLookAt = data.content[contentId].cameraTarget;
 				villageAnimation.animateCamera(
-					new Vector3(data.content[contentId].camera),
-					new Vector3(data.content[contentId].target),
-					1000
+					new Vector3(cameraPos.x, cameraPos.y, cameraPos.z),
+					new Vector3(cameraLookAt.x, cameraLookAt.y, cameraLookAt.z),
+					duration
 				);
 				break;
 		}

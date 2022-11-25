@@ -48,7 +48,9 @@ export class VillageAnimation extends ThreeAnimation {
         this.camera.position.y = 3;
 
         this.tweenPos = new Tween(this.camera.position);
+        this.tweenPos.start();
         this.tweenLookAt = new Tween(this.camera.lookAt);
+        this.tweenLookAt.start();
 
         this.prevTime = Date.now();
 
@@ -65,15 +67,18 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public animateCamera(nexPosition : Vector3, nextLookAt : Vector3, duration : number) {
+        console.log("animateCamera", nexPosition, nextLookAt, duration);
+        this.tweenPos.stop();
         this.tweenPos = new Tween(this.camera.position)
             .to(nexPosition, duration)
-            .easing(Easing.Exponential.InOut);
+            .easing(Easing.Cubic.InOut);
 
         this.tweenPos.start();
 
+        this.tweenLookAt.stop();
         this.tweenLookAt = new Tween(this.camera.lookAt)
             .to(nextLookAt, duration)
-            .easing(Easing.Exponential.InOut);
+            .easing(Easing.Cubic.InOut);
 
         this.tweenLookAt.start();
 
@@ -121,7 +126,7 @@ export class VillageAnimation extends ThreeAnimation {
 		light.shadow.camera.far = 20;
 		light.shadow.bias = -0.0001;
 
-		const ambientLight = new AmbientLight( 0x4c6061 );
+		const ambientLight = new AmbientLight( 0x9d81a6 );
 		this.scene.add( ambientLight );
 	}
 

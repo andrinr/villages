@@ -23,7 +23,12 @@ export abstract class ThreeAnimation {
     public abstract onMouse(event : MouseEvent) : void;
 
     private start () {
-        this.renderer = new WebGLRenderer();
+        this.renderer = new WebGLRenderer(
+            {
+                antialias: true,
+                powerPreference: "high-performance"
+            }
+        );
         this.rendererElement.appendChild( this.renderer.domElement );
         this.camera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
         this.init();
