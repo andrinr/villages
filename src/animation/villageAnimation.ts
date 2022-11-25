@@ -8,7 +8,11 @@ import {
     DirectionalLight, 
     AmbientLight,
     MathUtils,
-    VSMShadowMap} from 'three';
+    VSMShadowMap,
+    CylinderGeometry,
+    MeshBasicMaterial,
+    Mesh,
+    Color} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -17,15 +21,15 @@ import { Tween, Easing } from "@tweenjs/tween.js";
 // Local imports
 import { loadGLTF } from './loader';
 import { ThreeAnimation } from "./animation";
+import { generateGradientMaterial } from './gradientMaterial';
 
 export class VillageAnimation extends ThreeAnimation {
 
 	scene: Scene;
-	private prevTime: number;
 	private tweenPos: Tween;
     private tweenLookAt: Tween;
-    private prevLookAt : Vector3;
     private controls : OrbitControls;
+    private highlight : Mesh;
 
     public init(): void {
         // @ts-ignore
@@ -57,8 +61,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.tweenLookAt = new Tween(this.camera.lookAt);
         this.tweenLookAt.start();
 
-        this.prevTime = Date.now();
-
         const sunPosition : Vector3 = new Vector3(0, 0, 0);
         const phi : number = MathUtils.degToRad( 90 - 20 );
         const theta : number = MathUtils.degToRad( 30 );
@@ -67,6 +69,8 @@ export class VillageAnimation extends ThreeAnimation {
         this.addLights(sunPosition);
 
         this.addSky(sunPosition);
+
+        this.addHightlight();
         
         this.addModels();
     }
@@ -94,10 +98,32 @@ export class VillageAnimation extends ThreeAnimation {
         this.tweenLookAt.update();
         this.controls.update();
         this.renderer.render( this.scene, this.camera );
+
+        console.log(this.secondsPassed);
+        //this.highlight.scale.y = Math.sin(this.secondsPassed * 0.3);;
     }
 
     public onMouse(event: MouseEvent): void {
+        //const mouseX = event.clientX / window.innerWidth * 2 - 1;
+        //const mouseY = event.clientY / window.innerHeight * 2 - 1;
+
         return;
+    }
+
+    private addHightlight() {
+        const radiusTop = 0.6;
+        const radiusBottom = 0.6;
+        const height = 1.0;
+        const radialSegments = 96;
+        const geometry = new CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
+        const posY = 0.5;
+        const material = generateGradientMaterial(new Color(0xff9a47));
+        //const material = new MeshBasicMaterial( { color: 0xffde26 } );
+        this.highlight = new Mesh(geometry, material);
+        this.highlight.position.set(0, posY, 0);
+        this.highlight.rotation.x = Math.PI;
+
+        this.scene.add(this.highlight);
     }
 
 	private addSky (sunPosition : Vector3) {
@@ -125,8 +151,8 @@ export class VillageAnimation extends ThreeAnimation {
 		//scene.add( helper );
 
 		//Set up shadow properties for the light
-		light.shadow.mapSize.width = 512; 
-		light.shadow.mapSize.height = 512;
+		light.shadow.mapSize.width = 1024; 
+		light.shadow.mapSize.height = 1024;
 		light.shadow.camera.near = 0.5;
 		light.shadow.camera.far = 20;
 		light.shadow.bias = -0.0001;

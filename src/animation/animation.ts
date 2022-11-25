@@ -2,6 +2,8 @@ import { WebGLRenderer, PerspectiveCamera } from "three";
 
 export abstract class ThreeAnimation {
     private lastTime : number = 0;
+    private startTime : number = 0;
+    public secondsPassed : number = 0;
 
     public renderer : WebGLRenderer;
     public camera : PerspectiveCamera;
@@ -32,13 +34,17 @@ export abstract class ThreeAnimation {
         this.rendererElement.appendChild( this.renderer.domElement );
         this.camera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
         this.init();
+        this.startTime = Date.now();
+        this.secondsPassed = 0;
         this.loop();
     }
 
     private loop () {
 		requestAnimationFrame( this.loop );
+        const time : number = performance.now();
         const dt : number = Date.now() - this.lastTime;
 		this.lastTime = Date.now();
+        this.secondsPassed = (Date.now() - this.startTime) / 1000;
         this.update(dt);
     }
 
