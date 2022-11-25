@@ -1,24 +1,24 @@
 {
     "content" : [
         {
-            "title": "Tile 1",
-            "description" : "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. ",
+            "title": "Next Generation Village",
+            "description" : "Explore the map to see what life in a regenerative, technologically advanced & culturally thriving society of the future could look like.",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 0, "y" : 0, "z" : 0},
             "highlightPosition" :  {"x" : 0, "y" : 0, "z" : 0},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1}
         },
-        {
-            "title" : "Tile 2",
-            "description" :"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.",
+        {   
+            "title": "Next Generation Village",
+            "description" : "Explore the map to see what life in a regenerative, technologically advanced & culturally thriving society of the future could look like.",
             "cameraPosition" : {"x" : 3, "y" : 2, "z" : 1},
             "cameraTarget" : {"x" : 0, "y" : 1, "z" : 2},
             "highlightPosition" : {"x" : 0, "y" : 1, "z" : 2},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1}
         },
         {
-            "title" : "Tile 3",
-            "description" :"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.",
+            "title": "Next Generation Village",
+            "description" : "Explore the map to see what life in a regenerative, technologically advanced & culturally thriving society of the future could look like.",
             "cameraPosition" : {"x" : -2, "y" : 1, "z" : 1},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},

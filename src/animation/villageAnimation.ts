@@ -26,8 +26,8 @@ import { generateGradientMaterial } from './gradientMaterial';
 export class VillageAnimation extends ThreeAnimation {
 
 	scene: Scene;
-	private tweenPos: Tween;
-    private tweenLookAt: Tween;
+	private tweenPos: Tween<Vector3>;
+    private tweenLookAt: Tween<Vector3>;
     private controls : OrbitControls;
     private highlight : Mesh;
 
@@ -58,7 +58,7 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.tweenPos = new Tween(this.camera.position);
         this.tweenPos.start();
-        this.tweenLookAt = new Tween(this.camera.lookAt);
+        this.tweenLookAt = new Tween(this.controls.target);
         this.tweenLookAt.start();
 
         const sunPosition : Vector3 = new Vector3(0, 0, 0);
@@ -70,7 +70,7 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.addSky(sunPosition);
 
-        this.addHightlight();
+        //this.addHightlight();
         
         this.addModels();
     }
