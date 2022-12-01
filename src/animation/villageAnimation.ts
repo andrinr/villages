@@ -24,6 +24,7 @@ import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
 import * as dat from 'lil-gui'
 
+
 export class VillageAnimation extends ThreeAnimation {
 
 	scene: Scene;
@@ -32,10 +33,7 @@ export class VillageAnimation extends ThreeAnimation {
     private controls : OrbitControls;
     private highlight : Mesh;
 
-    private positionArray : any[] = [];
-
-    //DEBUG
-    private 
+    private utilityObjArray : any[] = [];
 
     public init(): void {
         // @ts-ignore
@@ -89,11 +87,10 @@ export class VillageAnimation extends ThreeAnimation {
     //public animateCamera(nexPosition : Vector3, nextLookAt : Vector3, duration : number) {
     //private nextLookAt: Vector3;
     public animateCamera(itemID: number, duration : number) {
-        console.log("content ID passed" + itemID);
         const nextLookAt = new Vector3(0,0,0);
         const nextPos = new Vector3(0,0,0);
-        const centerPos = new Vector3(0,2,3);
-        const approximity = 0.5; //number 0-1 how close is camera to object
+        // const centerPos = new Vector3(0,2,3);
+        // const approximity = 0.5; //number 0-1 how close is camera to object
         console.log("content ID ISSSS" + itemID);
 
         if(itemID == 0) {
@@ -107,21 +104,36 @@ export class VillageAnimation extends ThreeAnimation {
                 useGrouping: false
               });
 
-            this.positionArray.forEach((pos) => {
-                  console.log("indexString" + indexString);
-                if(pos.name.includes(indexString)){
-                    console.log("Found position" + pos.name + ":"+ pos.posX + ":" + pos.posY + ":" + pos.posZ); 
-    
-                    nextLookAt.x = pos.posX * 0.03;
-                    nextLookAt.y = pos.posY * 0.03 + 0.5;
-                    nextLookAt.z = pos.posZ * 0.03 + 0.2;
+
+            this.utilityObjArray.forEach((pos) => {
+                if(pos.name.includes("GLOW")){
+                    //disable glow object
                 }
             });
 
-            //Calculating final position
-            nextPos.x = approximity * (nextLookAt.x - centerPos.x) + centerPos.x;
-            nextPos.y = approximity * (nextLookAt.y - centerPos.y) + centerPos.y;
-            nextPos.z = approximity * (nextLookAt.z - centerPos.z) + centerPos.z;
+            //get anchor object position aka LOOK AT
+            this.utilityObjArray.forEach((pos) => {
+                
+                if(pos.name.includes(indexString) && pos.name.includes("ANCHOR")){
+                    console.log("Look at position" + pos.name + ":"+ pos.posX + ":" + pos.posY + ":" + pos.posZ); 
+    
+                    nextLookAt.x = pos.posX * 0.03;
+                    nextLookAt.y = pos.posY * 0.03;
+                    nextLookAt.z = pos.posZ * 0.03;
+                }
+            });
+
+            //get camera position aka LOOK FROM
+            this.utilityObjArray.forEach((pos) => {
+                
+                if(pos.name.includes("CAMPOS") && pos.name.includes(indexString)){
+                    console.log("Look from position" + pos.name + ":"+ pos.posX + ":" + pos.posY + ":" + pos.posZ); 
+    
+                    nextPos.x = pos.posX * 0.03;
+                    nextPos.y = pos.posY * 0.03;
+                    nextPos.z = pos.posZ * 0.03;
+                }
+            });
         }
 
 
@@ -168,7 +180,6 @@ export class VillageAnimation extends ThreeAnimation {
         const geometry = new CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
         const posY = 0.5;
         const material = generateGradientMaterial(new Color(0xff9a47));
-        //const material = new MeshBasicMaterial( { color: 0xffde26 } );
         this.highlight = new Mesh(geometry, material);
         this.highlight.position.set(0, posY, 0);
         this.highlight.rotation.x = Math.PI;
@@ -213,13 +224,26 @@ export class VillageAnimation extends ThreeAnimation {
 
 	private async addModels() {
 		const id = this.scene.children.length;
-		await loadGLTF('models/map_new.glb', 'models/draco/', this.scene);
+		await loadGLTF('models/map_new_added.glb', 'models/draco/', this.scene);
+
+        //add transparent material
+        //const material = generateGradientMaterial(new Color(0xff9a47));
+
+        //add material to glow object
+        // const transpTexture = this.textureLoader.load( './transparency.png' );
+        // const material = new MeshBasicMaterial( { map: transpTexture } );
 
 		this.scene.children[id].children.forEach((child) => {
-			child.castShadow = true;
-			child.receiveShadow = true;
-			// @ts-ignore
-			child.roughness = 0.6;
+
+            // if(child.name.includes("GLOW")){
+            //     //child.material = material;
+            //     console.log("load child" + child);
+            // }else{
+            child.castShadow = true;
+            child.receiveShadow = true;
+            // @ts-ignore
+            child.roughness = 0.6;
+            // }
 
 		});
 		
@@ -228,7 +252,7 @@ export class VillageAnimation extends ThreeAnimation {
 		this.scene.children[id].scale.z = 0.03;
 
         this.scene.children[id].children.forEach((child) => {
-            if(child.name.includes("ANCHOR")){
+            if(child.name.includes("ANCHOR") || child.name.includes("CAMPOS") || child.name.includes("GLOW")){
                 console.log(child);
                 const newpos = {   
                     name: child.userData.name,
@@ -236,15 +260,21 @@ export class VillageAnimation extends ThreeAnimation {
                     posY: child.position.y,
                     posZ: child.position.z
                 };
-                this.positionArray.push(newpos);
+                this.utilityObjArray.push(newpos);
             }
         });
+
+        // this.utilityObjArray.forEach((pos) => {
+        //     if(pos.name.includes("GLOW")){
+        //         //disable glow object
+        //     }
+        // });
 
         
 	}
 
     private getPositionfromPosArray(index){
-        this.positionArray.forEach((pos) => {
+        this.utilityObjArray.forEach((pos) => {
             // console.log(pos.name);
             // console.log(pos.position);
             let indexString = index.toLocaleString('en-US', {
