@@ -22,6 +22,7 @@ import { Tween, Easing } from "@tweenjs/tween.js";
 import { loadGLTF } from './loader';
 import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
+import * as dat from 'lil-gui'
 
 export class VillageAnimation extends ThreeAnimation {
 
@@ -30,6 +31,11 @@ export class VillageAnimation extends ThreeAnimation {
     private tweenLookAt: Tween<Vector3>;
     private controls : OrbitControls;
     private highlight : Mesh;
+
+    private positionArray : any[] = [];
+
+    //DEBUG
+    private 
 
     public init(): void {
         // @ts-ignore
@@ -53,6 +59,11 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.camera.position.z = 3;
         this.camera.position.y = 3;
+        const gui = new dat.GUI();
+
+        gui.add(this.camera.position, 'x', -20,20,0.01);
+        gui.add(this.camera.position, 'y', -20,20,0.01);
+        gui.add(this.camera.position, 'z', -20,20,0.01);
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
 
@@ -75,13 +86,51 @@ export class VillageAnimation extends ThreeAnimation {
         this.addModels();
     }
 
-    public animateCamera(nexPosition : Vector3, nextLookAt : Vector3, duration : number) {
+    //public animateCamera(nexPosition : Vector3, nextLookAt : Vector3, duration : number) {
+    //private nextLookAt: Vector3;
+    public animateCamera(itemID: number, duration : number) {
+        console.log("content ID passed" + itemID);
+        const nextLookAt = new Vector3(0,0,0);
+        const nextPos = new Vector3(0,0,0);
+        const centerPos = new Vector3(0,2,3);
+        const approximity = 0.5; //number 0-1 how close is camera to object
+        console.log("content ID ISSSS" + itemID);
+
+        if(itemID == 0) {
+            nextLookAt.set(0,0,0);
+            nextPos.set(0,2,3);
+            console.log("Setting default pos");
+
+        }else{
+            let indexString = itemID.toLocaleString('en-US', {
+                minimumIntegerDigits: 2,
+                useGrouping: false
+              });
+
+            this.positionArray.forEach((pos) => {
+                  console.log("indexString" + indexString);
+                if(pos.name.includes(indexString)){
+                    console.log("Found position" + pos.name + ":"+ pos.posX + ":" + pos.posY + ":" + pos.posZ); 
+    
+                    nextLookAt.x = pos.posX * 0.03;
+                    nextLookAt.y = pos.posY * 0.03 + 0.5;
+                    nextLookAt.z = pos.posZ * 0.03 + 0.2;
+                }
+            });
+
+            //Calculating final position
+            nextPos.x = approximity * (nextLookAt.x - centerPos.x) + centerPos.x;
+            nextPos.y = approximity * (nextLookAt.y - centerPos.y) + centerPos.y;
+            nextPos.z = approximity * (nextLookAt.z - centerPos.z) + centerPos.z;
+        }
+
+
         this.tweenPos.stop();
         this.tweenPos = new Tween(this.camera.position)
-            .to(nexPosition, duration)
+            .to(nextPos, duration)
             .easing(Easing.Cubic.InOut);
-
         this.tweenPos.start();
+
 
         this.tweenLookAt.stop();
         this.tweenLookAt = new Tween(this.controls.target)
@@ -90,7 +139,8 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.tweenLookAt.start();
 
-        console.log("Camera animation started");
+        console.log("Camera animation started" + nextPos.x + "&&" + nextPos.y + "&&" + nextPos.z);
+        console.log("next lookat is " + nextLookAt.x + " && " + nextLookAt.y + "&&" + nextLookAt.z);
     }
 
     public update(delta: number): void {
@@ -99,7 +149,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.controls.update();
         this.renderer.render( this.scene, this.camera );
 
-        console.log(this.secondsPassed);
+        //console.log(this.secondsPassed);
         //this.highlight.scale.y = Math.sin(this.secondsPassed * 0.3);;
     }
 
@@ -163,17 +213,57 @@ export class VillageAnimation extends ThreeAnimation {
 
 	private async addModels() {
 		const id = this.scene.children.length;
-		await loadGLTF('models/map_collection.glb', 'models/draco/', this.scene);
+		await loadGLTF('models/map_new.glb', 'models/draco/', this.scene);
 
 		this.scene.children[id].children.forEach((child) => {
 			child.castShadow = true;
 			child.receiveShadow = true;
 			// @ts-ignore
 			child.roughness = 0.6;
+
 		});
 		
 		this.scene.children[id].scale.x = 0.03;
 		this.scene.children[id].scale.y = 0.03;
 		this.scene.children[id].scale.z = 0.03;
+
+        this.scene.children[id].children.forEach((child) => {
+            if(child.name.includes("ANCHOR")){
+                console.log(child);
+                const newpos = {   
+                    name: child.userData.name,
+                    posX: child.position.x,
+                    posY: child.position.y,
+                    posZ: child.position.z
+                };
+                this.positionArray.push(newpos);
+            }
+        });
+
+        
 	}
+
+    private getPositionfromPosArray(index){
+        this.positionArray.forEach((pos) => {
+            // console.log(pos.name);
+            // console.log(pos.position);
+            let indexString = index.toLocaleString('en-US', {
+                minimumIntegerDigits: 2,
+                useGrouping: false
+              });
+
+              console.log("indexString" + indexString);
+
+            if(pos.name.includes(indexString)){
+
+                console.log("Found position" + pos.name + ":"+ pos.posX + ":" + pos.posY + ":" + pos.posZ); 
+
+                //return new Vector3(pos.posX, pos.posY, pos.posZ);
+                return {x: pos.posX, y: pos.posY, z: pos.posZ};
+            }
+
+            
+        });
+        return new Vector3(0,0,0);
+    }
 }

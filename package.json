@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-json": "^5.0.1",
+    "@rollup/plugin-json": "^5.0.2",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
     "@tsconfig/svelte": "^2.0.0",
@@ -31,6 +31,7 @@
     "@types/createjs": "^0.0.29",
     "@types/three": "^0.131.0",
     "createjs": "^1.0.1",
+    "lil-gui": "^0.17.0",
     "postprocessing": "^6.29.1",
     "sirv-cli": "^1.0.0",
     "three": "^0.146.0",
