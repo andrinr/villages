@@ -10,7 +10,6 @@ import {
     MathUtils,
     VSMShadowMap,
     CylinderGeometry,
-    MeshBasicMaterial,
     Mesh,
     Color} from 'three';
 
@@ -24,6 +23,13 @@ import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
 import * as dat from 'lil-gui'
 
+interface CameraSettingsMap {
+    [key: number]: {
+        name: string,
+        position: Vector3,
+    }
+}
+
 export class VillageAnimation extends ThreeAnimation {
 
 	scene: Scene;
@@ -31,9 +37,9 @@ export class VillageAnimation extends ThreeAnimation {
     private tweenLookAt: Tween<Vector3>;
     private controls : OrbitControls;
     private highlight : Mesh;
-    private outlineMesh : Mesh;
+    private scale : number = 0.03;
 
-    private utilityObjArray : any[] = [];
+    private cameraSettings : CameraSettingsMap;
 
     //DEBUG
     private 
@@ -78,6 +84,8 @@ export class VillageAnimation extends ThreeAnimation {
         const theta : number = MathUtils.degToRad( 30 );
         sunPosition.setFromSphericalCoords( 1, phi, theta );
 
+        this.cameraSettings = {};
+
         this.addLights(sunPosition);
 
         this.addSky(sunPosition);
@@ -87,35 +95,29 @@ export class VillageAnimation extends ThreeAnimation {
         this.addModels();
     }
 
-    //public animateCamera(nexPosition : Vector3, nextLookAt : Vector3, duration : number) {
-    //private nextLookAt: Vector3;
     public animateCamera(itemID: number, duration : number) {
         const nextLookAt = new Vector3(0,0,0);
         const nextPos = new Vector3(0,0,0);
         const centerPos = new Vector3(0,2,3);
-        const approximity = 0.5; //number 0-1 how close is camera to object
-        console.log("content ID ISSSS" + itemID);
+        const proximity = 0.5; //number 0-1 how close is camera to object
 
         if(itemID == 0) {
             nextLookAt.set(0,0,0);
             nextPos.set(0,2,3);
             console.log("Setting default pos");
-        }else{
+        } else {
             let indexString = itemID.toLocaleString('en-US', {
                 minimumIntegerDigits: 2,
                 useGrouping: false
-              });
-
-            //get LookAt position from ANCHOR objects
-            this.utilityObjArray.forEach((pos) => {
-                if(pos.name.includes(indexString) && pos.name.includes("ANCHOR")){
-                    console.log("Lookat position" + pos.name + ":"+ pos.posX + ":" + pos.posY + ":" + pos.posZ); 
-    
-                    nextLookAt.x = pos.posX * 0.03;
-                    nextLookAt.y = pos.posY * 0.03;
-                    nextLookAt.z = pos.posZ * 0.03;
-                }
             });
+            let cameraSetting = this.cameraSettings[itemID];
+            console.log("Setting pos for " + indexString);
+            console.log(cameraSetting);
+
+
+            nextLookAt.x = cameraSetting.position.x * this.scale;
+            nextLookAt.y = cameraSetting.position.y * this.scale;
+            nextLookAt.z = cameraSetting.position.z * this.scale;
 
             //get Camera position from CAMPOS objects
             this.utilityObjArray.forEach((pos) => {
@@ -127,8 +129,12 @@ export class VillageAnimation extends ThreeAnimation {
                     nextPos.z = pos.posZ * 0.03;
                 }
             });
-        }
+            //Calculating final position
+            nextPos.x = proximity * (nextLookAt.x - centerPos.x) + centerPos.x;
+            nextPos.y = proximity * (nextLookAt.y - centerPos.y) + centerPos.y;
+            nextPos.z = proximity * (nextLookAt.z - centerPos.z) + centerPos.z;
 
+        }
 
         this.tweenPos.stop();
         this.tweenPos = new Tween(this.camera.position)
@@ -223,15 +229,10 @@ export class VillageAnimation extends ThreeAnimation {
 			// @ts-ignore
 			child.roughness = 0.6;
 		});
-
-        /*console.log(this.scene.children[id].children);
-        this.outlineMesh = new Mesh(this.scene.children[id].children[0], new MeshBasicMaterial({color: 0xff9a47}));
-        this.outlineMesh.scale.set(1.1, 1.1, 1.1);
-        this.scene.add(this.outlineMesh);*/
 		
-		this.scene.children[id].scale.x = 0.03;
-		this.scene.children[id].scale.y = 0.03;
-		this.scene.children[id].scale.z = 0.03;
+		this.scene.children[id].scale.x = this.scale;
+		this.scene.children[id].scale.y = this.scale;
+		this.scene.children[id].scale.z = this.scale;
 
         this.scene.children[id].children.forEach((child) => {
             if(child.name.includes("ANCHOR") || child.name.includes("CAMPOS") || child.name.includes("GLOW")){
@@ -243,11 +244,20 @@ export class VillageAnimation extends ThreeAnimation {
                     posZ: child.position.z
                 };
                 this.utilityObjArray.push(newpos);
+            if(child.name.includes("ANCHOR")) {
+                const id = +child.name.match(/\d+/)[0]
+                console.log("ID is " + id);
+                this.cameraSettings[id] = {
+                    position: new Vector3(
+                        child.position.x,
+                        child.position.y,
+                        child.position.z
+                    ),
+                    name: child.name,
+                };
             }
         });
 
-        
+        console.log(this.cameraSettings);
 	}
-
-
 }

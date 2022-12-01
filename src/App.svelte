@@ -2,7 +2,6 @@
   // Svelte imports
   import { onMount } from "svelte";
   import { VillageAnimation } from "./animation/villageAnimation";
-  import { Vector3 } from "three";
   import Tile from "./Tile.svelte";
 
   // @ts-ignore
@@ -12,14 +11,7 @@
   let villageAnimation: VillageAnimation;
 
   const getAndSetCamera = () => {
-    // let cameraPos = data.content[contentId].cameraPosition;
-    // let cameraTarget = data.content[contentId].cameraTarget;
-    villageAnimation.animateCamera(
-      //   new Vector3(cameraPos.x, cameraPos.y, cameraPos.z),
-      //   new Vector3(cameraTarget.x, cameraTarget.y, cameraTarget.z),
-      contentId,
-      2000
-    );
+    villageAnimation.animateCamera(contentId, 2000);
   };
 
   function onKeyDown(e) {
