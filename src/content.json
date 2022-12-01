@@ -1,28 +1,152 @@
 {
     "content" : [
         {
-            "title": "Next Generation Village",
+            "title": "Next Generation Village Default",
             "description" : "Explore the map to see what life in a regenerative, technologically advanced & culturally thriving society of the future could look like.",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 0, "y" : 0, "z" : 0},
             "highlightPosition" :  {"x" : 0, "y" : 0, "z" : 0},
-            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1}
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"00"
         },
         {   
-            "title": "Next Generation Village",
-            "description" : "Explore the map to see what life in a regenerative, technologically advanced & culturally thriving society of the future could look like.",
-            "cameraPosition" : {"x" : 3, "y" : 2, "z" : 1},
+            "title": "Next Generation Village 01",
+            "description" : "Energy Sector",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 0, "y" : 1, "z" : 2},
             "highlightPosition" : {"x" : 0, "y" : 1, "z" : 2},
-            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1}
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"ANCHOR_01_Energy"
         },
         {
-            "title": "Next Generation Village",
-            "description" : "Explore the map to see what life in a regenerative, technologically advanced & culturally thriving society of the future could look like.",
-            "cameraPosition" : {"x" : -2, "y" : 1, "z" : 1},
+            "title": "Next Generation Village 02",
+            "description" : "Data",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
-            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1}
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"ANCHOR_02_Data"
+        },{
+            "title": "Next Generation Village 03",
+            "description" : "Waste",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"ANCHOR_03_Construction"
+        },{
+            "title": "Next Generation Village 04",
+            "description" : "Construction",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"ANCHOR_04_Manufactor"
+        },{
+            "title": "Next Generation Village 05",
+            "description" : "Manufactor",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"ANCHOR_05_Living"
+        },{
+            "title": "Next Generation Village 06",
+            "description" : "Economics, Governance, Culture",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"ANCHOR_06_Transport"
+        },{
+            "title": "Next Generation Village 07",
+            "description" : "Living",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"ANCHOR_07_Economics_Governance_Culture"
+        },{
+            "title": "Next Generation Village 08",
+            "description" : "Education",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
+        },{
+            "title": "Next Generation Village 09",
+            "description" : "Health",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
+        },{
+            "title": "Next Generation Village 10",
+            "description" : "Science & Education",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
+        },{
+            "title": "Next Generation Village 11",
+            "description" : "Wellness",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
+        },{
+            "title": "Next Generation Village 12",
+            "description" : "Art & Music",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
+        },{
+            "title": "Next Generation Village 13",
+            "description" : "Philosophy",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
+        },{
+            "title": "Next Generation Village 14",
+            "description" : "Farm",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
+        },{
+            "title": "Next Generation Village 15",
+            "description" : "Water",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
+        },{
+            "title": "Next Generation Village 16",
+            "description" : "Transport",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
+        },{
+            "title": "Next Generation Village 17",
+            "description" : "Metaverse",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"08"
         }
     ]
+    
 }
