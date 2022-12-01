@@ -31,7 +31,6 @@ interface PositionMap {
 }
 
 export class VillageAnimation extends ThreeAnimation {
-
 	scene: Scene;
 	private tweenPos: Tween<Vector3>;
     private tweenLookAt: Tween<Vector3>;
@@ -41,8 +40,6 @@ export class VillageAnimation extends ThreeAnimation {
 
     private cameraAnchors : PositionMap;
     private cameraPositions : PositionMap;
-    private highlightPositions : PositionMap;
-
 
     public init(): void {
         // @ts-ignore
@@ -239,16 +236,10 @@ export class VillageAnimation extends ThreeAnimation {
                 this.cameraPositions[id] = data;
             }
             else if(child.name.includes("GLOW")) {
-                const id = +child.name.match(/\d+/)[0]
-                const data = {
-                    p: new Vector3(
-                        child.position.x,
-                        child.position.y,
-                        child.position.z
-                    ),
-                    name: child.name,
-                };
-                this.highlightPositions[id] = data;
+                // @ts-ignore
+                child.material = generateGradientMaterial(new Color(0xff9a47), this.scale);
+                child.castShadow = false;
+                child.receiveShadow = false;
             }           
         });
 	}
