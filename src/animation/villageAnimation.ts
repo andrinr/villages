@@ -31,6 +31,7 @@ export class VillageAnimation extends ThreeAnimation {
     private tweenLookAt: Tween<Vector3>;
     private controls : OrbitControls;
     private highlight : Mesh;
+    private outlineMesh : Mesh;
 
     private positionArray : any[] = [];
 
@@ -220,8 +221,12 @@ export class VillageAnimation extends ThreeAnimation {
 			child.receiveShadow = true;
 			// @ts-ignore
 			child.roughness = 0.6;
-
 		});
+
+        /*console.log(this.scene.children[id].children);
+        this.outlineMesh = new Mesh(this.scene.children[id].children[0], new MeshBasicMaterial({color: 0xff9a47}));
+        this.outlineMesh.scale.set(1.1, 1.1, 1.1);
+        this.scene.add(this.outlineMesh);*/
 		
 		this.scene.children[id].scale.x = 0.03;
 		this.scene.children[id].scale.y = 0.03;
