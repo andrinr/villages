@@ -23,10 +23,10 @@ import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
 import * as dat from 'lil-gui'
 
-interface CameraSettingsMap {
+interface PositionMap {
     [key: number]: {
         name: string,
-        position: Vector3,
+        p: Vector3,
     }
 }
 
@@ -39,10 +39,10 @@ export class VillageAnimation extends ThreeAnimation {
     private highlight : Mesh;
     private scale : number = 0.03;
 
-    private cameraSettings : CameraSettingsMap;
+    private cameraAnchors : PositionMap;
+    private cameraPositions : PositionMap;
+    private highlightPositions : PositionMap;
 
-    //DEBUG
-    private 
 
     public init(): void {
         // @ts-ignore
@@ -84,7 +84,9 @@ export class VillageAnimation extends ThreeAnimation {
         const theta : number = MathUtils.degToRad( 30 );
         sunPosition.setFromSphericalCoords( 1, phi, theta );
 
-        this.cameraSettings = {};
+        this.cameraAnchors = {};
+        this.cameraPositions = {};
+        this.highlightPositions = {};
 
         this.addLights(sunPosition);
 
@@ -98,42 +100,19 @@ export class VillageAnimation extends ThreeAnimation {
     public animateCamera(itemID: number, duration : number) {
         const nextLookAt = new Vector3(0,0,0);
         const nextPos = new Vector3(0,0,0);
-        const centerPos = new Vector3(0,2,3);
-        const proximity = 0.5; //number 0-1 how close is camera to object
 
         if(itemID == 0) {
             nextLookAt.set(0,0,0);
             nextPos.set(0,2,3);
-            console.log("Setting default pos");
+
         } else {
-            let indexString = itemID.toLocaleString('en-US', {
-                minimumIntegerDigits: 2,
-                useGrouping: false
-            });
-            let cameraSetting = this.cameraSettings[itemID];
-            console.log("Setting pos for " + indexString);
-            console.log(cameraSetting);
+            nextLookAt.x = this.cameraAnchors[itemID].p.x * this.scale;
+            nextLookAt.y = this.cameraAnchors[itemID].p.y * this.scale;
+            nextLookAt.z = this.cameraAnchors[itemID].p.z * this.scale;
 
-
-            nextLookAt.x = cameraSetting.position.x * this.scale;
-            nextLookAt.y = cameraSetting.position.y * this.scale;
-            nextLookAt.z = cameraSetting.position.z * this.scale;
-
-            //get Camera position from CAMPOS objects
-            this.utilityObjArray.forEach((pos) => {
-                if(pos.name.includes(indexString) && pos.name.includes("CAMPOS")){
-                    console.log("Camera position" + pos.name + ":"+ pos.posX + ":" + pos.posY + ":" + pos.posZ); 
-    
-                    nextPos.x = pos.posX * 0.03;
-                    nextPos.y = pos.posY * 0.03;
-                    nextPos.z = pos.posZ * 0.03;
-                }
-            });
-            //Calculating final position
-            nextPos.x = proximity * (nextLookAt.x - centerPos.x) + centerPos.x;
-            nextPos.y = proximity * (nextLookAt.y - centerPos.y) + centerPos.y;
-            nextPos.z = proximity * (nextLookAt.z - centerPos.z) + centerPos.z;
-
+            nextPos.x = this.cameraPositions[itemID].p.x * this.scale;
+            nextPos.y = this.cameraPositions[itemID].p.y * this.scale;
+            nextPos.z = this.cameraPositions[itemID].p.z * this.scale;
         }
 
         this.tweenPos.stop();
@@ -141,7 +120,6 @@ export class VillageAnimation extends ThreeAnimation {
             .to(nextPos, duration)
             .easing(Easing.Cubic.InOut);
         this.tweenPos.start();
-
 
         this.tweenLookAt.stop();
         this.tweenLookAt = new Tween(this.controls.target)
@@ -235,29 +213,27 @@ export class VillageAnimation extends ThreeAnimation {
 		this.scene.children[id].scale.z = this.scale;
 
         this.scene.children[id].children.forEach((child) => {
-            if(child.name.includes("ANCHOR") || child.name.includes("CAMPOS") || child.name.includes("GLOW")){
-                console.log(child);
-                const newpos = {   
-                    name: child.userData.name,
-                    posX: child.position.x,
-                    posY: child.position.y,
-                    posZ: child.position.z
-                };
-                this.utilityObjArray.push(newpos);
+
+            const id = +child.name.match(/\d+/)[0]
+            console.log("ID is " + id);
+            const data = {
+                p: new Vector3(
+                    child.position.x,
+                    child.position.y,
+                    child.position.z
+                ),
+                name: child.name,
+            };
+
             if(child.name.includes("ANCHOR")) {
-                const id = +child.name.match(/\d+/)[0]
-                console.log("ID is " + id);
-                this.cameraSettings[id] = {
-                    position: new Vector3(
-                        child.position.x,
-                        child.position.y,
-                        child.position.z
-                    ),
-                    name: child.name,
-                };
+                this.cameraAnchors[id] = data;
+            }
+            else if(child.name.includes("CAMPOS")) {
+                this.cameraPositions[id] = data;
+            }
+            else if(child.name.includes("GLOW")) {
+                this.highlightPositions[id] = data;
             }
         });
-
-        console.log(this.cameraSettings);
 	}
 }
