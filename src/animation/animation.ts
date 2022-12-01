@@ -8,6 +8,8 @@ export abstract class ThreeAnimation {
     public renderer : WebGLRenderer;
     public camera : PerspectiveCamera;
     public rendererElement : HTMLElement;
+    // public loader : Loader;
+    // public textureLoader: TextureLoader;
 
     constructor(rendererElement : HTMLElement) {
         this.rendererElement = rendererElement;

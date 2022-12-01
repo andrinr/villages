@@ -105,7 +105,6 @@ export class VillageAnimation extends ThreeAnimation {
             nextLookAt.set(0,0,0);
             nextPos.set(0,2,3);
             console.log("Setting default pos");
-
         } else {
             let indexString = itemID.toLocaleString('en-US', {
                 minimumIntegerDigits: 2,
@@ -117,13 +116,24 @@ export class VillageAnimation extends ThreeAnimation {
 
 
             nextLookAt.x = cameraSetting.position.x * this.scale;
-            nextLookAt.y = cameraSetting.position.y * this.scale + 0.5;
-            nextLookAt.z = cameraSetting.position.z * this.scale + 0.2;
+            nextLookAt.y = cameraSetting.position.y * this.scale;
+            nextLookAt.z = cameraSetting.position.z * this.scale;
 
+            //get Camera position from CAMPOS objects
+            this.utilityObjArray.forEach((pos) => {
+                if(pos.name.includes(indexString) && pos.name.includes("CAMPOS")){
+                    console.log("Camera position" + pos.name + ":"+ pos.posX + ":" + pos.posY + ":" + pos.posZ); 
+    
+                    nextPos.x = pos.posX * 0.03;
+                    nextPos.y = pos.posY * 0.03;
+                    nextPos.z = pos.posZ * 0.03;
+                }
+            });
             //Calculating final position
             nextPos.x = proximity * (nextLookAt.x - centerPos.x) + centerPos.x;
             nextPos.y = proximity * (nextLookAt.y - centerPos.y) + centerPos.y;
             nextPos.z = proximity * (nextLookAt.z - centerPos.z) + centerPos.z;
+
         }
 
         this.tweenPos.stop();
@@ -139,9 +149,6 @@ export class VillageAnimation extends ThreeAnimation {
             .easing(Easing.Cubic.InOut);
 
         this.tweenLookAt.start();
-
-        console.log("Camera animation started" + nextPos.x + "&&" + nextPos.y + "&&" + nextPos.z);
-        console.log("next lookat is " + nextLookAt.x + " && " + nextLookAt.y + "&&" + nextLookAt.z);
     }
 
     public update(delta: number): void {
@@ -214,7 +221,7 @@ export class VillageAnimation extends ThreeAnimation {
 
 	private async addModels() {
 		const id = this.scene.children.length;
-		await loadGLTF('models/map_new.glb', 'models/draco/', this.scene);
+		await loadGLTF('models/map_new_added.glb', 'models/draco/', this.scene);
 
 		this.scene.children[id].children.forEach((child) => {
 			child.castShadow = true;
@@ -228,6 +235,15 @@ export class VillageAnimation extends ThreeAnimation {
 		this.scene.children[id].scale.z = this.scale;
 
         this.scene.children[id].children.forEach((child) => {
+            if(child.name.includes("ANCHOR") || child.name.includes("CAMPOS") || child.name.includes("GLOW")){
+                console.log(child);
+                const newpos = {   
+                    name: child.userData.name,
+                    posX: child.position.x,
+                    posY: child.position.y,
+                    posZ: child.position.z
+                };
+                this.utilityObjArray.push(newpos);
             if(child.name.includes("ANCHOR")) {
                 const id = +child.name.match(/\d+/)[0]
                 console.log("ID is " + id);
