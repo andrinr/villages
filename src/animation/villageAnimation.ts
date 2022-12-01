@@ -214,26 +214,42 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.scene.children[id].children.forEach((child) => {
 
-            const id = +child.name.match(/\d+/)[0]
-            console.log("ID is " + id);
-            const data = {
-                p: new Vector3(
-                    child.position.x,
-                    child.position.y,
-                    child.position.z
-                ),
-                name: child.name,
-            };
-
             if(child.name.includes("ANCHOR")) {
+                const id = +child.name.match(/\d+/)[0]
+                const data = {
+                    p: new Vector3(
+                        child.position.x,
+                        child.position.y,
+                        child.position.z
+                    ),
+                    name: child.name,
+                };
                 this.cameraAnchors[id] = data;
             }
             else if(child.name.includes("CAMPOS")) {
+                const id = +child.name.match(/\d+/)[0]
+                const data = {
+                    p: new Vector3(
+                        child.position.x,
+                        child.position.y,
+                        child.position.z
+                    ),
+                    name: child.name,
+                };
                 this.cameraPositions[id] = data;
             }
             else if(child.name.includes("GLOW")) {
+                const id = +child.name.match(/\d+/)[0]
+                const data = {
+                    p: new Vector3(
+                        child.position.x,
+                        child.position.y,
+                        child.position.z
+                    ),
+                    name: child.name,
+                };
                 this.highlightPositions[id] = data;
-            }
+            }           
         });
 	}
 }
