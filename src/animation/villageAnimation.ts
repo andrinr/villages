@@ -9,7 +9,6 @@ import {
     AmbientLight,
     MathUtils,
     VSMShadowMap,
-    CylinderGeometry,
     Mesh,
     Color} from 'three';
 
@@ -23,10 +22,10 @@ import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
 import * as dat from 'lil-gui'
 
-interface PositionMap {
+interface Map<T> {
     [key: number]: {
         name: string,
-        p: Vector3,
+        data: T
     }
 }
 
@@ -34,12 +33,16 @@ export class VillageAnimation extends ThreeAnimation {
 	scene: Scene;
 	private tweenPos: Tween<Vector3>;
     private tweenLookAt: Tween<Vector3>;
+    private tweenHightlightIn: Tween<Number>;
+    private tweenHightlightOut : Tween<Number>;
     private controls : OrbitControls;
-    private highlight : Mesh;
     private scale : number = 0.03;
 
-    private cameraAnchors : PositionMap;
-    private cameraPositions : PositionMap;
+    private cameraAnchors : Map<Vector3>;
+    private cameraPositions : Map<Vector3>;
+    private highlights : Map<Mesh>;
+
+    private previousCameraID : number = 0;
 
     public init(): void {
         // @ts-ignore
@@ -83,7 +86,11 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.cameraAnchors = {};
         this.cameraPositions = {};
-        this.highlightPositions = {};
+        this.cameraAnchors[0] = {name: "Default", data: new Vector3(0,0,0)};
+        this.cameraPositions[0] = {name: "Default", data: new Vector3(0,66,99)};
+        this.highlights = {};
+
+        this.previousCameraID = 0;
 
         this.addLights(sunPosition);
 
@@ -95,32 +102,27 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public animateCamera(itemID: number, duration : number) {
-        const nextLookAt = new Vector3(0,0,0);
-        const nextPos = new Vector3(0,0,0);
+        const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
+        const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
 
-        if(itemID == 0) {
-            nextLookAt.set(0,0,0);
-            nextPos.set(0,2,3);
-
-        } else {
-            nextLookAt.x = this.cameraAnchors[itemID].p.x * this.scale;
-            nextLookAt.y = this.cameraAnchors[itemID].p.y * this.scale;
-            nextLookAt.z = this.cameraAnchors[itemID].p.z * this.scale;
-
-            nextPos.x = this.cameraPositions[itemID].p.x * this.scale;
-            nextPos.y = this.cameraPositions[itemID].p.y * this.scale;
-            nextPos.z = this.cameraPositions[itemID].p.z * this.scale;
+        if (this.highlights[itemID]) {
+            this.highlights[itemID].data.visible = true;
+     }
+        if (this.highlights[this.previousCameraID]) {
+            this.highlights[this.previousCameraID].data.visible = false;
         }
+        
+        this.previousCameraID = itemID;
 
         this.tweenPos.stop();
         this.tweenPos = new Tween(this.camera.position)
-            .to(nextPos, duration)
+            .to(pos, duration)
             .easing(Easing.Cubic.InOut);
         this.tweenPos.start();
 
         this.tweenLookAt.stop();
         this.tweenLookAt = new Tween(this.controls.target)
-            .to(nextLookAt, duration)
+            .to(anchor, duration)
             .easing(Easing.Cubic.InOut);
 
         this.tweenLookAt.start();
@@ -131,9 +133,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.tweenLookAt.update();
         this.controls.update();
         this.renderer.render( this.scene, this.camera );
-
-        //console.log(this.secondsPassed);
-        //this.highlight.scale.y = Math.sin(this.secondsPassed * 0.3);;
     }
 
     public onMouse(event: MouseEvent): void {
@@ -141,22 +140,6 @@ export class VillageAnimation extends ThreeAnimation {
         //const mouseY = event.clientY / window.innerHeight * 2 - 1;
 
         return;
-    }
-
-    private addHightlight() {
-        const radiusTop = 0.6;
-        const radiusBottom = 0.6;
-        const height = 1.0;
-        const radialSegments = 96;
-        const geometry = new CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
-        const posY = 0.5;
-        const material = generateGradientMaterial(new Color(0xff9a47));
-        //const material = new MeshBasicMaterial( { color: 0xffde26 } );
-        this.highlight = new Mesh(geometry, material);
-        this.highlight.position.set(0, posY, 0);
-        this.highlight.rotation.x = Math.PI;
-
-        this.scene.add(this.highlight);
     }
 
 	private addSky (sunPosition : Vector3) {
@@ -180,10 +163,7 @@ export class VillageAnimation extends ThreeAnimation {
 
 		light.castShadow = true;
 		this.scene.add( light );
-		//const helper = new THREE.CameraHelper( light.shadow.camera );
-		//scene.add( helper );
 
-		//Set up shadow properties for the light
 		light.shadow.mapSize.width = 1024; 
 		light.shadow.mapSize.height = 1024;
 		light.shadow.camera.near = 0.5;
@@ -202,7 +182,7 @@ export class VillageAnimation extends ThreeAnimation {
 			child.castShadow = true;
 			child.receiveShadow = true;
 			// @ts-ignore
-			child.roughness = 0.6;
+			//child.roughness = 0.6;
 		});
 		
 		this.scene.children[id].scale.x = this.scale;
@@ -210,37 +190,47 @@ export class VillageAnimation extends ThreeAnimation {
 		this.scene.children[id].scale.z = this.scale;
 
         this.scene.children[id].children.forEach((child) => {
-
-            if(child.name.includes("ANCHOR")) {
-                const id = +child.name.match(/\d+/)[0]
+            const childMesh = child as Mesh;
+            if(childMesh.name.includes("ANCHOR")) {
+                const id = +childMesh.name.match(/\d+/)[0]
                 const data = {
-                    p: new Vector3(
-                        child.position.x,
-                        child.position.y,
-                        child.position.z
+                    data: new Vector3(
+                        childMesh.position.x,
+                        childMesh.position.y,
+                        childMesh.position.z
                     ),
-                    name: child.name,
+                    name: childMesh.name,
                 };
                 this.cameraAnchors[id] = data;
             }
-            else if(child.name.includes("CAMPOS")) {
-                const id = +child.name.match(/\d+/)[0]
+            else if(childMesh.name.includes("CAMPOS")) {
+                const id = +childMesh.name.match(/\d+/)[0]
                 const data = {
-                    p: new Vector3(
-                        child.position.x,
-                        child.position.y,
-                        child.position.z
+                    data: new Vector3(
+                        childMesh.position.x,
+                        childMesh.position.y,
+                        childMesh.position.z
                     ),
-                    name: child.name,
+                    name: childMesh.name,
                 };
                 this.cameraPositions[id] = data;
             }
-            else if(child.name.includes("GLOW")) {
-                // @ts-ignore
-                child.material = generateGradientMaterial(new Color(0xff9a47), this.scale);
-                child.castShadow = false;
-                child.receiveShadow = false;
+            else if(childMesh.name.includes("GLOW")) {
+  
+                childMesh.material = generateGradientMaterial(new Color(0xff9a47), this.scale);
+                childMesh.castShadow = false;
+                childMesh.receiveShadow = false;
+                childMesh.visible = false;
+
+                const id = +childMesh.name.match(/\d+/)[0]
+                const data = {
+                    data: childMesh,
+                    name: childMesh.name,
+                };
+                this.highlights[id] = data;
             }           
         });
+
+        console.log(this.highlights);
 	}
 }

@@ -34,7 +34,7 @@ export abstract class ThreeAnimation {
             }
         );
         this.rendererElement.appendChild( this.renderer.domElement );
-        this.camera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 1000 );
+        this.camera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.001, 1000 );
         this.init();
         this.startTime = Date.now();
         this.secondsPassed = 0;
