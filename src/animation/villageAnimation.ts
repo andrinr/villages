@@ -73,6 +73,16 @@ export class VillageAnimation extends ThreeAnimation {
         gui.add(this.camera.position, 'z', -20,20,0.01);
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+        this.controls.minPolarAngle = 0;
+		this.controls.maxPolarAngle =  Math.PI * 0.5;
+        this.controls.maxDistance = 5;
+        this.controls.minDistance = 0.3;
+        this.controls.dampingFactor = 0.1
+        this.controls.enableDamping = true;
+        this.controls.enablePan = false;
+        this.controls.enableZoom = false;
+        this.controls.autoRotate = true;
+        this.controls.autoRotateSpeed = 0.1;
 
         this.tweenPos = new Tween(this.camera.position);
         this.tweenPos.start();
