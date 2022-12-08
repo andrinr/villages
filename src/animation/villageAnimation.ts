@@ -10,7 +10,9 @@ import {
     MathUtils,
     VSMShadowMap,
     Mesh,
-    Color} from 'three';
+    Color, 
+    TextureLoader,
+    MeshBasicMaterial} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -43,6 +45,8 @@ export class VillageAnimation extends ThreeAnimation {
     private highlights : Map<Mesh>;
 
     private previousCameraID : number = 0;
+
+    private textureLoader : TextureLoader;
 
     public init(): void {
         // @ts-ignore
@@ -194,6 +198,8 @@ export class VillageAnimation extends ThreeAnimation {
 			// @ts-ignore
 			//child.roughness = 0.6;
 		});
+
+        // console.log(this.scene.children[id]);
 		
 		this.scene.children[id].scale.x = this.scale;
 		this.scene.children[id].scale.y = this.scale;
@@ -238,9 +244,18 @@ export class VillageAnimation extends ThreeAnimation {
                     name: childMesh.name,
                 };
                 this.highlights[id] = data;
-            }           
+            }else if(childMesh.name.includes("TEX")){
+                //give childmesh custom mateiral
+                const texture = this.textureLoader.load('models/texture.png');
+
+                this.textureLoader.load( 'models/texture.png', ( texture ) => {
+                    const mat = new MeshBasicMaterial({map: texture});
+                    childMesh.material = mat;
+                  } );
+                
+            }      
         });
 
-        console.log(this.highlights);
+        //console.log(this.highlights);
 	}
 }
