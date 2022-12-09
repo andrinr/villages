@@ -12,7 +12,9 @@ import {
     Mesh,
     Color, 
     TextureLoader,
-    MeshBasicMaterial} from 'three';
+    MeshBasicMaterial,
+    MeshPhysicalMaterial,
+    HemisphereLight} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -47,6 +49,8 @@ export class VillageAnimation extends ThreeAnimation {
     private previousCameraID : number = 0;
 
     private textureLoader : TextureLoader;
+    
+    private gui : dat.GUI;
 
     public init(): void {
         // @ts-ignore
@@ -70,11 +74,12 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.camera.position.z = 3;
         this.camera.position.y = 3;
-        const gui = new dat.GUI();
+        
+        this.gui = new dat.GUI();
 
-        gui.add(this.camera.position, 'x', -20,20,0.01);
-        gui.add(this.camera.position, 'y', -20,20,0.01);
-        gui.add(this.camera.position, 'z', -20,20,0.01);
+        this.gui.add(this.camera.position, 'x', -20,20,0.01);
+        this.gui.add(this.camera.position, 'y', -20,20,0.01);
+        this.gui.add(this.camera.position, 'z', -20,20,0.01);
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         this.controls.minPolarAngle = 0;
@@ -165,20 +170,26 @@ export class VillageAnimation extends ThreeAnimation {
 
 		const uniforms = sky.material.uniforms;
 		uniforms[ 'turbidity' ].value = 10;
-		uniforms[ 'rayleigh' ].value = 1.8;
+		uniforms[ 'rayleigh' ].value = 1;
 		uniforms[ 'mieCoefficient' ].value = 0.0;
 		uniforms[ 'mieDirectionalG' ].value = 0.7;
+
+        console.log("add sky")
+
+        // const skyFolder = this.gui.addFolder( 'Sky' );
+        // skyFolder.add( sky.material, 'turbidity', 2, 20 ).name( 'Turbidity' );
+
 
 		uniforms[ 'sunPosition' ].value.copy( sunPosition );
 	}
 
 	private addLights( sunPosition : Vector3) {
-		const light = new DirectionalLight( 0xf59e33, 1 );
+		const light = new DirectionalLight( "#ff947b", 2.87 );
 		const scale : number = 4.0;
 		light.position.set(sunPosition.x * scale, sunPosition.y * scale, sunPosition.z * scale);
 
 		light.castShadow = true;
-		this.scene.add( light );
+		
 
 		light.shadow.mapSize.width = 1024; 
 		light.shadow.mapSize.height = 1024;
@@ -186,13 +197,27 @@ export class VillageAnimation extends ThreeAnimation {
 		light.shadow.camera.far = 20;
 		light.shadow.bias = -0.0001;
 
-		const ambientLight = new AmbientLight( 0x9d81a6 );
+		const ambientLight = new AmbientLight( "0x9d81a6");
+        ambientLight.intensity = 0.4;
+        
+        
+        const hemiLight = new HemisphereLight( "#4dc1ff", "#d191ff", 0.5);
+
+
+       
+        //this.gui.add(light, 'color');
+        this.gui.add(light, 'intensity', 0,10,0.01).name("Sun Light");
+        this.gui.add(ambientLight, 'intensity', 0,5,0.01).name("Ambient Light");
+        this.gui.add(hemiLight, 'intensity', 0,5,0.01).name("Hemi Light");
+        
+        this.scene.add(hemiLight);
+        this.scene.add( light );
 		this.scene.add( ambientLight );
 	}
 
 	private async addModels() {
 		const id = this.scene.children.length;
-		await loadGLTF('models/map_new_added.glb', 'models/draco/', this.scene);
+		await loadGLTF('models/map_new_added.gltf', 'models/draco/', this.scene);
 
 		this.scene.children[id].children.forEach((child) => {
 			child.castShadow = true;
@@ -209,6 +234,7 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.scene.children[id].children.forEach((child) => {
             const childMesh = child as Mesh;
+
             if(childMesh.name.includes("ANCHOR")) {
                 const id = +childMesh.name.match(/\d+/)[0]
                 const data = {
@@ -246,18 +272,21 @@ export class VillageAnimation extends ThreeAnimation {
                     name: childMesh.name,
                 };
                 this.highlights[id] = data;
-            }else if(childMesh.name.includes("TEX")){
-                //give childmesh custom mateiral
-                //const texture = this.textureLoader.load('models/texture.png');
+            }
 
-                this.textureLoader.load( 'models/texture.png', ( texture ) => {
-                    const mat = new MeshBasicMaterial({map: texture});
-                    childMesh.material = mat;
-                  } );
-                
-            }      
+   
         });
 
-        //console.log(this.highlights);
 	}
+
+    private applyTexture(mesh : Mesh){
+        this.textureLoader.load( 'models/texture.png', ( texture ) => {
+            const mat = new MeshPhysicalMaterial({map: texture});
+            mesh.material = mat;
+            console.log(mat);
+            this.gui.add(mat, 'roughness', 0,1,0.01);
+            this.gui.add(mat, 'metalness', 0,1,0.01);
+            //console.log("child mesh name" + mesh.name);
+          } );
+    }
 }
