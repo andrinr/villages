@@ -12,12 +12,14 @@ export abstract class ThreeAnimation {
     constructor(rendererElement : HTMLElement) {
         this.rendererElement = rendererElement;
         this.loop = this.loop.bind(this);
+        this.onMouse = this.onMouse.bind(this);
         this.onWindowResize = this.onWindowResize.bind(this);
+        this.onMouseClick = this.onMouseClick.bind(this);
+
         window.addEventListener( 'resize', this.onWindowResize, false );
         window.addEventListener( 'pointermove', this.onMouse );
         window.addEventListener( 'click', this.onMouseClick );
-        this.onMouse = this.onMouse.bind(this);
-        this.onMouseClick = this.onMouseClick.bind(this);
+
         this.start();
     }
 

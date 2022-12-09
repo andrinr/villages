@@ -169,6 +169,7 @@ export class VillageAnimation extends ThreeAnimation {
 
     public onMouseClick(event: MouseEvent): void {
         console.log("mouse click");
+        console.log(this);
         const raycaster = new Raycaster();
         const mouse = new Vector2();
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
