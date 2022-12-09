@@ -13,8 +13,11 @@ import {
     Color, 
     TextureLoader,
     MeshBasicMaterial,
-    MeshPhysicalMaterial,
-    HemisphereLight} from 'three';
+    //MeshPhysicalMaterial,
+    HemisphereLight,
+    Raycaster,
+    Vector2,
+    PerspectiveCamera} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -159,7 +162,30 @@ export class VillageAnimation extends ThreeAnimation {
     public onMouse(event: MouseEvent): void {
         //const mouseX = event.clientX / window.innerWidth * 2 - 1;
         //const mouseY = event.clientY / window.innerHeight * 2 - 1;
+        //console.log("mouse hold");
+        
+        return;
+    }
 
+    public onMouseClick(event: MouseEvent): void {
+        console.log("mouse click");
+        const raycaster = new Raycaster();
+        const mouse = new Vector2();
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        
+        console.log(this.camera);//this is undefinedd
+        
+        raycaster.setFromCamera( mouse, this.camera );
+        const intersects = [];
+        raycaster.intersectObjects( this.scene.children, false, intersects );
+        if ( intersects.length > 0 ) {
+            // Get the first intersected object
+            const object = intersects[0].object;
+            console.log("intersected objecctt");
+            console.log(object);
+            // Do something with the object, such as highlighting it or displaying information about it
+          }
         return;
     }
 
@@ -279,14 +305,17 @@ export class VillageAnimation extends ThreeAnimation {
 
 	}
 
-    private applyTexture(mesh : Mesh){
-        this.textureLoader.load( 'models/texture.png', ( texture ) => {
-            const mat = new MeshPhysicalMaterial({map: texture});
-            mesh.material = mat;
-            console.log(mat);
-            this.gui.add(mat, 'roughness', 0,1,0.01);
-            this.gui.add(mat, 'metalness', 0,1,0.01);
-            //console.log("child mesh name" + mesh.name);
-          } );
-    }
+
+    
+
+    // private applyTexture(mesh : Mesh){
+    //     this.textureLoader.load( 'models/texture.png', ( texture ) => {
+    //         const mat = new MeshPhysicalMaterial({map: texture});
+    //         mesh.material = mat;
+    //         console.log(mat);
+    //         this.gui.add(mat, 'roughness', 0,1,0.01);
+    //         this.gui.add(mat, 'metalness', 0,1,0.01);
+    //         //console.log("child mesh name" + mesh.name);
+    //       } );
+    // }
 }
