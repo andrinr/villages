@@ -106,6 +106,8 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.previousCameraID = 0;
 
+        this.textureLoader = new TextureLoader();
+
         this.addLights(sunPosition);
 
         this.addSky(sunPosition);
@@ -246,7 +248,7 @@ export class VillageAnimation extends ThreeAnimation {
                 this.highlights[id] = data;
             }else if(childMesh.name.includes("TEX")){
                 //give childmesh custom mateiral
-                const texture = this.textureLoader.load('models/texture.png');
+                //const texture = this.textureLoader.load('models/texture.png');
 
                 this.textureLoader.load( 'models/texture.png', ( texture ) => {
                     const mat = new MeshBasicMaterial({map: texture});
