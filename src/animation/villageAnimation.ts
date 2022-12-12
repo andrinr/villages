@@ -94,6 +94,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.controls.enableZoom = false;
         this.controls.enableRotate = false;
         this.controls.autoRotate = false;
+        this.controls.dampingFactor = 0.1;
     
         this.controls.mouseButtons = {
             LEFT: MOUSE.PAN,
@@ -161,6 +162,7 @@ export class VillageAnimation extends ThreeAnimation {
     public update(delta: number): void {
         this.tweenPos.update();
         this.tweenLookAt.update();
+        this.controls.target.clamp( new Vector3(-1, 0, -1), new Vector3(1, 1, 1) );
         this.controls.update();
         this.renderer.render( this.scene, this.camera );
     }
