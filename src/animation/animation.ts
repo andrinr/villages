@@ -8,15 +8,18 @@ export abstract class ThreeAnimation {
     public renderer : WebGLRenderer;
     public camera : PerspectiveCamera;
     public rendererElement : HTMLElement;
-    // public loader : Loader;
-    // public textureLoader: TextureLoader;
 
     constructor(rendererElement : HTMLElement) {
         this.rendererElement = rendererElement;
         this.loop = this.loop.bind(this);
+        this.onMouse = this.onMouse.bind(this);
         this.onWindowResize = this.onWindowResize.bind(this);
+        this.onMouseClick = this.onMouseClick.bind(this);
+
         window.addEventListener( 'resize', this.onWindowResize, false );
         window.addEventListener( 'pointermove', this.onMouse );
+        window.addEventListener( 'click', this.onMouseClick );
+
         this.start();
     }
 
@@ -25,6 +28,8 @@ export abstract class ThreeAnimation {
     public abstract update(delta : number) : void;
 
     public abstract onMouse(event : MouseEvent) : void;
+
+    public abstract onMouseClick(event : MouseEvent) : void;
 
     private start () {
         this.renderer = new WebGLRenderer(
