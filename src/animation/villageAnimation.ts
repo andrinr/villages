@@ -11,7 +11,12 @@ import {
     VSMShadowMap,
     Mesh,
     Color,
-    MOUSE} from 'three';
+    MOUSE,
+    TextureLoader,
+    HemisphereLight,
+    Raycaster,
+    Vector2} from 'three';
+
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -45,6 +50,10 @@ export class VillageAnimation extends ThreeAnimation {
 
     private previousCameraID : number = 0;
 
+    private textureLoader : TextureLoader;
+    
+    private gui : dat.GUI;
+
     public init(): void {
         // @ts-ignore
         this.renderer.shadowMap.enabled = true;
@@ -67,11 +76,12 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.camera.position.z = 3;
         this.camera.position.y = 3;
-        const gui = new dat.GUI();
+        
+        this.gui = new dat.GUI();
 
-        gui.add(this.camera.position, 'x', -20,20,0.01);
-        gui.add(this.camera.position, 'y', -20,20,0.01);
-        gui.add(this.camera.position, 'z', -20,20,0.01);
+        this.gui.add(this.camera.position, 'x', -20,20,0.01);
+        this.gui.add(this.camera.position, 'y', -20,20,0.01);
+        this.gui.add(this.camera.position, 'z', -20,20,0.01);
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         //this.controls.minPolarAngle = 0;
@@ -109,6 +119,8 @@ export class VillageAnimation extends ThreeAnimation {
         this.highlights = {};
 
         this.previousCameraID = 0;
+
+        this.textureLoader = new TextureLoader();
 
         this.addLights(sunPosition);
 
@@ -156,7 +168,31 @@ export class VillageAnimation extends ThreeAnimation {
     public onMouse(event: MouseEvent): void {
         //const mouseX = event.clientX / window.innerWidth * 2 - 1;
         //const mouseY = event.clientY / window.innerHeight * 2 - 1;
+        //console.log("mouse hold");
+        
+        return;
+    }
 
+    public onMouseClick(event: MouseEvent): void {
+        console.log("mouse click");
+        console.log(this);
+        const raycaster = new Raycaster();
+        const mouse = new Vector2();
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        
+        console.log(this.camera);//this is undefinedd
+        
+        raycaster.setFromCamera( mouse, this.camera );
+        const intersects = [];
+        raycaster.intersectObjects( this.scene.children, false, intersects );
+        if ( intersects.length > 0 ) {
+            // Get the first intersected object
+            const object = intersects[0].object;
+            console.log("intersected objecctt");
+            console.log(object);
+            // Do something with the object, such as highlighting it or displaying information about it
+          }
         return;
     }
 
@@ -167,20 +203,26 @@ export class VillageAnimation extends ThreeAnimation {
 
 		const uniforms = sky.material.uniforms;
 		uniforms[ 'turbidity' ].value = 10;
-		uniforms[ 'rayleigh' ].value = 1.8;
+		uniforms[ 'rayleigh' ].value = 1;
 		uniforms[ 'mieCoefficient' ].value = 0.0;
 		uniforms[ 'mieDirectionalG' ].value = 0.7;
+
+        console.log("add sky")
+
+        // const skyFolder = this.gui.addFolder( 'Sky' );
+        // skyFolder.add( sky.material, 'turbidity', 2, 20 ).name( 'Turbidity' );
+
 
 		uniforms[ 'sunPosition' ].value.copy( sunPosition );
 	}
 
 	private addLights( sunPosition : Vector3) {
-		const light = new DirectionalLight( 0xf59e33, 1 );
+		const light = new DirectionalLight( "#ff947b", 2.87 );
 		const scale : number = 4.0;
 		light.position.set(sunPosition.x * scale, sunPosition.y * scale, sunPosition.z * scale);
 
 		light.castShadow = true;
-		this.scene.add( light );
+		
 
 		light.shadow.mapSize.width = 1024; 
 		light.shadow.mapSize.height = 1024;
@@ -188,13 +230,24 @@ export class VillageAnimation extends ThreeAnimation {
 		light.shadow.camera.far = 20;
 		light.shadow.bias = -0.0001;
 
-		const ambientLight = new AmbientLight( 0x9d81a6 );
+		const ambientLight = new AmbientLight( "0x9d81a6");
+        ambientLight.intensity = 0.4;
+        
+        const hemiLight = new HemisphereLight( "#4dc1ff", "#d191ff", 0.5);
+
+        //this.gui.add(light, 'color');
+        this.gui.add(light, 'intensity', 0,10,0.01).name("Sun Light");
+        this.gui.add(ambientLight, 'intensity', 0,5,0.01).name("Ambient Light");
+        this.gui.add(hemiLight, 'intensity', 0,5,0.01).name("Hemi Light");
+        
+        this.scene.add(hemiLight);
+        this.scene.add( light );
 		this.scene.add( ambientLight );
 	}
 
 	private async addModels() {
 		const id = this.scene.children.length;
-		await loadGLTF('models/map_new_added.glb', 'models/draco/', this.scene);
+		await loadGLTF('models/map_new_added.gltf', 'models/draco/', this.scene);
 
 		this.scene.children[id].children.forEach((child) => {
 			child.castShadow = true;
@@ -202,6 +255,8 @@ export class VillageAnimation extends ThreeAnimation {
 			// @ts-ignore
 			//child.roughness = 0.6;
 		});
+
+        // console.log(this.scene.children[id]);
 		
 		this.scene.children[id].scale.x = this.scale;
 		this.scene.children[id].scale.y = this.scale;
@@ -209,6 +264,7 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.scene.children[id].children.forEach((child) => {
             const childMesh = child as Mesh;
+
             if(childMesh.name.includes("ANCHOR")) {
                 const id = +childMesh.name.match(/\d+/)[0]
                 const data = {
@@ -246,9 +302,7 @@ export class VillageAnimation extends ThreeAnimation {
                     name: childMesh.name,
                 };
                 this.highlights[id] = data;
-            }           
+            }   
         });
-
-        console.log(this.highlights);
 	}
 }

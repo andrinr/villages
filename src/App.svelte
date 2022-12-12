@@ -32,7 +32,7 @@
     const parentDiv: HTMLElement = document.getElementById("three");
     villageAnimation = new VillageAnimation(parentDiv);
 
-    console.log(data);
+    // console.log(data);
   });
 </script>
 
