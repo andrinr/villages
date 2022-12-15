@@ -8,6 +8,10 @@
   import * as data from "./content.json";
   let contentId = 0;
 
+  const contentIDCallback = (id: number) => {
+    contentId = id;
+  };
+
   let villageAnimation: VillageAnimation;
 
   const getAndSetCamera = () => {
@@ -30,7 +34,7 @@
 
   onMount(async () => {
     const parentDiv: HTMLElement = document.getElementById("three");
-    villageAnimation = new VillageAnimation(parentDiv);
+    villageAnimation = new VillageAnimation(parentDiv, contentIDCallback);
 
     // console.log(data);
   });

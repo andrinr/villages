@@ -53,6 +53,12 @@ export class VillageAnimation extends ThreeAnimation {
     private textureLoader : TextureLoader;
     
     private gui : dat.GUI;
+    private contentIDCallback : (id : number) => void;
+
+    public constructor(rendererElement : HTMLElement, contentIDCallback : (id : number) => void) {
+        super(rendererElement);
+        this.contentIDCallback = contentIDCallback;
+    }
 
     public init(): void {
         // @ts-ignore
@@ -194,6 +200,7 @@ export class VillageAnimation extends ThreeAnimation {
             const object = intersects[0].object;
             console.log("intersected objecctt");
             console.log(object);
+            this.contentIDCallback(10);
             // Do something with the object, such as highlighting it or displaying information about it
           }
         return;
