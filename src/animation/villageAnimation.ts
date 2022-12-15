@@ -178,7 +178,6 @@ export class VillageAnimation extends ThreeAnimation {
         //const mouseX = event.clientX / window.innerWidth * 2 - 1;
         //const mouseY = event.clientY / window.innerHeight * 2 - 1;
         //console.log("mouse hold");
-        
         return;
     }
 
@@ -194,12 +193,21 @@ export class VillageAnimation extends ThreeAnimation {
         
         raycaster.setFromCamera( mouse, this.camera );
         const intersects = [];
-        raycaster.intersectObjects( this.scene.children, false, intersects );
+        raycaster.intersectObjects( this.scene.children, true, intersects );
         if ( intersects.length > 0 ) {
             // Get the first intersected object
             const object = intersects[0].object;
-            console.log("intersected objecctt");
-            console.log(object);
+            console.log("intersected objecct!");
+
+            if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
+                const id = +object.name.match(/\d+/)[0];
+                console.log("click on object" + id);
+                this.animateCamera(id, 2000);
+            }else if(object.name.includes("NATURE")){
+                this.animateCamera(0, 2000);
+            }
+            //console.log(object);
+
             this.contentIDCallback(10);
             // Do something with the object, such as highlighting it or displaying information about it
           }
