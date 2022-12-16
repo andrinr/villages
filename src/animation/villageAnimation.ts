@@ -80,14 +80,14 @@ export class VillageAnimation extends ThreeAnimation {
         this.scene = new Scene();
         this.scene.fog = new Fog(0xbbb4c2, 1, 18);
 
-        this.camera.position.z = 3;
-        this.camera.position.y = 3;
+        // this.camera.position.z = 3;
+        // this.camera.position.y = 3;
         
         this.gui = new dat.GUI();
 
-        this.gui.add(this.camera.position, 'x', -20,20,0.01);
-        this.gui.add(this.camera.position, 'y', -20,20,0.01);
-        this.gui.add(this.camera.position, 'z', -20,20,0.01);
+        // this.gui.add(this.camera.position, 'x', -20,20,0.01);
+        // this.gui.add(this.camera.position, 'y', -20,20,0.01);
+        // this.gui.add(this.camera.position, 'z', -20,20,0.01);
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         //this.controls.minPolarAngle = 0;
@@ -123,7 +123,12 @@ export class VillageAnimation extends ThreeAnimation {
         this.cameraAnchors = {};
         this.cameraPositions = {};
         this.cameraAnchors[0] = {name: "Default", data: new Vector3(0,0,0)};
-        this.cameraPositions[0] = {name: "Default", data: new Vector3(0,66,99)};
+        this.cameraPositions[0] = {name: "Default", data: new Vector3(69,30,86)};
+        // this.camera.position.x = 69;
+        // this.camera.position.y = 30;
+        // this.camera.position.z = 86;
+        
+        
         this.highlights = {};
 
         this.previousCameraID = 0;
@@ -135,11 +140,15 @@ export class VillageAnimation extends ThreeAnimation {
         this.addSky(sunPosition);
 
         //this.addHightlight();
-        
+
         this.addModels();
+        
     }
 
     public animateCamera(itemID: number, duration : number) {
+        // console.log("itemID " + itemID);
+        // console.log(this.cameraAnchors[itemID]);
+        // console.log(this.cameraPositions[itemID]);
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
         const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
 
@@ -177,7 +186,7 @@ export class VillageAnimation extends ThreeAnimation {
     public onMouse(event: MouseEvent): void {
         //const mouseX = event.clientX / window.innerWidth * 2 - 1;
         //const mouseY = event.clientY / window.innerHeight * 2 - 1;
-        //console.log("mouse hold");
+        console.log("mouse hold");
         return;
     }
 
@@ -197,18 +206,27 @@ export class VillageAnimation extends ThreeAnimation {
         if ( intersects.length > 0 ) {
             // Get the first intersected object
             const object = intersects[0].object;
-            console.log("intersected objecct!");
-
+            // console.log("intersected objecct!");
+            
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
+
+                if(id == this.previousCameraID){
+                    return;
+                }
+
                 console.log("click on object" + id);
                 this.animateCamera(id, 2000);
-            }else if(object.name.includes("NATURE")){
+                this.contentIDCallback(id);
+                return;
+            }else{
                 this.animateCamera(0, 2000);
+                this.contentIDCallback(0);
+                return;
             }
             //console.log(object);
 
-            this.contentIDCallback(10);
+            
             // Do something with the object, such as highlighting it or displaying information about it
           }
         return;
@@ -224,8 +242,6 @@ export class VillageAnimation extends ThreeAnimation {
 		uniforms[ 'rayleigh' ].value = 1;
 		uniforms[ 'mieCoefficient' ].value = 0.0;
 		uniforms[ 'mieDirectionalG' ].value = 0.7;
-
-        console.log("add sky")
 
         // const skyFolder = this.gui.addFolder( 'Sky' );
         // skyFolder.add( sky.material, 'turbidity', 2, 20 ).name( 'Turbidity' );
@@ -296,7 +312,7 @@ export class VillageAnimation extends ThreeAnimation {
                 this.cameraAnchors[id] = data;
             }
             else if(childMesh.name.includes("CAMPOS")) {
-                const id = +childMesh.name.match(/\d+/)[0]
+                const id = +childMesh.name.match(/\d+/)[0];
                 const data = {
                     data: new Vector3(
                         childMesh.position.x,
@@ -306,6 +322,9 @@ export class VillageAnimation extends ThreeAnimation {
                     name: childMesh.name,
                 };
                 this.cameraPositions[id] = data;
+                
+                // console.log(childMesh.name);
+                // console.log(childMesh.position);
             }
             else if(childMesh.name.includes("GLOW")) {
   
@@ -322,5 +341,7 @@ export class VillageAnimation extends ThreeAnimation {
                 this.highlights[id] = data;
             }   
         });
+
+        this.animateCamera(0, 0);
 	}
 }

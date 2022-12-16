@@ -9,6 +9,7 @@
   let contentId = 0;
 
   const contentIDCallback = (id: number) => {
+    console.log("IDCallback" + id);
     contentId = id;
   };
 
