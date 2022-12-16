@@ -12,17 +12,16 @@ export abstract class ThreeAnimation {
     constructor(rendererElement : HTMLElement) {
         this.rendererElement = rendererElement;
         this.loop = this.loop.bind(this);
-        this.onMouse = this.onMouse.bind(this);
+        this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onWindowResize = this.onWindowResize.bind(this);
         this.onMouseClick = this.onMouseClick.bind(this);
 
         window.addEventListener( 'resize', this.onWindowResize, false );
-        window.addEventListener( 'pointermove', this.onMouse );
-        window.addEventListener( 'pointerdown', this.onMouseDown );
-        window.addEventListener( 'pointerup', this.onMouseUp );
-        window.addEventListener( 'click', this.onMouseClick );
+        window.addEventListener( 'mousedown', this.onMouseDown );
+        window.addEventListener( 'mousemove', this.onMouseMove );
+        window.addEventListener( 'mouseup', this.onMouseUp );
 
         this.start();
     }
@@ -31,7 +30,7 @@ export abstract class ThreeAnimation {
 
     public abstract update(delta : number) : void;
 
-    public abstract onMouse(event : MouseEvent) : void;
+    public abstract onMouseMove(event : MouseEvent) : void;
     public abstract onMouseDown(event : MouseEvent) : void;
     public abstract onMouseUp(event : MouseEvent) : void;
     public abstract onMouseClick(event : MouseEvent) : void;
