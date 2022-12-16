@@ -11,12 +11,12 @@ import {
     VSMShadowMap,
     Mesh,
     Color,
+    Camera,
     MOUSE,
     TextureLoader,
     HemisphereLight,
     Raycaster,
     Vector2} from 'three';
-
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -116,6 +116,8 @@ export class VillageAnimation extends ThreeAnimation {
         this.tweenPos.start();
         this.tweenLookAt = new Tween(this.controls.target);
         this.tweenLookAt.start();
+        //this.tweenHightlightIn = new Tween(number);
+        //this.tweenHightlightIn.start();
 
         const sunPosition : Vector3 = new Vector3(0, 0, 0);
         const phi : number = MathUtils.degToRad( 90 - 20 );
@@ -179,6 +181,7 @@ export class VillageAnimation extends ThreeAnimation {
 
     public update(delta: number): void {
         this.tweenPos.update();
+        this.camera.updateProjectionMatrix();
         this.tweenLookAt.update();
         //this.controls.target.clamp( new Vector3(-1, 0, -1), new Vector3(1, 1, 1) );
         this.controls.update();
@@ -188,26 +191,19 @@ export class VillageAnimation extends ThreeAnimation {
     public onMouseMove(event: MouseEvent): void {
         //const mouseX = event.clientX / window.innerWidth * 2 - 1;
         //const mouseY = event.clientY / window.innerHeight * 2 - 1;
-        console.log("mouse hold");
         this.mouseHasMoved = true;
         return;
     }
 
     public onMouseUp(event: MouseEvent): void {
-        console.log("mouse up");
-
         if(this.mouseHasMoved){
             return;
         }
 
-        console.log("mouse click");
-        console.log(this);
         const raycaster = new Raycaster();
         const mouse = new Vector2();
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-        
-        console.log(this.camera);//this is undefinedd
         
         raycaster.setFromCamera( mouse, this.camera );
         const intersects = [];
@@ -243,7 +239,6 @@ export class VillageAnimation extends ThreeAnimation {
 
     public onMouseDown(event: MouseEvent): void {
         this.mouseHasMoved = false;
-        console.log("mouse down");
         return;
     }
 

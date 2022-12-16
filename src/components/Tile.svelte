@@ -1,7 +1,6 @@
 <script lang="ts">
   export let title = "";
   export let description = "";
-  export let leftButton;
 </script>
 
 <main>
@@ -12,15 +11,10 @@
       </div>
       <div class="description">
         <p>{description}</p>
+        
       </div>
     </div>
   </div>
-  <button class="button button-left" bind:this={leftButton}>
-    <!-- <img src="./next-01.png" alt="next-01" /> -->
-  </button>
-  <button class="button button-right">
-    <!-- <img src="./next-01.png" alt="next-01" /> -->
-  </button>
   <div />
 </main>
 
