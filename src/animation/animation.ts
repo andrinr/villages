@@ -16,7 +16,6 @@ export abstract class ThreeAnimation {
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onWindowResize = this.onWindowResize.bind(this);
-        this.onMouseClick = this.onMouseClick.bind(this);
 
         window.addEventListener( 'resize', this.onWindowResize, false );
         window.addEventListener( 'mousedown', this.onMouseDown );
@@ -33,7 +32,6 @@ export abstract class ThreeAnimation {
     public abstract onMouseMove(event : MouseEvent) : void;
     public abstract onMouseDown(event : MouseEvent) : void;
     public abstract onMouseUp(event : MouseEvent) : void;
-    public abstract onMouseClick(event : MouseEvent) : void;
 
     private start () {
         this.renderer = new WebGLRenderer(
