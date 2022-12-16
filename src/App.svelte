@@ -7,6 +7,14 @@
   // @ts-ignore
   import * as data from "./content.json";
   let contentId = 0;
+  let leftButton;
+
+  function clickHandler() {
+    console.log("click on left button!!");
+  }
+
+  //leftButton.addEventListener("click", clickHandler);
+  //How can we reference leftButton in villageAnimation.ts??
 
   const contentIDCallback = (id: number) => {
     console.log("IDCallback" + id);
