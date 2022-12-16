@@ -51,6 +51,8 @@ export class VillageAnimation extends ThreeAnimation {
     private previousCameraID : number = 0;
 
     private textureLoader : TextureLoader;
+
+    private isMouseDragging : boolean = false;
     
     private gui : dat.GUI;
     private contentIDCallback : (id : number) => void;
@@ -187,10 +189,27 @@ export class VillageAnimation extends ThreeAnimation {
         //const mouseX = event.clientX / window.innerWidth * 2 - 1;
         //const mouseY = event.clientY / window.innerHeight * 2 - 1;
         console.log("mouse hold");
+        this.isMouseDragging = true;
+        return;
+    }
+
+    public onMouseUp(event: MouseEvent): void {
+        console.log("mouse up");
+        this.isMouseDragging = false;
+        return;
+    }
+
+    public onMouseDown(event: MouseEvent): void {
+        console.log("mouse down");
         return;
     }
 
     public onMouseClick(event: MouseEvent): void {
+
+        if(this.isMouseDragging){
+            return;
+        }
+
         console.log("mouse click");
         console.log(this);
         const raycaster = new Raycaster();
