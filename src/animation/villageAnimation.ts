@@ -63,17 +63,12 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public init(): void {
-        // @ts-ignore
         this.renderer.shadowMap.enabled = true;
-        // @ts-ignore
         this.renderer.shadowMap.type = VSMShadowMap; // THREE.PCFShadowMap
 
         this.renderer.setSize( window.innerWidth, window.innerHeight );
-        // @ts-ignore
         this.renderer.outputEncoding = sRGBEncoding;
-        // @ts-ignore
         this.renderer.toneMapping = ACESFilmicToneMapping;
-        // @ts-ignore
         this.renderer.toneMappingExposure = 0.4;
 
         const parentDiv : HTMLElement = document.getElementById("three");
@@ -82,9 +77,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.scene = new Scene();
         this.scene.fog = new Fog(0xbbb4c2, 1, 18);
 
-        // this.camera.position.z = 3;
-        // this.camera.position.y = 3;
-        
         this.gui = new dat.GUI();
 
         // this.gui.add(this.camera.position, 'x', -20,20,0.01);
@@ -116,8 +108,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.tweenPos.start();
         this.tweenLookAt = new Tween(this.controls.target);
         this.tweenLookAt.start();
-        //this.tweenHightlightIn = new Tween(number);
-        //this.tweenHightlightIn.start();
 
         const sunPosition : Vector3 = new Vector3(0, 0, 0);
         const phi : number = MathUtils.degToRad( 90 - 20 );
@@ -128,9 +118,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.cameraPositions = {};
         this.cameraAnchors[0] = {name: "Default", data: new Vector3(0,0,0)};
         this.cameraPositions[0] = {name: "Default", data: new Vector3(69,30,86)};
-        // this.camera.position.x = 69;
-        // this.camera.position.y = 30;
-        // this.camera.position.z = 86;
         
         
         this.highlights = {};
@@ -150,15 +137,12 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public animateCamera(itemID: number, duration : number) {
-        // console.log("itemID " + itemID);
-        // console.log(this.cameraAnchors[itemID]);
-        // console.log(this.cameraPositions[itemID]);
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
         const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
 
         if (this.highlights[itemID]) {
             this.highlights[itemID].data.visible = true;
-     }
+        }
         if (this.highlights[this.previousCameraID]) {
             this.highlights[this.previousCameraID].data.visible = false;
         }
@@ -189,8 +173,6 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public onMouseMove(event: MouseEvent): void {
-        //const mouseX = event.clientX / window.innerWidth * 2 - 1;
-        //const mouseY = event.clientY / window.innerHeight * 2 - 1;
         this.mouseHasMoved = true;
         return;
     }
