@@ -59,17 +59,11 @@
     />
     <div id="three" />
     <div class='button-left'>
-      <Button pointLeft={true} callback={(event) => {
-        event.stopImmediatePropagation();
-        decreementContentId();
-      }}/>
+      <Button pointLeft={true} callback={decreementContentId}/>
     </div>
 
     <div class='button-right'>
-      <Button pointLeft={false} callback={(event) => {
-        event.stopImmediatePropagation();
-        increementContentId();
-      }}/>
+      <Button pointLeft={false} callback={increementContentId}/>
     </div>
   </div>
 </main>

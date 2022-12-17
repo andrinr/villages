@@ -196,7 +196,7 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public onMouseUp(event: MouseEvent): void {
-        if(this.mouseHasMoved){
+        if(this.mouseHasMoved || !this.mouseOnScreen){
             return;
         }
 
