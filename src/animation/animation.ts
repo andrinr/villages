@@ -21,7 +21,7 @@ export abstract class ThreeAnimation {
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
 
-        rendererElement.addEventListener( 'resize', this.onWindowResize, false );
+        window.addEventListener( 'resize', this.onWindowResize );
         rendererElement.addEventListener( 'mousedown', this.onMouseDown );
         rendererElement.addEventListener( 'mousemove', this.onMouseMove );
         rendererElement.addEventListener( 'mouseup', this.onMouseUp );

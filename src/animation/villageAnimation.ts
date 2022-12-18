@@ -39,8 +39,6 @@ export class VillageAnimation extends ThreeAnimation {
 	scene: Scene;
 	private tweenPos: Tween<Vector3>;
     private tweenLookAt: Tween<Vector3>;
-    private tweenHightlightIn: Tween<Number>;
-    private tweenHightlightOut : Tween<Number>;
     private controls : OrbitControls;
     private scale : number = 0.03;
 
@@ -84,8 +82,6 @@ export class VillageAnimation extends ThreeAnimation {
         // this.gui.add(this.camera.position, 'z', -20,20,0.01);
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
-        //this.controls.minPolarAngle = 0;
-		//this.controls.maxPolarAngle =  Math.PI * 0.5;
         this.controls.maxDistance = 5;
         this.controls.minDistance = 0.3;
         this.controls.dampingFactor = 0.1
@@ -119,7 +115,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.cameraAnchors[0] = {name: "Default", data: new Vector3(0,0,0)};
         this.cameraPositions[0] = {name: "Default", data: new Vector3(69,30,86)};
         
-        
         this.highlights = {};
 
         this.previousCameraID = 0;
@@ -140,12 +135,11 @@ export class VillageAnimation extends ThreeAnimation {
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
         const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
 
-        if (this.highlights[itemID]) {
+        if (this.highlights[itemID]) 
             this.highlights[itemID].data.visible = true;
-        }
-        if (this.highlights[this.previousCameraID]) {
+        
+        if (this.highlights[this.previousCameraID]) 
             this.highlights[this.previousCameraID].data.visible = false;
-        }
         
         this.previousCameraID = itemID;
 
@@ -178,10 +172,9 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public onMouseUp(event: MouseEvent): void {
-        if(this.mouseHasMoved || !this.mouseOnScreen){
+        if(this.mouseHasMoved || !this.mouseOnScreen)
             return;
-        }
-
+    
         const raycaster = new Raycaster();
         const mouse = new Vector2();
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -191,29 +184,21 @@ export class VillageAnimation extends ThreeAnimation {
         const intersects = [];
         raycaster.intersectObjects( this.scene.children, true, intersects );
         if ( intersects.length > 0 ) {
-            // Get the first intersected object
             const object = intersects[0].object;
-            // console.log("intersected objecct!");
-            
+    
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
-
-                if(id == this.previousCameraID){
+                if(id == this.previousCameraID)
                     return;
-                }
-
-                console.log("click on object" + id);
                 this.animateCamera(id, 2000);
                 this.contentIDCallback(id);
                 return;
-            }else{
+            } else {
                 this.animateCamera(0, 2000);
                 this.contentIDCallback(0);
                 return;
             }
-            //console.log(object);
-
-            
+           
             // Do something with the object, such as highlighting it or displaying information about it
           }
         return;
@@ -238,7 +223,6 @@ export class VillageAnimation extends ThreeAnimation {
         // const skyFolder = this.gui.addFolder( 'Sky' );
         // skyFolder.add( sky.material, 'turbidity', 2, 20 ).name( 'Turbidity' );
 
-
 		uniforms[ 'sunPosition' ].value.copy( sunPosition );
 	}
 
@@ -248,7 +232,6 @@ export class VillageAnimation extends ThreeAnimation {
 		light.position.set(sunPosition.x * scale, sunPosition.y * scale, sunPosition.z * scale);
 
 		light.castShadow = true;
-		
 
 		light.shadow.mapSize.width = 1024; 
 		light.shadow.mapSize.height = 1024;
@@ -278,15 +261,9 @@ export class VillageAnimation extends ThreeAnimation {
 		this.scene.children[id].children.forEach((child) => {
 			child.castShadow = true;
 			child.receiveShadow = true;
-			// @ts-ignore
-			//child.roughness = 0.6;
 		});
 
-        // console.log(this.scene.children[id]);
-		
-		this.scene.children[id].scale.x = this.scale;
-		this.scene.children[id].scale.y = this.scale;
-		this.scene.children[id].scale.z = this.scale;
+		this.scene.children[id].scale.multiplyScalar(this.scale);
 
         this.scene.children[id].children.forEach((child) => {
             const childMesh = child as Mesh;
@@ -294,11 +271,7 @@ export class VillageAnimation extends ThreeAnimation {
             if(childMesh.name.includes("ANCHOR")) {
                 const id = +childMesh.name.match(/\d+/)[0]
                 const data = {
-                    data: new Vector3(
-                        childMesh.position.x,
-                        childMesh.position.y,
-                        childMesh.position.z
-                    ),
+                    data: childMesh.position.clone(),
                     name: childMesh.name,
                 };
                 this.cameraAnchors[id] = data;
@@ -306,20 +279,12 @@ export class VillageAnimation extends ThreeAnimation {
             else if(childMesh.name.includes("CAMPOS")) {
                 const id = +childMesh.name.match(/\d+/)[0];
                 const data = {
-                    data: new Vector3(
-                        childMesh.position.x,
-                        childMesh.position.y,
-                        childMesh.position.z
-                    ),
+                    data: childMesh.position.clone(),
                     name: childMesh.name,
                 };
                 this.cameraPositions[id] = data;
-                
-                // console.log(childMesh.name);
-                // console.log(childMesh.position);
             }
             else if(childMesh.name.includes("GLOW")) {
-  
                 childMesh.material = generateGradientMaterial(new Color(0xff9a47), this.scale);
                 childMesh.castShadow = false;
                 childMesh.receiveShadow = false;
