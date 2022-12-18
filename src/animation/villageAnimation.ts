@@ -48,8 +48,6 @@ export class VillageAnimation extends ThreeAnimation {
 
     private previousHighlightID : number = 0;
 
-    private textureLoader : TextureLoader;
-
     private mouseHasMoved : boolean = false;
     
     private gui : dat.GUI;
@@ -119,8 +117,6 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.previousHighlightID = 0;
 
-        this.textureLoader = new TextureLoader();
-
         this.addLights(sunPosition);
 
         this.addSky(sunPosition);
@@ -148,7 +144,6 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public hightlightItem(itemID: number) {
-        console.log("Highlighting item " + itemID);
         if (this.previousHighlightID == itemID) return;
 
         if (this.highlights[itemID]) 
@@ -162,7 +157,6 @@ export class VillageAnimation extends ThreeAnimation {
     
     public update(delta: number): void {
         this.tweenPos.update();
-        this.camera.updateProjectionMatrix();
         this.tweenLookAt.update();
         //this.controls.target.clamp( new Vector3(-1, 0, -1), new Vector3(1, 1, 1) );
         this.controls.update();
@@ -182,12 +176,10 @@ export class VillageAnimation extends ThreeAnimation {
         raycaster.intersectObjects( this.scene.children, true, intersects );
         if ( intersects.length > 0 ) {
             const object = intersects[0].object;
-            console.log(object.name);
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
                 this.hightlightItem(id);
             }
-            
             // Do something with the object, such as highlighting it or displaying information about it
           }
         return;
@@ -207,12 +199,9 @@ export class VillageAnimation extends ThreeAnimation {
         raycaster.intersectObjects( this.scene.children, true, intersects );
         if ( intersects.length > 0 ) {
             const object = intersects[0].object;
-            console.log(object.name);
     
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
-                if(id == this.previousHighlightID)
-                    return;
                 this.hightlightItem(id);
                 this.animateCamera(id, 2000);
                 this.contentIDCallback(id);
