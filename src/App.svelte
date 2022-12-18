@@ -2,11 +2,16 @@
   // Svelte imports
   import { onMount } from "svelte";
   import { VillageAnimation } from "./animation/villageAnimation";
-  import Tile from "./Tile.svelte";
+  import Tile from "./components/Tile.svelte";
+  import Button from "./components/Button.svelte";
 
   // @ts-ignore
   import * as data from "./content.json";
   let contentId = 0;
+
+  const contentIDCallback = (id: number) => {
+    contentId = id;
+  };
 
   let villageAnimation: VillageAnimation;
 
@@ -14,23 +19,33 @@
     villageAnimation.animateCamera(contentId, 2000);
   };
 
+  const increementContentId = () => {
+    contentId = (contentId + 1) % data.content.length;
+    console.log(contentId);
+    getAndSetCamera();
+  }
+
+  const decreementContentId = () => {
+    // Make sure there are no negative numbers
+    contentId = (contentId - 1 + data.content.length) % data.content.length;
+    console.log(contentId);
+    getAndSetCamera();
+  }
+
   function onKeyDown(e) {
     switch (e.keyCode) {
       case 38:
-        contentId = (contentId + 1) % data.content.length;
-        getAndSetCamera();
+        increementContentId();
         break;
       case 40:
-        // Make sure there are no negative numbers
-        contentId = (contentId - 1 + data.content.length) % data.content.length;
-        getAndSetCamera();
+        decreementContentId();
         break;
     }
   }
 
   onMount(async () => {
     const parentDiv: HTMLElement = document.getElementById("three");
-    villageAnimation = new VillageAnimation(parentDiv);
+    villageAnimation = new VillageAnimation(parentDiv, contentIDCallback);
 
     // console.log(data);
   });
@@ -43,6 +58,13 @@
       description={data.content[contentId].description}
     />
     <div id="three" />
+    <div class='button-left'>
+      <Button pointLeft={true} callback={decreementContentId}/>
+    </div>
+
+    <div class='button-right'>
+      <Button pointLeft={false} callback={increementContentId}/>
+    </div>
   </div>
 </main>
 
@@ -57,19 +79,18 @@
     left: 0;
   }
 
-  .tile {
-    z-index: 1;
+  .button-left {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    z-index: 100;
   }
 
-  #sample-content {
-    text-align: center;
-    opacity: 0.9;
-    border-radius: 5px;
-    z-index: 10;
+  .button-right {
     position: absolute;
-    padding: 10px;
-    background-color: white;
-    overscroll-behavior: none;
+    bottom: 40px;
+    right: 40px;
+    z-index: 100;
   }
 
   .visualization {

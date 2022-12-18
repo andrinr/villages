@@ -9,16 +9,24 @@ export abstract class ThreeAnimation {
     public camera : PerspectiveCamera;
     public rendererElement : HTMLElement;
 
+    protected mouseOnScreen : boolean = false;
+
     constructor(rendererElement : HTMLElement) {
         this.rendererElement = rendererElement;
         this.loop = this.loop.bind(this);
-        this.onMouse = this.onMouse.bind(this);
+        this.onMouseMove = this.onMouseMove.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseUp = this.onMouseUp.bind(this);
         this.onWindowResize = this.onWindowResize.bind(this);
-        this.onMouseClick = this.onMouseClick.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
 
-        window.addEventListener( 'resize', this.onWindowResize, false );
-        window.addEventListener( 'pointermove', this.onMouse );
-        window.addEventListener( 'click', this.onMouseClick );
+        window.addEventListener( 'resize', this.onWindowResize );
+        rendererElement.addEventListener( 'mousedown', this.onMouseDown );
+        rendererElement.addEventListener( 'mousemove', this.onMouseMove );
+        rendererElement.addEventListener( 'mouseup', this.onMouseUp );
+        rendererElement.addEventListener( 'mouseover', this.onMouseOver );
+        rendererElement.addEventListener( 'mouseleave', this.onMouseLeave );
 
         this.start();
     }
@@ -27,9 +35,19 @@ export abstract class ThreeAnimation {
 
     public abstract update(delta : number) : void;
 
-    public abstract onMouse(event : MouseEvent) : void;
+    public abstract onMouseMove(event : MouseEvent) : void;
+    public abstract onMouseDown(event : MouseEvent) : void;
+    public abstract onMouseUp(event : MouseEvent) : void;
 
-    public abstract onMouseClick(event : MouseEvent) : void;
+    public onMouseLeave(event: MouseEvent): void {
+        this.mouseOnScreen = false;
+        return;
+    }
+
+    private onMouseOver(event: MouseEvent): void {
+        this.mouseOnScreen = true;
+        return;
+    }
 
     private start () {
         this.renderer = new WebGLRenderer(
