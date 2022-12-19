@@ -46,9 +46,7 @@ export class VillageAnimation extends ThreeAnimation {
     private cameraPositions : Map<Vector3>;
     private highlights : Map<Mesh>;
 
-    private previousCameraID : number = 0;
-
-    private textureLoader : TextureLoader;
+    private previousHighlightID : number = 0;
 
     private mouseHasMoved : boolean = false;
     
@@ -67,7 +65,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         this.renderer.outputEncoding = sRGBEncoding;
         this.renderer.toneMapping = ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 0.4;
+        this.renderer.toneMappingExposure = 0.3;
 
         const parentDiv : HTMLElement = document.getElementById("three");
         parentDiv.appendChild( this.renderer.domElement );
@@ -117,9 +115,7 @@ export class VillageAnimation extends ThreeAnimation {
         
         this.highlights = {};
 
-        this.previousCameraID = 0;
-
-        this.textureLoader = new TextureLoader();
+        this.previousHighlightID = 0;
 
         this.addLights(sunPosition);
 
@@ -128,20 +124,11 @@ export class VillageAnimation extends ThreeAnimation {
         //this.addHightlight();
 
         this.addModels();
-        
     }
 
     public animateCamera(itemID: number, duration : number) {
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
         const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
-
-        if (this.highlights[itemID]) 
-            this.highlights[itemID].data.visible = true;
-        
-        if (this.highlights[this.previousCameraID]) 
-            this.highlights[this.previousCameraID].data.visible = false;
-        
-        this.previousCameraID = itemID;
 
         this.tweenPos.stop();
         this.tweenPos = new Tween(this.camera.position)
@@ -153,13 +140,23 @@ export class VillageAnimation extends ThreeAnimation {
         this.tweenLookAt = new Tween(this.controls.target)
             .to(anchor, duration)
             .easing(Easing.Cubic.InOut);
-
         this.tweenLookAt.start();
     }
 
+    public hightlightItem(itemID: number) {
+        if (this.previousHighlightID == itemID) return;
+
+        if (this.highlights[itemID]) 
+            this.highlights[itemID].data.visible = true;
+    
+        if (this.highlights[this.previousHighlightID]) 
+            this.highlights[this.previousHighlightID].data.visible = false;
+
+        this.previousHighlightID = itemID;
+    }
+    
     public update(delta: number): void {
         this.tweenPos.update();
-        this.camera.updateProjectionMatrix();
         this.tweenLookAt.update();
         //this.controls.target.clamp( new Vector3(-1, 0, -1), new Vector3(1, 1, 1) );
         this.controls.update();
@@ -168,6 +165,23 @@ export class VillageAnimation extends ThreeAnimation {
 
     public onMouseMove(event: MouseEvent): void {
         this.mouseHasMoved = true;
+
+        const raycaster = new Raycaster();
+        const mouse = new Vector2();
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        
+        raycaster.setFromCamera( mouse, this.camera );
+        const intersects = [];
+        raycaster.intersectObjects( this.scene.children, true, intersects );
+        if ( intersects.length > 0 ) {
+            const object = intersects[0].object;
+            if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
+                const id = +object.name.match(/\d+/)[0];
+                this.hightlightItem(id);
+            }
+            // Do something with the object, such as highlighting it or displaying information about it
+          }
         return;
     }
 
@@ -188,17 +202,16 @@ export class VillageAnimation extends ThreeAnimation {
     
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
-                if(id == this.previousCameraID)
-                    return;
+                this.hightlightItem(id);
                 this.animateCamera(id, 2000);
                 this.contentIDCallback(id);
                 return;
             } else {
+                this.hightlightItem(0);
                 this.animateCamera(0, 2000);
                 this.contentIDCallback(0);
                 return;
             }
-           
             // Do something with the object, such as highlighting it or displaying information about it
           }
         return;
