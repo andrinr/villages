@@ -1,14 +1,17 @@
 <script lang="ts">
-    export let pointLeft : boolean = true;
-    export let callback : (event) => void;
+  export let pointLeft: boolean = true;
+  export let callback: (event) => void;
 </script>
 
-<button class="{pointLeft ? 'button-left' : 'button-right'} button" on:click={callback}>
-    <!-- <img src="./next-01.png" alt="next-01" /> -->
+<button
+  class="{pointLeft ? 'button-left' : 'button-right'} button"
+  on:click={callback}
+>
+  <!-- <img src="./next-01.png" alt="next-01" /> -->
 </button>
 
 <style>
-.button {
+  .button {
     position: relative;
     border-radius: 10px;
     z-index: 100;
@@ -28,10 +31,6 @@
 
   .button-left {
     transform: rotate(180deg);
-  }
-
-  .button-right {
-    right: 40px;
   }
 
   .button:hover {
