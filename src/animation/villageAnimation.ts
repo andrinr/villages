@@ -58,6 +58,12 @@ export class VillageAnimation extends ThreeAnimation {
         this.contentIDCallback = contentIDCallback;
     }
 
+    private setButtonsVisibility(visible : boolean) : void {
+        const buttons : HTMLElement = document.getElementById("buttons");
+        buttons.style.visibility = visible ? "visible" : "hidden";
+    }
+
+
     public init(): void {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = VSMShadowMap; // THREE.PCFShadowMap
@@ -141,6 +147,12 @@ export class VillageAnimation extends ThreeAnimation {
             .to(anchor, duration)
             .easing(Easing.Cubic.InOut);
         this.tweenLookAt.start();
+
+        if(itemID == 0){
+            this.setButtonsVisibility(false);
+        }else{
+            this.setButtonsVisibility(true);
+        }
     }
 
     public hightlightItem(itemID: number) {
@@ -186,8 +198,11 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public onMouseUp(event: MouseEvent): void {
+        console.log("mouse up");
         if(this.mouseHasMoved || !this.mouseOnScreen)
             return;
+
+        console.log("mouse up registered")
     
         const raycaster = new Raycaster();
         const mouse = new Vector2();

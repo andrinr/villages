@@ -11,7 +11,6 @@
       </div>
       <div class="description">
         <p>{description}</p>
-        
       </div>
     </div>
   </div>
@@ -36,43 +35,6 @@
     /* color: red; */
   }
 
-  .button {
-    position: absolute;
-    bottom: 40px;
-    border-radius: 10px;
-    z-index: 100;
-    width: 65px;
-    height: 65px;
-    outline: none;
-    border: none;
-    background: url("/next-01.png");
-    /* background-color: red; */
-    background-size: cover;
-    background-repeat: no-repeat;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-    background-color: rgba(255, 255, 255, 0.8);
-    transition: box-shadow 0.4s ease-in-out;
-    /* transition: background-color 0.4s ease-in-out; */
-  }
-
-  .button-left {
-    left: 40px;
-    transform: rotate(180deg);
-  }
-
-  .button-right {
-    right: 40px;
-  }
-
-  .button:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  }
-
-  .button:active {
-    background-color: rgb(166, 166, 166);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  }
-
   .tile {
     z-index: 20;
     position: absolute;
@@ -89,5 +51,17 @@
 
     font-weight: 400;
     background-color: rgb(255, 255, 255);
+  }
+
+  @media screen and (orientation: portrait) {
+    .tile {
+      position: absolute;
+      width: 300px;
+      height: auto;
+      left: 0px;
+      right: 0px;
+      bottom: 20px;
+      margin: auto;
+    }
   }
 </style>

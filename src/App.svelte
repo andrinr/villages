@@ -23,21 +23,21 @@
     contentId = (contentId + 1) % data.content.length;
     console.log(contentId);
     getAndSetCamera();
-  }
+  };
 
   const decreementContentId = () => {
     // Make sure there are no negative numbers
     contentId = (contentId - 1 + data.content.length) % data.content.length;
     console.log(contentId);
     getAndSetCamera();
-  }
+  };
 
   function onKeyDown(e) {
     switch (e.keyCode) {
-      case 38:
+      case 39:
         increementContentId();
         break;
-      case 40:
+      case 37:
         decreementContentId();
         break;
     }
@@ -58,12 +58,14 @@
       description={data.content[contentId].description}
     />
     <div id="three" />
-    <div class='button-left'>
-      <Button pointLeft={true} callback={decreementContentId}/>
-    </div>
+    <div id="buttons">
+      <div class="button-left">
+        <Button pointLeft={true} callback={decreementContentId} />
+      </div>
 
-    <div class='button-right'>
-      <Button pointLeft={false} callback={increementContentId}/>
+      <div class="button-right">
+        <Button pointLeft={false} callback={increementContentId} />
+      </div>
     </div>
   </div>
 </main>
@@ -93,7 +95,33 @@
     z-index: 100;
   }
 
+  .button:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  }
+
+  .button:active {
+    background-color: rgb(166, 166, 166);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  }
+
   .visualization {
     overflow: hidden;
+  }
+
+  @media screen and (orientation: portrait) {
+    /* Styles go here */
+    .button-left {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      z-index: 100;
+    }
+
+    .button-right {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      z-index: 100;
+    }
   }
 </style>
