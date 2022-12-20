@@ -23,14 +23,14 @@
     contentId = (contentId + 1) % data.content.length;
     console.log(contentId);
     getAndSetCamera();
-  }
+  };
 
   const decreementContentId = () => {
     // Make sure there are no negative numbers
     contentId = (contentId - 1 + data.content.length) % data.content.length;
     console.log(contentId);
     getAndSetCamera();
-  }
+  };
 
   function onKeyDown(e) {
     switch (e.keyCode) {
@@ -58,12 +58,12 @@
       description={data.content[contentId].description}
     />
     <div id="three" />
-    <div class='button-left'>
-      <Button pointLeft={true} callback={decreementContentId}/>
+    <div class="button-left">
+      <Button pointLeft={true} callback={decreementContentId} />
     </div>
 
-    <div class='button-right'>
-      <Button pointLeft={false} callback={increementContentId}/>
+    <div class="button-right">
+      <Button pointLeft={false} callback={increementContentId} />
     </div>
   </div>
 </main>

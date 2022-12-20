@@ -11,7 +11,6 @@
       </div>
       <div class="description">
         <p>{description}</p>
-        
       </div>
     </div>
   </div>
