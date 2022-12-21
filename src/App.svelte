@@ -8,9 +8,13 @@
   // @ts-ignore
   import * as data from "./content.json";
   let contentId = 0;
+  let buttons: HTMLElement;
 
   const contentIDCallback = (id: number) => {
     contentId = id;
+    if (buttons) {
+      buttons.style.display = id == 0 ? "none" : "block";
+    }
   };
 
   let villageAnimation: VillageAnimation;
@@ -50,6 +54,7 @@
 
   onMount(async () => {
     const parentDiv: HTMLElement = document.getElementById("three");
+    buttons = document.getElementById("buttons");
     villageAnimation = new VillageAnimation(parentDiv, contentIDCallback);
   });
 </script>
@@ -62,16 +67,18 @@
     />
     <div id="three" />
 
-    <div class="button-back">
-      <Button isArrow={false} callback={backtoMain} />
-    </div>
+    <div id="buttons">
+      <div class="button-back">
+        <Button isArrow={false} callback={backtoMain} />
+      </div>
 
-    <div class="button-left">
-      <Button isArrow={true} callback={decreementContentId} />
-    </div>
+      <div class="button-left">
+        <Button isArrow={true} callback={decreementContentId} />
+      </div>
 
-    <div class="button-right">
-      <Button isArrow={true} callback={increementContentId} />
+      <div class="button-right">
+        <Button isArrow={true} callback={increementContentId} />
+      </div>
     </div>
   </div>
 </main>

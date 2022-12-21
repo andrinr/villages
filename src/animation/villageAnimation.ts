@@ -84,7 +84,9 @@ export class VillageAnimation extends ThreeAnimation {
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         this.controls.maxDistance = 5;
         this.controls.minDistance = 0.3;
-        this.controls.dampingFactor = 0.1
+        this.controls.dampingFactor = 0.1;
+
+
         this.controls.enableDamping = true;
         this.controls.enablePan = true;
         this.controls.enableZoom = false;
@@ -143,6 +145,9 @@ export class VillageAnimation extends ThreeAnimation {
             .to(anchor, duration)
             .easing(Easing.Cubic.InOut);
         this.tweenLookAt.start();
+        
+        //this seems unnecessary but is to make sure we always turn off the buttons when itemID = 0
+        this.contentIDCallback(itemID);
     }
 
     public hightlightItem(itemID: number) {
