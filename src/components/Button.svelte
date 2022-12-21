@@ -14,8 +14,8 @@
     position: relative;
     border-radius: 10px;
     z-index: 100;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     outline: none;
     border: none;
     background-size: cover;
@@ -29,8 +29,8 @@
     position: relative;
     border-radius: 10px;
     z-index: 100;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     outline: none;
     border: none;
     background-size: cover;
@@ -40,16 +40,15 @@
     transition: box-shadow 0.1s ease-in-out;
   }
 
-  /* .button-left {
-    transform: rotate(180deg);
-  } */
+  @media screen and (orientation: portrait) {
+    .button-arrow {
+      width: 30px;
+      height: 30px;
+    }
 
-  .button:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  }
-
-  .button:active {
-    background-color: rgb(166, 166, 166);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    .button-back {
+      width: 30px;
+      height: 30px;
+    }
   }
 </style>

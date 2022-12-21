@@ -39,10 +39,10 @@
 
   function onKeyDown(e) {
     switch (e.keyCode) {
-      case 38:
+      case 39:
         increementContentId();
         break;
-      case 40:
+      case 37:
         decreementContentId();
         break;
     }
@@ -89,8 +89,8 @@
 
   .button-left {
     position: absolute;
-    bottom: 40px;
-    left: 40px;
+    bottom: 20px;
+    left: 20px;
     z-index: 100;
     transform: rotate(180deg);
     /* width: 30px;
@@ -100,16 +100,32 @@
   .button-right {
     background: url("/next-01.png");
     position: absolute;
-    bottom: 40px;
-    right: 40px;
+    bottom: 20px;
+    right: 20px;
     z-index: 100;
   }
 
   .button-back {
     position: absolute;
-    top: 40px;
-    right: 40px;
+    top: 20px;
+    right: 20px;
     z-index: 100;
+  }
+
+  @media screen and (orientation: portrait) {
+    .button-left {
+      left: 5px;
+      top: 50%;
+      transform: translateY(-50%), rotate(180deg);
+      bottom: auto;
+    }
+
+    .button-right {
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      bottom: auto;
+    }
   }
 
   .visualization {
