@@ -21,8 +21,23 @@
   @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap");
 
   @font-face {
-    font-family: "Satoshi";
-    src: url("public/Satoshi-Variable.ttf") format("ttf");
+    font-family: "MyFont";
+    src: url("/fonts/Chillax-Variable.ttf") format("truetype");
+    font-weight: 500;
+  }
+
+  .tile {
+    z-index: 20;
+    position: absolute;
+    margin: 20px;
+    width: 50vw;
+    max-width: 300px;
+    opacity: 0.8;
+    border-radius: 10px;
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(10px);
+
+    background-color: rgb(255, 255, 255);
   }
 
   .content {
@@ -30,28 +45,14 @@
     color: #121212;
   }
 
-  p {
-    font-family: "Satoshi", sans-serif;
-    /* color: red; */
+  .title {
+    font-family: "MyFont";
+    font-weight: 700;
   }
 
-  .button {
-    position: absolute;
-    bottom: 40px;
-    border-radius: 10px;
-    z-index: 100;
-    width: 65px;
-    height: 65px;
-    outline: none;
-    border: none;
-    background: url("/next-01.png");
-    /* background-color: red; */
-    background-size: cover;
-    background-repeat: no-repeat;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-    background-color: rgba(255, 255, 255, 0.8);
-    transition: box-shadow 0.4s ease-in-out;
-    /* transition: background-color 0.4s ease-in-out; */
+  .description {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 100;
   }
 
   .button-left {
@@ -70,23 +71,5 @@
   .button:active {
     background-color: rgb(166, 166, 166);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  }
-
-  .tile {
-    z-index: 20;
-    position: absolute;
-    margin: 20px;
-    width: 50vw;
-    max-width: 300px;
-    opacity: 0.8;
-    border-radius: 10px;
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(10px);
-
-    /* font-family: "Roboto", sans-serif; */
-    font-family: "Space Grotesk", sans-serif;
-
-    font-weight: 400;
-    background-color: rgb(255, 255, 255);
   }
 </style>

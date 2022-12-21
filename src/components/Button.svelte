@@ -1,23 +1,25 @@
 <script lang="ts">
-    export let pointLeft : boolean = true;
-    export let callback : (event) => void;
+  export let pointLeft: boolean = true;
+  export let callback: (event) => void;
 </script>
 
-<button class="{pointLeft ? 'button-left' : 'button-right'} button" on:click={callback}>
-    <!-- <img src="./next-01.png" alt="next-01" /> -->
+<button
+  class="{pointLeft ? 'button-left' : 'button-right'} button"
+  on:click={callback}
+>
+  <!-- <img src="./next-01.png" alt="next-01" /> -->
 </button>
 
 <style>
-.button {
+  .button {
+    background: url("/next-01.png");
     position: relative;
     border-radius: 10px;
     z-index: 100;
-    width: 65px;
-    height: 65px;
+    width: 50px;
+    height: 50px;
     outline: none;
     border: none;
-    background: url("/next-01.png");
-    /* background-color: red; */
     background-size: cover;
     background-repeat: no-repeat;
     box-shadow: 0 0 0 rgba(0, 0, 0, 0);
@@ -26,12 +28,12 @@
     /* transition: background-color 0.4s ease-in-out; */
   }
 
+  /* .button-arrow {
+    
+  } */
+
   .button-left {
     transform: rotate(180deg);
-  }
-
-  .button-right {
-    right: 40px;
   }
 
   .button:hover {

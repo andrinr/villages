@@ -58,11 +58,11 @@
       description={data.content[contentId].description}
     />
     <div id="three" />
-    <div class="button-left">
+    <div class="button-left button-arrow">
       <Button pointLeft={true} callback={decreementContentId} />
     </div>
 
-    <div class="button-right">
+    <div class="button-right button-arrow">
       <Button pointLeft={false} callback={increementContentId} />
     </div>
   </div>
@@ -84,6 +84,8 @@
     bottom: 40px;
     left: 40px;
     z-index: 100;
+    /* width: 30px;
+    height: 30px; */
   }
 
   .button-right {
