@@ -54,22 +54,4 @@
     font-family: "Space Grotesk", sans-serif;
     font-weight: 100;
   }
-
-  .button-left {
-    left: 40px;
-    transform: rotate(180deg);
-  }
-
-  .button-right {
-    right: 40px;
-  }
-
-  .button:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  }
-
-  .button:active {
-    background-color: rgb(166, 166, 166);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  }
 </style>

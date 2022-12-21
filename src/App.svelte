@@ -21,14 +21,19 @@
 
   const increementContentId = () => {
     contentId = (contentId + 1) % data.content.length;
-    console.log(contentId);
+    // console.log(contentId);
     getAndSetCamera();
   };
 
   const decreementContentId = () => {
     // Make sure there are no negative numbers
     contentId = (contentId - 1 + data.content.length) % data.content.length;
-    console.log(contentId);
+    // console.log(contentId);
+    getAndSetCamera();
+  };
+
+  const backtoMain = () => {
+    contentId = 0;
     getAndSetCamera();
   };
 
@@ -46,8 +51,6 @@
   onMount(async () => {
     const parentDiv: HTMLElement = document.getElementById("three");
     villageAnimation = new VillageAnimation(parentDiv, contentIDCallback);
-
-    // console.log(data);
   });
 </script>
 
@@ -58,12 +61,17 @@
       description={data.content[contentId].description}
     />
     <div id="three" />
-    <div class="button-left button-arrow">
-      <Button pointLeft={true} callback={decreementContentId} />
+
+    <div class="button-back">
+      <Button isArrow={false} callback={backtoMain} />
     </div>
 
-    <div class="button-right button-arrow">
-      <Button pointLeft={false} callback={increementContentId} />
+    <div class="button-left">
+      <Button isArrow={true} callback={decreementContentId} />
+    </div>
+
+    <div class="button-right">
+      <Button isArrow={true} callback={increementContentId} />
     </div>
   </div>
 </main>
@@ -84,13 +92,22 @@
     bottom: 40px;
     left: 40px;
     z-index: 100;
+    transform: rotate(180deg);
     /* width: 30px;
     height: 30px; */
   }
 
   .button-right {
+    background: url("/next-01.png");
     position: absolute;
     bottom: 40px;
+    right: 40px;
+    z-index: 100;
+  }
+
+  .button-back {
+    position: absolute;
+    top: 40px;
     right: 40px;
     z-index: 100;
   }
