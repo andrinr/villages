@@ -78,7 +78,7 @@ export class VillageAnimation extends ThreeAnimation {
         // this.gui.add(this.camera.position, 'x', -20,20,0.01);
         // this.gui.add(this.camera.position, 'y', -20,20,0.01);
         // this.gui.add(this.camera.position, 'z', -20,20,0.01);
-        this.gui.add(this.camera, 'fov', 0, 100, 1);
+       // this.gui.add(this.camera, 'fov', 0, 100, 1);
         this.camera.fov = 40;
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
