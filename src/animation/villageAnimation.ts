@@ -71,7 +71,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         this.renderer.outputEncoding = sRGBEncoding;
         this.renderer.toneMapping = ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 0.3;
+        this.renderer.toneMappingExposure = 0.45;
 
         const parentDiv : HTMLElement = document.getElementById("three");
         parentDiv.appendChild( this.renderer.domElement );
@@ -84,11 +84,15 @@ export class VillageAnimation extends ThreeAnimation {
         // this.gui.add(this.camera.position, 'x', -20,20,0.01);
         // this.gui.add(this.camera.position, 'y', -20,20,0.01);
         // this.gui.add(this.camera.position, 'z', -20,20,0.01);
+       // this.gui.add(this.camera, 'fov', 0, 100, 1);
+        this.camera.fov = 40;
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         this.controls.maxDistance = 5;
         this.controls.minDistance = 0.3;
-        this.controls.dampingFactor = 0.1
+        this.controls.dampingFactor = 0.1;
+
+
         this.controls.enableDamping = true;
         this.controls.enablePan = true;
         this.controls.enableZoom = false;
@@ -153,6 +157,9 @@ export class VillageAnimation extends ThreeAnimation {
         }else{
             this.setButtonsVisibility(true);
         }
+        
+        //this seems unnecessary but is to make sure we always turn off the buttons when itemID = 0
+        this.contentIDCallback(itemID);
     }
 
     public hightlightItem(itemID: number) {
@@ -268,9 +275,9 @@ export class VillageAnimation extends ThreeAnimation {
 		light.shadow.bias = -0.0001;
 
 		const ambientLight = new AmbientLight( "0x9d81a6");
-        ambientLight.intensity = 0.4;
+        ambientLight.intensity = 0.21;
         
-        const hemiLight = new HemisphereLight( "#4dc1ff", "#d191ff", 0.5);
+        const hemiLight = new HemisphereLight( "#4dc1ff", "#d191ff", 0.4);
 
         //this.gui.add(light, 'color');
         this.gui.add(light, 'intensity', 0,10,0.01).name("Sun Light");
