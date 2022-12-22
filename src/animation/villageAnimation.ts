@@ -75,17 +75,12 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.gui = new dat.GUI();
 
-        // this.gui.add(this.camera.position, 'x', -20,20,0.01);
-        // this.gui.add(this.camera.position, 'y', -20,20,0.01);
-        // this.gui.add(this.camera.position, 'z', -20,20,0.01);
-       // this.gui.add(this.camera, 'fov', 0, 100, 1);
         this.camera.fov = 40;
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         this.controls.maxDistance = 5;
         this.controls.minDistance = 0.3;
         this.controls.dampingFactor = 0.1;
-
 
         this.controls.enableDamping = true;
         this.controls.enablePan = true;
@@ -100,7 +95,6 @@ export class VillageAnimation extends ThreeAnimation {
             MIDDLE: MOUSE.DOLLY,
             RIGHT: MOUSE.PAN
         }
-        //this.controls.autoRotateSpeed = 0.1;
 
         this.tweenPos = new Tween(this.camera.position);
         this.tweenPos.start();
@@ -124,8 +118,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.addLights(sunPosition);
 
         this.addSky(sunPosition);
-
-        //this.addHightlight();
 
         this.addModels();
     }
@@ -165,7 +157,6 @@ export class VillageAnimation extends ThreeAnimation {
     public update(delta: number): void {
         this.tweenPos.update();
         this.tweenLookAt.update();
-        //this.controls.target.clamp( new Vector3(-1, 0, -1), new Vector3(1, 1, 1) );
         this.controls.update();
         this.renderer.render( this.scene, this.camera );
     }
@@ -187,9 +178,7 @@ export class VillageAnimation extends ThreeAnimation {
                 const id = +object.name.match(/\d+/)[0];
                 this.hightlightItem(id);
             }
-            // Do something with the object, such as highlighting it or displaying information about it
-          }
-        return;
+        }
     }
 
     public onMouseUp(event: MouseEvent): void {
@@ -219,14 +208,11 @@ export class VillageAnimation extends ThreeAnimation {
                 this.contentIDCallback(0);
                 return;
             }
-            // Do something with the object, such as highlighting it or displaying information about it
-          }
-        return;
+        }
     }
 
     public onMouseDown(event: MouseEvent): void {
         this.mouseHasMoved = false;
-        return;
     }
 
 	private addSky (sunPosition : Vector3) {
@@ -253,11 +239,11 @@ export class VillageAnimation extends ThreeAnimation {
 
 		light.castShadow = true;
 
-		light.shadow.mapSize.width = 1024; 
-		light.shadow.mapSize.height = 1024;
+		light.shadow.mapSize.width = 512; 
+		light.shadow.mapSize.height = 512;
 		light.shadow.camera.near = 0.5;
 		light.shadow.camera.far = 20;
-		light.shadow.bias = -0.0001;
+		light.shadow.bias = -0.001;
 
 		const ambientLight = new AmbientLight( "0x9d81a6");
         ambientLight.intensity = 0.21;

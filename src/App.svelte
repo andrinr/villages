@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Svelte imports
   import { onMount } from "svelte";
   import { VillageAnimation } from "./animation/villageAnimation";
   import Tile from "./components/Tile.svelte";
@@ -25,14 +24,12 @@
 
   const increementContentId = () => {
     contentId = (contentId + 1) % data.content.length;
-    // console.log(contentId);
     getAndSetCamera();
   };
 
   const decreementContentId = () => {
     // Make sure there are no negative numbers
     contentId = (contentId - 1 + data.content.length) % data.content.length;
-    // console.log(contentId);
     getAndSetCamera();
   };
 
