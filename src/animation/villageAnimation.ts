@@ -108,11 +108,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.tweenLookAt = new Tween(this.controls.target);
         this.tweenLookAt.start();
 
-        const sunPosition : Vector3 = new Vector3(0, 0, 0);
-        const phi : number = MathUtils.degToRad( 90 - 20 );
-        const theta : number = MathUtils.degToRad( 30 );
-        sunPosition.setFromSphericalCoords( 1, phi, theta );
-
         this.cameraAnchors = {};
         this.cameraPositions = {};
         this.cameraAnchors[0] = {name: "Default", data: new Vector3(0,0,0)};
@@ -123,8 +118,12 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.previousHighlightID = 0;
 
-        this.addLights(sunPosition);
+        const sunPosition : Vector3 = new Vector3(0, 0, 0);
+        const phi : number = MathUtils.degToRad( 90 - 20 );
+        const theta : number = MathUtils.degToRad( 30 );
+        sunPosition.setFromSphericalCoords( 1, phi, theta );
 
+        this.addLights(sunPosition);
         this.addSky(sunPosition);
 
         this.addModels();
@@ -134,7 +133,7 @@ export class VillageAnimation extends ThreeAnimation {
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
         const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
 
-        this.tweenPos.stop();
+        this.tweenPos.end();
         this.tweenPos = new Tween(this.camera.position)
             .to(pos, duration)
             .easing(Easing.Cubic.InOut);
@@ -248,8 +247,8 @@ export class VillageAnimation extends ThreeAnimation {
 
 		light.castShadow = true;
 
-		light.shadow.mapSize.width = 512; 
-		light.shadow.mapSize.height = 512;
+		light.shadow.mapSize.width = 1024; 
+		light.shadow.mapSize.height = 1024;
 		light.shadow.camera.near = 0.5;
 		light.shadow.camera.far = 20;
 		light.shadow.bias = -0.001;

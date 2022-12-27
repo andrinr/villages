@@ -23,10 +23,10 @@ export abstract class ThreeAnimation {
 
         window.addEventListener( 'resize', this.onWindowResize );
         rendererElement.addEventListener( 'mousedown', this.onMouseDown );
-        //rendererElement.addEventListener( 'mousemove', this.onMouseMove );
+        rendererElement.addEventListener( 'mousemove', this.onMouseMove );
         rendererElement.addEventListener( 'mouseup', this.onMouseUp );
-        //rendererElement.addEventListener( 'mouseover', this.onMouseOver );
-        //rendererElement.addEventListener( 'mouseleave', this.onMouseLeave );
+        rendererElement.addEventListener( 'mouseover', this.onMouseOver );
+        rendererElement.addEventListener( 'mouseleave', this.onMouseLeave );
 
         this.start();
     }
