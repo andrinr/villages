@@ -16,7 +16,8 @@ import {
     TextureLoader,
     HemisphereLight,
     Raycaster,
-    Vector2} from 'three';
+    Vector2,
+    Object3D} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -27,6 +28,7 @@ import { loadGLTF } from './loader';
 import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
 import * as dat from 'lil-gui'
+import Stats from 'stats.js'
 
 interface Map<T> {
     [key: number]: {
@@ -41,6 +43,7 @@ export class VillageAnimation extends ThreeAnimation {
     private tweenLookAt: Tween<Vector3>;
     private controls : OrbitControls;
     private scale : number = 0.03;
+    private raycaster : Raycaster;
 
     private cameraAnchors : Map<Vector3>;
     private cameraPositions : Map<Vector3>;
@@ -51,6 +54,7 @@ export class VillageAnimation extends ThreeAnimation {
     private mouseHasMoved : boolean = false;
     
     private gui : dat.GUI;
+    private stats : Stats;
     private contentIDCallback : (id : number) => void;
 
     public constructor(rendererElement : HTMLElement, contentIDCallback : (id : number) => void) {
@@ -74,6 +78,9 @@ export class VillageAnimation extends ThreeAnimation {
         this.scene.fog = new Fog(0xbbb4c2, 1, 18);
 
         this.gui = new dat.GUI();
+        this.stats = new Stats();
+        this.stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.body.appendChild( this.stats.dom );
 
         this.camera.fov = 40;
 
@@ -111,6 +118,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.cameraAnchors[0] = {name: "Default", data: new Vector3(0,0,0)};
         this.cameraPositions[0] = {name: "Default", data: new Vector3(69,30,86)};
         
+        this.raycaster = new Raycaster();
         this.highlights = {};
 
         this.previousHighlightID = 0;
@@ -155,47 +163,48 @@ export class VillageAnimation extends ThreeAnimation {
     }
     
     public update(delta: number): void {
+        this.stats.begin();
         this.tweenPos.update();
         this.tweenLookAt.update();
         this.controls.update();
         this.renderer.render( this.scene, this.camera );
+	    this.stats.end();
+    }
+
+    private checkIntersections(mouse : Vector2, action : (object : Object3D) => void) {
+
+        this.raycaster.setFromCamera( mouse, this.camera );
+        const intersects = [];
+        this.raycaster.intersectObjects( this.scene.children, true, intersects );
+        if ( intersects.length > 0 ) {
+            const object = intersects[0].object;
+            action(object);
+        }
     }
 
     public onMouseMove(event: MouseEvent): void {
         this.mouseHasMoved = true;
-
-        const raycaster = new Raycaster();
         const mouse = new Vector2();
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
         
-        raycaster.setFromCamera( mouse, this.camera );
-        const intersects = [];
-        raycaster.intersectObjects( this.scene.children, true, intersects );
-        if ( intersects.length > 0 ) {
-            const object = intersects[0].object;
+        this.checkIntersections(mouse, (object) => {
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
                 this.hightlightItem(id);
             }
-        }
+        });
     }
 
     public onMouseUp(event: MouseEvent): void {
         if(this.mouseHasMoved || !this.mouseOnScreen)
             return;
     
-        const raycaster = new Raycaster();
         const mouse = new Vector2();
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
         
-        raycaster.setFromCamera( mouse, this.camera );
-        const intersects = [];
-        raycaster.intersectObjects( this.scene.children, true, intersects );
-        if ( intersects.length > 0 ) {
-            const object = intersects[0].object;
-    
+        this.checkIntersections(mouse, (object) => {
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
                 this.hightlightItem(id);
@@ -208,7 +217,7 @@ export class VillageAnimation extends ThreeAnimation {
                 this.contentIDCallback(0);
                 return;
             }
-        }
+        });
     }
 
     public onMouseDown(event: MouseEvent): void {
