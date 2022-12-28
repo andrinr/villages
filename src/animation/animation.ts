@@ -1,6 +1,9 @@
-import { WebGLRenderer, PerspectiveCamera } from "three";
+import { WebGLRenderer, PerspectiveCamera, Vector2 } from "three";
 
 export abstract class ThreeAnimation {
+    
+    static threeAnimations : ThreeAnimation[] = [];
+
     private lastTime : number = 0;
     private startTime : number = 0;
     public secondsPassed : number = 0;
@@ -10,8 +13,11 @@ export abstract class ThreeAnimation {
     public rendererElement : HTMLElement;
 
     protected mouseOnScreen : boolean = false;
+    protected mousePosition : Vector2 = new Vector2(0, 0);
 
     constructor(rendererElement : HTMLElement) {
+        ThreeAnimation.threeAnimations.push(this);
+
         this.rendererElement = rendererElement;
         this.loop = this.loop.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);

@@ -17,7 +17,8 @@ import {
     HemisphereLight,
     Raycaster,
     Vector2,
-    Object3D} from 'three';
+    Object3D,
+    Material} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -48,6 +49,7 @@ export class VillageAnimation extends ThreeAnimation {
     private cameraAnchors : Map<Vector3>;
     private cameraPositions : Map<Vector3>;
     private highlights : Map<Mesh>;
+    private sunPosition : Vector3;
 
     private previousHighlightID : number = 0;
 
@@ -56,6 +58,9 @@ export class VillageAnimation extends ThreeAnimation {
     private gui : dat.GUI;
     private stats : Stats;
     private contentIDCallback : (id : number) => void;
+
+    private highlightMaterial1 : Material;
+    private highlightMaterial2 : Material;
 
     public constructor(rendererElement : HTMLElement, contentIDCallback : (id : number) => void) {
         super(rendererElement);
@@ -118,13 +123,16 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.previousHighlightID = 0;
 
-        const sunPosition : Vector3 = new Vector3(0, 0, 0);
+        this.sunPosition = new Vector3(0, 0, 0);
         const phi : number = MathUtils.degToRad( 90 - 20 );
         const theta : number = MathUtils.degToRad( 30 );
-        sunPosition.setFromSphericalCoords( 1, phi, theta );
+        this.sunPosition.setFromSphericalCoords( 1, phi, theta );
 
-        this.addLights(sunPosition);
-        this.addSky(sunPosition);
+        this.highlightMaterial1 = generateGradientMaterial(new Color(0xff9a47), 0.5);
+        this.highlightMaterial2 = generateGradientMaterial(new Color(0x00b4ff), 0.5);
+
+        this.addLights();
+        this.addSky();
 
         this.addModels();
     }
@@ -133,7 +141,7 @@ export class VillageAnimation extends ThreeAnimation {
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
         const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
 
-        this.tweenPos.end();
+        this.tweenPos.stop();
         this.tweenPos = new Tween(this.camera.position)
             .to(pos, duration)
             .easing(Easing.Cubic.InOut);
@@ -168,10 +176,11 @@ export class VillageAnimation extends ThreeAnimation {
         this.controls.update();
         this.renderer.render( this.scene, this.camera );
 	    this.stats.end();
+
+        this.stats
     }
 
     private checkIntersections(mouse : Vector2, action : (object : Object3D) => void) {
-
         this.raycaster.setFromCamera( mouse, this.camera );
         const intersects = [];
         this.raycaster.intersectObjects( this.scene.children, true, intersects );
@@ -223,7 +232,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.mouseHasMoved = false;
     }
 
-	private addSky (sunPosition : Vector3) {
+	private addSky () {
 		const sky : Sky = new Sky();
 		sky.scale.setScalar( 450000 );
 		this.scene.add( sky );
@@ -233,17 +242,13 @@ export class VillageAnimation extends ThreeAnimation {
 		uniforms[ 'rayleigh' ].value = 1;
 		uniforms[ 'mieCoefficient' ].value = 0.0;
 		uniforms[ 'mieDirectionalG' ].value = 0.7;
-
-        // const skyFolder = this.gui.addFolder( 'Sky' );
-        // skyFolder.add( sky.material, 'turbidity', 2, 20 ).name( 'Turbidity' );
-
-		uniforms[ 'sunPosition' ].value.copy( sunPosition );
+		uniforms[ 'sunPosition' ].value.copy( this.sunPosition );
 	}
 
-	private addLights( sunPosition : Vector3) {
+	private addLights() {
 		const light = new DirectionalLight( "#ff947b", 2.87 );
 		const scale : number = 4.0;
-		light.position.set(sunPosition.x * scale, sunPosition.y * scale, sunPosition.z * scale);
+	    light.position.multiplyScalar(0).add(this.sunPosition.clone().multiplyScalar(scale));
 
 		light.castShadow = true;
 
@@ -299,7 +304,7 @@ export class VillageAnimation extends ThreeAnimation {
                 this.cameraPositions[id] = data;
             }
             else if(childMesh.name.includes("GLOW")) {
-                childMesh.material = generateGradientMaterial(new Color(0xff9a47), this.scale);
+                childMesh.material = this.highlightMaterial1;
                 childMesh.castShadow = false;
                 childMesh.receiveShadow = false;
                 childMesh.visible = false;
