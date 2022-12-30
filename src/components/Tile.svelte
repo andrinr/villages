@@ -6,32 +6,6 @@
   onMount(async () => {
     const parentDiv: HTMLElement = document.getElementById("tile");
     const childDiv: HTMLElement = document.getElementById("content");
-    const portraitQuery = window.matchMedia("(orientation: portrait)");
-
-    console.log(parentDiv);
-    console.log(childDiv);
-
-    parentDiv.scrollTop = childDiv.offsetTop;
-    parentDiv.scrollTop = childDiv.offsetTop - parentDiv.offsetHeight / 2;
-
-    let isTileCentered = false;
-
-    portraitQuery.addListener((event) => {
-      if (event.matches) {
-        // Add a click event listener to the element
-        document.getElementById("tile").addEventListener("click", () => {
-          console.log("Click!");
-          // Get the current position of the item
-          const currentPosition = parentDiv.getBoundingClientRect();
-
-          parentDiv.style.transform = isTileCentered
-            ? "translateY(82%)"
-            : "translateY(0%)";
-
-          isTileCentered = !isTileCentered;
-        });
-      }
-    });
   });
 </script>
 
@@ -80,16 +54,7 @@
       padding-bottom: 20px;
     }
   }
-
-  /* @-webkit-keyframes animateToCenter {
-  from {
-    -webkit-transform: rotate(0deg) scale(1) skew(0deg) translate(100px);
-  }
-  to {
-    -webkit-transform: rotate(0deg) scale(2) skew(0deg) translate(100px);
-  }
-} */
-
+  
   /* Hide scrollbar for Chrome, Safari and Opera */
   #tile::-webkit-scrollbar {
     display: none;
