@@ -11,9 +11,6 @@
 
   const contentIDCallback = (id: number) => {
     contentId = id;
-    if (buttons) {
-      buttons.style.display = id == 0 ? "none" : "block";
-    }
   };
 
   let villageAnimation: VillageAnimation;
@@ -124,13 +121,26 @@
     z-index: 100;
   }
 
+  @media only screen and (max-width: 768px) {
+    .wrapper-content {
+      top: auto;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .tile {
+      margin: 10px;
+      z-index: 100;
+    }
+  }
+
   .buttons {
     position: absolute;
     bottom: 0;
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 40px;
-    padding-top: 20px;
+    padding-top: 30px;
+    margin-bottom: 30px;
   }
 
   .button {
