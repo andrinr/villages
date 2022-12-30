@@ -218,12 +218,12 @@ export class VillageAnimation extends ThreeAnimation {
         this.checkIntersections(mouse, (object) => {
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
-                this.hightlightItem(id);
+                //this.hightlightItem(id);
                 this.animateCamera(id, 2000);
                 this.contentIDCallback(id);
                 return;
             } else {
-                this.hightlightItem(0);
+                //this.hightlightItem(0);
                 this.animateCamera(0, 2000);
                 this.contentIDCallback(0);
                 return;

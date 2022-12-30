@@ -60,12 +60,9 @@
   }
 
   #tile {
-
-    width: 50vw;
-    max-width: 300px;
-    height: 50vh;
     border-radius: 10px;
-
+    max-width: 400px;
+    height: 50vh;
     background-color: rgb(255, 255, 255);
     overflow: scroll;
     scroll-behavior: smooth;
@@ -77,17 +74,10 @@
 
   @media screen and (orientation: portrait) {
     #tile {
-      position: absolute;
-      height: auto;
-      bottom: 70px;
-      top: 70px;
-      margin: auto;
-      width: 80vw;
-      max-width: 1000px;
-      transition: transform 0.5s ease-in-out;
-      transform: translateY(82%);
-      /* overflow: scroll;
-      scroll-behavior: smooth; */
+      max-width: 100%;
+      width: 100%;
+      height: 100%;
+      padding-bottom: 20px;
     }
   }
 
@@ -118,5 +108,6 @@
   .description {
     font-family: "Space Grotesk", sans-serif;
     font-weight: 100;
+    margin-bottom: 50px;
   }
 </style>
