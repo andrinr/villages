@@ -27,7 +27,7 @@ export const generateGradientMaterial = (color : Color, scale : number) => {
       
             void main() {
                 float y = vUv.y*0.2;
-                gl_FragColor = vec4(mix(color, vec3(1.0), 1.0-y), 0.5 * (1.0-y));
+                gl_FragColor = vec4(mix(color, vec3(1.0), 1.0-y), 0.3 * (1.0-y));
             }
         `,
         transparent: true,

@@ -50,32 +50,41 @@
   }
 
   onMount(async () => {
-    const parentDiv: HTMLElement = document.getElementById("three");
+    const canvas: HTMLCanvasElement = document.getElementById("three") as HTMLCanvasElement;
+    const wrapper: HTMLElement = document.getElementById("wrapper");
     buttons = document.getElementById("buttons");
-    villageAnimation = new VillageAnimation(parentDiv, contentIDCallback);
+    villageAnimation = new VillageAnimation(canvas, wrapper, contentIDCallback);
   });
 </script>
 
 <main>
   <div class="visualization">
-    <Tile
-      title={data.content[contentId].title}
-      description={data.content[contentId].description}
-    />
-    <div id="three" />
+  
 
-    <div id="buttons">
-      <div class="button-back">
-        <Button isArrow={false} callback={backtoMain} />
-      </div>
-
-      <div class="button-left">
-        <Button isArrow={true} callback={decreementContentId} />
-      </div>
-
-      <div class="button-right">
-        <Button isArrow={true} callback={increementContentId} />
-      </div>
+    <div id="wrapper">
+      <canvas id="three" />
+      <div class="wrapper-content">
+        <div class='tile'>
+          <Tile
+            title={data.content[contentId].title}
+            description={data.content[contentId].description}
+          >
+            <div class="buttons">
+              <div class="button">
+                <Button iconSource="icons/home-line.svg" callback={backtoMain} />
+              </div>
+        
+              <div class="button">
+                <Button iconSource="icons/arrow-left-s-line.svg" callback={decreementContentId} />
+              </div>
+        
+              <div class="button">
+                <Button iconSource="icons/arrow-right-s-line.svg" callback={increementContentId} />
+              </div>
+            </div>
+          </Tile>
+        </div>
+      </div> 
     </div>
   </div>
 </main>
@@ -83,53 +92,51 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <style>
-  #three {
+  #wrapper {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+    right: 10px;
+    
+  }
+
+  #three {
+    position: relative;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
   }
 
-  .button-left {
+  .wrapper-content {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
-    z-index: 100;
-    transform: rotate(180deg);
-    /* width: 30px;
-    height: 30px; */
-  }
-
-  .button-right {
-    background: url("/next-01.png");
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    top: 0;
+    left: 0;
     z-index: 100;
   }
 
-  .button-back {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+  .tile {
+    margin: 20px;
     z-index: 100;
   }
 
-  @media screen and (orientation: portrait) {
-    .button-left {
-      left: 5px;
-      top: 50%;
-      transform: translateY(-50%), rotate(180deg);
-      bottom: auto;
-    }
+  .buttons {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 40px;
+    padding-top: 20px;
+  }
 
-    .button-right {
-      right: 5px;
-      top: 50%;
-      transform: translateY(-50%);
-      bottom: auto;
-    }
+  .button {
+    position: relative;
+    margin-right: 10px;
+    z-index: 100;
   }
 
   .visualization {

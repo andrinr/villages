@@ -7,6 +7,7 @@ import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
 import json from '@rollup/plugin-json';
+const svelteConfig = require('./svelte.config.js');  
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -41,6 +42,7 @@ export default {
 	},
 	plugins: [
 		svelte({
+			...svelteConfig,
 			preprocess: sveltePreprocess({ sourceMap: !production }),
 			compilerOptions: {
 				// enable run-time checks when not in production

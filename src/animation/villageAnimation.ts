@@ -62,8 +62,8 @@ export class VillageAnimation extends ThreeAnimation {
     private highlightMaterial1 : Material;
     private highlightMaterial2 : Material;
 
-    public constructor(rendererElement : HTMLElement, contentIDCallback : (id : number) => void) {
-        super(rendererElement);
+    public constructor(canvas: HTMLCanvasElement, wrapper: HTMLElement, contentIDCallback : (id : number) => void) {
+        super(canvas, wrapper);
         this.contentIDCallback = contentIDCallback;
     }
 
@@ -76,18 +76,16 @@ export class VillageAnimation extends ThreeAnimation {
         this.renderer.toneMapping = ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 0.45;
 
-        const parentDiv : HTMLElement = document.getElementById("three");
-        parentDiv.appendChild( this.renderer.domElement );
+        //const parentDiv : HTMLElement = document.getElementById("three");
+        //parentDiv.appendChild( this.renderer.domElement );
 
         this.scene = new Scene();
         this.scene.fog = new Fog(0xbbb4c2, 1, 18);
 
         this.gui = new dat.GUI();
         this.stats = new Stats();
-        this.stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-        document.body.appendChild( this.stats.dom );
-
-        this.camera.fov = 40;
+        //this.stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+        //document.body.appendChild( this.stats.dom );
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         this.controls.maxDistance = 5;
@@ -129,7 +127,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.sunPosition.setFromSphericalCoords( 1, phi, theta );
 
         this.highlightMaterial1 = generateGradientMaterial(new Color(0xff9a47), 0.5);
-        this.highlightMaterial2 = generateGradientMaterial(new Color(0x00b4ff), 0.5);
+        this.highlightMaterial2 = generateGradientMaterial(new Color(0x045e85), 0.5);
 
         this.addLights();
         this.addSky();
@@ -199,7 +197,12 @@ export class VillageAnimation extends ThreeAnimation {
         this.checkIntersections(mouse, (object) => {
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
-                this.hightlightItem(id);
+                //this.hightlightItem(id);
+                this.canvas.style.cursor = "pointer";
+            }
+            else{
+                this.canvas.style.cursor = "default";
+
             }
         });
     }
@@ -304,10 +307,10 @@ export class VillageAnimation extends ThreeAnimation {
                 this.cameraPositions[id] = data;
             }
             else if(childMesh.name.includes("GLOW")) {
-                childMesh.material = this.highlightMaterial1;
+                childMesh.material = this.highlightMaterial2;
                 childMesh.castShadow = false;
                 childMesh.receiveShadow = false;
-                childMesh.visible = false;
+                childMesh.visible = true;
 
                 const id = +childMesh.name.match(/\d+/)[0]
                 const data = {
