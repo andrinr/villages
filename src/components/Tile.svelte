@@ -44,6 +44,7 @@
       <div class="description">
         <p>{description}</p>
       </div>
+      <slot />
     </div>
   </div>
   <div />
@@ -59,21 +60,11 @@
   }
 
   #tile {
-    z-index: 20;
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    /* bottom: 130px;
-    top: 20px; */
-    bottom: auto;
-    height: 50%;
-    top: 30px;
+
     width: 50vw;
     max-width: 300px;
-    opacity: 0.8;
+    height: 50vh;
     border-radius: 10px;
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(10px);
 
     background-color: rgb(255, 255, 255);
     overflow: scroll;

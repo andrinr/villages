@@ -10,15 +10,17 @@ export abstract class ThreeAnimation {
 
     public renderer : WebGLRenderer;
     public camera : PerspectiveCamera;
-    public rendererElement : HTMLElement;
+    public canvas : HTMLCanvasElement;
+    public wrapper : HTMLElement;
 
     protected mouseOnScreen : boolean = false;
     protected mousePosition : Vector2 = new Vector2(0, 0);
 
-    constructor(rendererElement : HTMLElement) {
+    constructor(canvas : HTMLCanvasElement, wrapper : HTMLElement) {
         ThreeAnimation.threeAnimations.push(this);
 
-        this.rendererElement = rendererElement;
+        this.canvas = canvas;
+        this.wrapper = wrapper;
         this.loop = this.loop.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
@@ -28,11 +30,11 @@ export abstract class ThreeAnimation {
         this.onMouseLeave = this.onMouseLeave.bind(this);
 
         window.addEventListener( 'resize', this.onWindowResize );
-        rendererElement.addEventListener( 'mousedown', this.onMouseDown );
-        rendererElement.addEventListener( 'mousemove', this.onMouseMove );
-        rendererElement.addEventListener( 'mouseup', this.onMouseUp );
-        rendererElement.addEventListener( 'mouseover', this.onMouseOver );
-        rendererElement.addEventListener( 'mouseleave', this.onMouseLeave );
+        canvas.addEventListener( 'mousedown', this.onMouseDown );
+        canvas.addEventListener( 'mousemove', this.onMouseMove );
+        canvas.addEventListener( 'mouseup', this.onMouseUp );
+        canvas.addEventListener( 'mouseover', this.onMouseOver );
+        canvas.addEventListener( 'mouseleave', this.onMouseLeave );
 
         this.start();
     }
@@ -59,14 +61,16 @@ export abstract class ThreeAnimation {
         this.renderer = new WebGLRenderer(
             {
                 antialias: true,
-                powerPreference: "high-performance"
+                powerPreference: "high-performance",
+                canvas: this.canvas as HTMLCanvasElement
             }
         );
-        this.rendererElement.appendChild( this.renderer.domElement );
-        this.camera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.001, 1000 );
+      
+        this.camera = new PerspectiveCamera( 70, this.wrapper.clientWidth / this.wrapper.clientHeight, 0.001, 1000 );
         this.init();
         this.startTime = Date.now();
         this.secondsPassed = 0;
+        this.onWindowResize();
         this.loop();
     }
 
@@ -80,9 +84,9 @@ export abstract class ThreeAnimation {
     }
 
     private onWindowResize () {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.aspect = this.wrapper.clientWidth / this.wrapper.clientHeight;
+        console.log(this.wrapper.clientWidth, this.wrapper.clientHeight);
         this.camera.updateProjectionMatrix();
-        this.renderer.setSize( window.innerWidth, window.innerHeight );
+        this.renderer.setSize( this.wrapper.offsetWidth, this.wrapper.offsetHeight );
     }
-
 }
