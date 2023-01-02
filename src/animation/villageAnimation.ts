@@ -74,10 +74,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.renderer.toneMapping = ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 0.45;
         
-
-        //const parentDiv : HTMLElement = document.getElementById("three");
-        //parentDiv.appendChild( this.renderer.domElement );
-
         this.scene = new Scene();
         this.scene.fog = new Fog(0xbbb4c2, 20, 70);
 
@@ -87,13 +83,13 @@ export class VillageAnimation extends ThreeAnimation {
         //document.body.appendChild( this.stats.dom );
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
-        //this.controls.maxDistance = 5;
-        //this.controls.minDistance = 0.3;
+        // unoffical way to set zoom
+        this.controls.minDistance = 5;
         this.controls.dampingFactor = 0.1;
 
         this.controls.enableDamping = true;
         this.controls.enablePan = true;
-        this.controls.enableZoom = true;
+        this.controls.enableZoom = false;
         this.controls.enableRotate = false;
         this.controls.autoRotate = false;
         this.controls.dampingFactor = 0.1;
