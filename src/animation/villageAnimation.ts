@@ -11,9 +11,7 @@ import {
     VSMShadowMap,
     Mesh,
     Color,
-    Camera,
     MOUSE,
-    TextureLoader,
     HemisphereLight,
     Raycaster,
     Vector2,
@@ -75,12 +73,13 @@ export class VillageAnimation extends ThreeAnimation {
         this.renderer.outputEncoding = sRGBEncoding;
         this.renderer.toneMapping = ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 0.45;
+        
 
         //const parentDiv : HTMLElement = document.getElementById("three");
         //parentDiv.appendChild( this.renderer.domElement );
 
         this.scene = new Scene();
-        this.scene.fog = new Fog(0xbbb4c2, 1, 18);
+        this.scene.fog = new Fog(0xbbb4c2, 20, 70);
 
         this.gui = new dat.GUI();
         this.stats = new Stats();
@@ -88,13 +87,13 @@ export class VillageAnimation extends ThreeAnimation {
         //document.body.appendChild( this.stats.dom );
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
-        this.controls.maxDistance = 5;
-        this.controls.minDistance = 0.3;
+        //this.controls.maxDistance = 5;
+        //this.controls.minDistance = 0.3;
         this.controls.dampingFactor = 0.1;
 
         this.controls.enableDamping = true;
         this.controls.enablePan = true;
-        this.controls.enableZoom = false;
+        this.controls.enableZoom = true;
         this.controls.enableRotate = false;
         this.controls.autoRotate = false;
         this.controls.dampingFactor = 0.1;
@@ -174,8 +173,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.controls.update();
         this.renderer.render( this.scene, this.camera );
 	    this.stats.end();
-
-        this.stats
     }
 
     private checkIntersections(mouse : Vector2, action : (object : Object3D) => void) {
@@ -197,7 +194,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.checkIntersections(mouse, (object) => {
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
-                //this.hightlightItem(id);
+                this.hightlightItem(id);
                 this.canvas.style.cursor = "pointer";
             }
             else{
@@ -310,7 +307,7 @@ export class VillageAnimation extends ThreeAnimation {
                 childMesh.material = this.highlightMaterial2;
                 childMesh.castShadow = false;
                 childMesh.receiveShadow = false;
-                childMesh.visible = true;
+                childMesh.visible = false;
 
                 const id = +childMesh.name.match(/\d+/)[0]
                 const data = {

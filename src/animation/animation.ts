@@ -28,8 +28,9 @@ export abstract class ThreeAnimation {
         this.onWindowResize = this.onWindowResize.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.resize = this.resize.bind(this);
 
-        window.addEventListener( 'resize', this.onWindowResize );
+        //window.addEventListener( 'resize', this.onWindowResize );
         canvas.addEventListener( 'mousedown', this.onMouseDown );
         canvas.addEventListener( 'mousemove', this.onMouseMove );
         canvas.addEventListener( 'mouseup', this.onMouseUp );
@@ -62,11 +63,13 @@ export abstract class ThreeAnimation {
             {
                 antialias: true,
                 powerPreference: "high-performance",
-                canvas: this.canvas as HTMLCanvasElement
+                canvas: this.canvas as HTMLCanvasElement,
+                logarithmicDepthBuffer: true
             }
         );
+
       
-        this.camera = new PerspectiveCamera( 70, this.wrapper.clientWidth / this.wrapper.clientHeight, 0.001, 1000 );
+        this.camera = new PerspectiveCamera( 35, this.wrapper.clientWidth / this.wrapper.clientHeight, 0.001, 1000 );
         this.init();
         this.startTime = Date.now();
         this.secondsPassed = 0;
@@ -81,6 +84,12 @@ export abstract class ThreeAnimation {
 		this.lastTime = Date.now();
         this.secondsPassed = (Date.now() - this.startTime) / 1000;
         this.update(dt);
+    }
+
+    public resize(element : HTMLElement) {
+        this.camera.aspect = element.clientWidth / element.clientHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize( element.offsetWidth, element.offsetHeight );
     }
 
     private onWindowResize () {

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { watchResize } from "svelte-watch-resize";
   import { VillageAnimation } from "./animation/villageAnimation";
   import Tile from "./components/Tile.svelte";
   import Button from "./components/Button.svelte";
@@ -15,6 +16,11 @@
 
   let villageAnimation: VillageAnimation;
 
+  const resize = (element : HTMLElement) => {
+    if (villageAnimation){
+      villageAnimation.resize(element);
+    }
+  };
   const getAndSetCamera = () => {
     villageAnimation.animateCamera(contentId, 2000);
   };
@@ -56,9 +62,7 @@
 
 <main>
   <div class="visualization">
-  
-
-    <div id="wrapper">
+    <div id="wrapper" class="wrapper" use:watchResize={resize}>
       <canvas id="three" />
       <div class="wrapper-content">
         <div class='tile'>
@@ -89,20 +93,20 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <style>
-  #wrapper {
+
+  .wrapper {
     position: absolute;
-    width: calc(100% - 20px);
-    height: calc(100% - 20px);
-    top: 10px;
-    left: 10px;
-    bottom: 10px;
-    right: 10px;
-    
+    transition: 0.3s ease-in-out;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
   }
 
   #three {
     position: relative;
-    border-radius: 20px;
     width: 100%;
     height: 100%;
     top: 0;
