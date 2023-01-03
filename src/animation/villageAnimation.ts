@@ -127,11 +127,11 @@ export class VillageAnimation extends ThreeAnimation {
         this.addModels();
     }
 
-    public animateCamera(itemID: number, duration : number, distance : number) {
+    public animateCamera(itemID: number, duration : number) {
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
         //const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
         const offset = new Vector3(1.0, 0.5, 1.0);
-        offset.multiplyScalar(distance);
+        offset.multiplyScalar(itemID == 0 ? 4.0 : 2.0);
         const pos = anchor.clone().add(offset);
 
         this.tweenPos.stop();
