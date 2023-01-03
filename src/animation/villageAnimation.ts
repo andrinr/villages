@@ -51,7 +51,7 @@ export class VillageAnimation extends ThreeAnimation {
     private mouseHasMoved : boolean = false;
     private contentIDCallback : (id : number) => void;
     private highilightMat : ShaderMaterial;
-
+    private cameraReset : boolean = false;
     private gui : dat.GUI;
 
     public constructor(
@@ -80,6 +80,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.controls.enableZoom = false;
         this.controls.enableRotate = false;
         this.controls.screenSpacePanning = false;
+        this.controls.panSpeed = 0.5;
     
         this.controls.mouseButtons = {
             LEFT: MOUSE.PAN,
@@ -96,7 +97,10 @@ export class VillageAnimation extends ThreeAnimation {
         this.cameraPositions = {};
         this.cameraAnchors[0] = {name: "Default", data: new Vector3(0,0,0)};
         this.cameraPositions[0] = {name: "Default", data: new Vector3(69,30,86)};
-        
+        this.camera.position.x = 3.0;
+        this.camera.position.y = 3.0;
+        this.camera.position.z = 3.0;
+
         this.raycaster = new Raycaster();
         this.highlights = {};
 
@@ -167,9 +171,20 @@ export class VillageAnimation extends ThreeAnimation {
     }
     
     public update(delta: number): void {
+        //console.log(this.camera.position);
+        const dist = this.camera.position.distanceTo(new Vector3(2.0, 2.1, 6.0));
+        //this.controls.panSpeed = 1.0 / (Math.max(1.0, 0.1*dist*dist))
+        if (dist > 5.0 && !this.cameraReset) {
+            console.log("dist: " + dist);
+            this.animateCamera(0, 1000);
+            this.cameraReset = true;
+        }
+        else if (dist <= 4.0) {
+            this.cameraReset = false;
+        }
+        this.controls.update();
         this.tweenPos.update();
         this.tweenLookAt.update();
-        this.controls.update();
     }
 
     private checkIntersections(mouse : Vector2, action : (object : Object3D) => void) {
@@ -229,19 +244,19 @@ export class VillageAnimation extends ThreeAnimation {
 
 	private addSky () {
 		const sky : Sky = new Sky();
-		sky.scale.setScalar( 10 );
+		sky.scale.setScalar( 20 );
 		this.scene.add( sky );
 
 		const uniforms = sky.material.uniforms;
-		uniforms[ 'turbidity' ].value = 10;
-		uniforms[ 'rayleigh' ].value = 1;
-		uniforms[ 'mieCoefficient' ].value = 0.0;
+		uniforms[ 'turbidity' ].value = 0.6;
+		uniforms[ 'rayleigh' ].value = 0.8;
+		uniforms[ 'mieCoefficient' ].value = 0.01;
 		uniforms[ 'mieDirectionalG' ].value = 0.7;
 		uniforms[ 'sunPosition' ].value.copy( this.sunPosition );
 	}
 
 	private addLights() {
-		const light = new DirectionalLight( "#fff", 3.5 );
+		const light = new DirectionalLight( "#ffd1d1", 3.5 );
 		const scale : number = 4.0;
 	    light.position.multiplyScalar(0).add(this.sunPosition.clone().multiplyScalar(scale));
 

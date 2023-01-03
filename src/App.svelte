@@ -4,6 +4,7 @@
   import { VillageAnimation } from "./animation/villageAnimation";
   import Tile from "./components/Tile.svelte";
   import Button from "./components/Button.svelte";
+  import Notification from "./components/Notification.svelte";
 
   // @ts-ignore
   import * as data from "./content.json";
@@ -61,33 +62,36 @@
 </script>
 
 <main>
-  <div class="visualization">
-    <div id="wrapper" class="wrapper" use:watchResize={resize}>
-      <canvas id="three" />
-      <div class="wrapper-content">
-        <div class='tile'>
-          <Tile
-            title={data.content[contentId].title}
-            description={data.content[contentId].description}
-          >
-            <div class="buttons">
-              <div class="button">
-                <Button iconSource="icons/home-line.svg" callback={backtoMain} />
-              </div>
+  <div id="wrapper" class="wrapper" use:watchResize={resize}>
+    <canvas id="three" />
+    <div class="wrapper-content">
+      <div class='tile'>
+        <Tile
+          title={data.content[contentId].title}
+          description={data.content[contentId].description}
+        >
+          <!--<div class='minimize-button'>
+            <Button iconSource="icons/minus.svg" callback={backtoMain} />
+          </div>-->
         
-              <div class="button">
-                <Button iconSource="icons/arrow-left-s-line.svg" callback={decreementContentId} />
-              </div>
-        
-              <div class="button">
-                <Button iconSource="icons/arrow-right-s-line.svg" callback={increementContentId} />
-              </div>
+          <div class="buttons">
+            <div class="button">
+              <Button iconSource="icons/home-line.svg" callback={backtoMain} />
             </div>
-          </Tile>
-        </div>
-      </div> 
-    </div>
+      
+            <div class="button">
+              <Button iconSource="icons/arrow-left-s-line.svg" callback={decreementContentId} />
+            </div>
+      
+            <div class="button">
+              <Button iconSource="icons/arrow-right-s-line.svg" callback={increementContentId} />
+            </div>
+          </div>
+        </Tile>
+      </div>
+    </div> 
   </div>
+
 </main>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -141,8 +145,11 @@
     z-index: 100;
   }
 
-  .visualization {
-    overflow: hidden;
+  .minimize-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100;
   }
 
   
