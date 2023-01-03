@@ -27,8 +27,6 @@ import { Tween, Easing } from "@tweenjs/tween.js";
 import { loadGLTF } from './loader';
 import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
-import * as dat from 'lil-gui'
-import Stats from 'stats.js'
 
 interface Map<T> {
     [key: number]: {
@@ -54,8 +52,6 @@ export class VillageAnimation extends ThreeAnimation {
 
     private mouseHasMoved : boolean = false;
     
-    private gui : dat.GUI;
-    private stats : Stats;
     private contentIDCallback : (id : number) => void;
 
     private highlightMaterial2 : Material;
@@ -76,16 +72,7 @@ export class VillageAnimation extends ThreeAnimation {
         
         this.scene = new Scene();
         this.scene.fog = new Fog(0xbbb4c2, 20, 70);
-
-        this.gui = new dat.GUI();
-        this.stats = new Stats();
-        //this.stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-        //document.body.appendChild( this.stats.dom );
-
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
-        // unoffical way to set zoom
-        //this.controls.minDistance = 5;
-        //this.controls.dampingFactor = 0.1;
 
         //this.controls.enableDamping = false;
         this.controls.enablePan = true;
@@ -131,7 +118,7 @@ export class VillageAnimation extends ThreeAnimation {
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
         //const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
         const offset = new Vector3(1.0, 0.5, 1.0);
-        offset.multiplyScalar(itemID == 0 ? 4.0 : 2.0);
+        offset.multiplyScalar(itemID == 0 ? 5.0 : 2.5);
         const pos = anchor.clone().add(offset);
 
         this.tweenPos.stop();
@@ -170,12 +157,10 @@ export class VillageAnimation extends ThreeAnimation {
     }
     
     public update(delta: number): void {
-        this.stats.begin();
         this.tweenPos.update();
         this.tweenLookAt.update();
         this.controls.update();
         this.renderer.render( this.scene, this.camera );
-	    this.stats.end();
     }
 
     private checkIntersections(mouse : Vector2, action : (object : Object3D) => void) {
@@ -219,12 +204,12 @@ export class VillageAnimation extends ThreeAnimation {
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
                 //this.hightlightItem(id);
-                this.animateCamera(id, 2000, 2.0);
+                this.animateCamera(id, 2000);
                 this.contentIDCallback(id);
                 return;
             } else {
                 //this.hightlightItem(0);
-                this.animateCamera(0, 2000, 4.0);
+                this.animateCamera(0, 2000);
                 this.contentIDCallback(0);
                 return;
             }
@@ -266,11 +251,6 @@ export class VillageAnimation extends ThreeAnimation {
         
         const hemiLight = new HemisphereLight( "#4dc1ff", "#d191ff", 0.4);
 
-        //this.gui.add(light, 'color');
-        this.gui.add(light, 'intensity', 0,10,0.01).name("Sun Light");
-        this.gui.add(ambientLight, 'intensity', 0,5,0.01).name("Ambient Light");
-        this.gui.add(hemiLight, 'intensity', 0,5,0.01).name("Hemi Light");
-        
         this.scene.add(hemiLight);
         this.scene.add( light );
 		this.scene.add( ambientLight );
@@ -321,6 +301,6 @@ export class VillageAnimation extends ThreeAnimation {
             }   
         });
 
-        this.animateCamera(0, 0, 4.0);
+        this.animateCamera(0, 0);
 	}
 }
