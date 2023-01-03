@@ -69,7 +69,7 @@ export abstract class ThreeAnimation {
         );
 
       
-        this.camera = new PerspectiveCamera( 35, this.wrapper.clientWidth / this.wrapper.clientHeight, 0.001, 1000 );
+        this.camera = new PerspectiveCamera( 45, this.wrapper.clientWidth / this.wrapper.clientHeight, 0.001, 1000 );
         this.init();
         this.startTime = Date.now();
         this.secondsPassed = 0;

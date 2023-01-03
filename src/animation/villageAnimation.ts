@@ -58,7 +58,6 @@ export class VillageAnimation extends ThreeAnimation {
     private stats : Stats;
     private contentIDCallback : (id : number) => void;
 
-    private highlightMaterial1 : Material;
     private highlightMaterial2 : Material;
 
     public constructor(canvas: HTMLCanvasElement, wrapper: HTMLElement, contentIDCallback : (id : number) => void) {
@@ -85,15 +84,13 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         // unoffical way to set zoom
-        this.controls.minDistance = 5;
-        this.controls.dampingFactor = 0.1;
+        //this.controls.minDistance = 5;
+        //this.controls.dampingFactor = 0.1;
 
-        this.controls.enableDamping = true;
+        //this.controls.enableDamping = false;
         this.controls.enablePan = true;
         this.controls.enableZoom = false;
         this.controls.enableRotate = false;
-        this.controls.autoRotate = false;
-        this.controls.dampingFactor = 0.1;
         this.controls.screenSpacePanning = false;
     
         this.controls.mouseButtons = {
@@ -122,7 +119,6 @@ export class VillageAnimation extends ThreeAnimation {
         const theta : number = MathUtils.degToRad( 30 );
         this.sunPosition.setFromSphericalCoords( 1, phi, theta );
 
-        this.highlightMaterial1 = generateGradientMaterial(new Color(0xff9a47), 0.5);
         this.highlightMaterial2 = generateGradientMaterial(new Color(0x045e85), 0.5);
 
         this.addLights();
@@ -131,9 +127,12 @@ export class VillageAnimation extends ThreeAnimation {
         this.addModels();
     }
 
-    public animateCamera(itemID: number, duration : number) {
+    public animateCamera(itemID: number, duration : number, distance : number) {
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
-        const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
+        //const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
+        const offset = new Vector3(1.0, 0.5, 1.0);
+        offset.multiplyScalar(distance);
+        const pos = anchor.clone().add(offset);
 
         this.tweenPos.stop();
         this.tweenPos = new Tween(this.camera.position)
@@ -153,6 +152,13 @@ export class VillageAnimation extends ThreeAnimation {
 
     public hightlightItem(itemID: number) {
         if (this.previousHighlightID == itemID) return;
+
+        if (itemID == -1) {
+            if (this.highlights[this.previousHighlightID]) 
+                this.highlights[this.previousHighlightID].data.visible = false;
+            this.previousHighlightID = -1;
+            return;
+        }
 
         if (this.highlights[itemID]) 
             this.highlights[itemID].data.visible = true;
@@ -196,7 +202,7 @@ export class VillageAnimation extends ThreeAnimation {
             }
             else{
                 this.canvas.style.cursor = "default";
-
+                this.hightlightItem(-1);
             }
         });
     }
@@ -213,12 +219,12 @@ export class VillageAnimation extends ThreeAnimation {
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
                 //this.hightlightItem(id);
-                this.animateCamera(id, 2000);
+                this.animateCamera(id, 2000, 2.0);
                 this.contentIDCallback(id);
                 return;
             } else {
                 //this.hightlightItem(0);
-                this.animateCamera(0, 2000);
+                this.animateCamera(0, 2000, 4.0);
                 this.contentIDCallback(0);
                 return;
             }
@@ -302,7 +308,6 @@ export class VillageAnimation extends ThreeAnimation {
             }
             else if(childMesh.name.includes("GLOW")) {
                 childMesh.material = this.highlightMaterial2;
-                //childMesh.material = new MeshBasicMaterial();
                 childMesh.castShadow = false;
                 childMesh.receiveShadow = false;
                 childMesh.visible = false;
@@ -316,6 +321,6 @@ export class VillageAnimation extends ThreeAnimation {
             }   
         });
 
-        this.animateCamera(0, 0);
+        this.animateCamera(0, 0, 4.0);
 	}
 }
