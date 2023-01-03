@@ -5,5 +5,5 @@ export enum NotificationType {
 }
 
 export function dispatchNotification(message : string, type : NotificationType) : void {
-    vscode.window.showInformationMessage(message);
+    
 }

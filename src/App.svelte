@@ -63,7 +63,6 @@
 
 <main>
   <div id="wrapper" class="wrapper" use:watchResize={resize}>
-    <Notification />
     <canvas id="three" />
     <div class="wrapper-content">
       <div class='tile'>
