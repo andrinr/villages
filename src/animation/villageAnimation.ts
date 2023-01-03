@@ -16,7 +16,8 @@ import {
     Raycaster,
     Vector2,
     Object3D,
-    Material} from 'three';
+    Material,
+    MeshBasicMaterial} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -301,6 +302,7 @@ export class VillageAnimation extends ThreeAnimation {
             }
             else if(childMesh.name.includes("GLOW")) {
                 childMesh.material = this.highlightMaterial2;
+                //childMesh.material = new MeshBasicMaterial();
                 childMesh.castShadow = false;
                 childMesh.receiveShadow = false;
                 childMesh.visible = false;

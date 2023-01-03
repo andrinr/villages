@@ -64,7 +64,7 @@ export abstract class ThreeAnimation {
                 antialias: true,
                 powerPreference: "high-performance",
                 canvas: this.canvas as HTMLCanvasElement,
-                logarithmicDepthBuffer: false
+                logarithmicDepthBuffer: true
             }
         );
 
