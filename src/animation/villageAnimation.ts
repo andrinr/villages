@@ -122,6 +122,8 @@ export class VillageAnimation extends ThreeAnimation {
         else {
             anchor.add(new Vector3(0, -0.2, 0));
         }
+        this.hightlightItem(itemID);
+
         //const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
         const offset = new Vector3(1.0, 0.5, 1.0);
         offset.multiplyScalar(itemID == 0 ? 5.0 : 2.5);
@@ -209,12 +211,10 @@ export class VillageAnimation extends ThreeAnimation {
         this.checkIntersections(mouse, (object) => {
             if(object.name.includes("ANCHOR") || object.name.includes("GLOW")){
                 const id = +object.name.match(/\d+/)[0];
-                //this.hightlightItem(id);
                 this.animateCamera(id, 2000);
                 this.contentIDCallback(id);
                 return;
             } else {
-                //this.hightlightItem(0);
                 this.animateCamera(0, 2000);
                 this.contentIDCallback(0);
                 return;

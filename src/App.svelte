@@ -123,7 +123,7 @@
   }
 
   .tile {
-    margin: 20px;
+    margin-left: 60px;
     z-index: 100;
   }
 
