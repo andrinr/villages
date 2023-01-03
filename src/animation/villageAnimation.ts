@@ -26,6 +26,7 @@ import { Tween, Easing } from "@tweenjs/tween.js";
 import { loadGLTF } from './loader';
 import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
+import * as dat from 'lil-gui'
 
 interface Map<T> {
     [key: number]: {
@@ -51,6 +52,8 @@ export class VillageAnimation extends ThreeAnimation {
     private contentIDCallback : (id : number) => void;
     private highilightMat : ShaderMaterial;
 
+    private gui : dat.GUI;
+
     public constructor(
         canvas: HTMLCanvasElement, 
         wrapper: HTMLElement, 
@@ -67,9 +70,9 @@ export class VillageAnimation extends ThreeAnimation {
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         this.renderer.outputEncoding = sRGBEncoding;
         this.renderer.toneMapping = ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 0.45;
+        this.renderer.toneMappingExposure = 0.40;
         
-        this.scene.fog = new Fog(0xbbb4c2, 20, 70);
+        this.scene.fog = new Fog(0xb4c1c2, 5, 25);
         this.controls.touches.ONE = TOUCH.PAN;
 
         //this.controls.enableDamping = false;
@@ -101,15 +104,16 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.sunPosition = new Vector3(0, 0, 0);
         const phi : number = MathUtils.degToRad( 90 - 20 );
-        const theta : number = MathUtils.degToRad( 30 );
+        const theta : number = MathUtils.degToRad( 80 );
         this.sunPosition.setFromSphericalCoords( 1, phi, theta );
 
         this.highilightMat = generateGradientMaterial(new Color(0x045e85), 0.5);
+        this.gui = new dat.GUI();
 
         this.addLights();
         this.addSky();
-
         this.addModels();
+
     }
 
     public animateCamera(itemID: number, duration : number) {
@@ -123,7 +127,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.hightlightItem(itemID);
 
         //const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
-        const offset = new Vector3(1.0, 0.5, 1.0);
+        const offset = new Vector3(1.0, 0.4, 1.0);
         offset.multiplyScalar(itemID == 0 ? 5.0 : 2.5);
         const pos = anchor.clone().add(offset);
 
@@ -225,7 +229,7 @@ export class VillageAnimation extends ThreeAnimation {
 
 	private addSky () {
 		const sky : Sky = new Sky();
-		sky.scale.setScalar( 450000 );
+		sky.scale.setScalar( 10 );
 		this.scene.add( sky );
 
 		const uniforms = sky.material.uniforms;
@@ -237,7 +241,7 @@ export class VillageAnimation extends ThreeAnimation {
 	}
 
 	private addLights() {
-		const light = new DirectionalLight( "#ff947b", 2.87 );
+		const light = new DirectionalLight( "#fff", 3.5 );
 		const scale : number = 4.0;
 	    light.position.multiplyScalar(0).add(this.sunPosition.clone().multiplyScalar(scale));
 
@@ -248,12 +252,21 @@ export class VillageAnimation extends ThreeAnimation {
 		light.shadow.camera.near = 0.5;
 		light.shadow.camera.far = 20;
 		light.shadow.bias = -0.001;
+        light.shadow.radius = 3.0;
 
-		const ambientLight = new AmbientLight( "0x9d81a6");
-        ambientLight.intensity = 0.21;
+		const ambientLight = new AmbientLight( "0xa68195");
+        ambientLight.intensity = 0.3;
         
-        const hemiLight = new HemisphereLight( "#4dc1ff", "#d191ff", 0.4);
+        const hemiLight = new HemisphereLight( "#4dc1ff", "#ffdca8", 0.4);
 
+        this.gui.add(light, 'intensity', 0,10,0.01).name("Sun Light");
+        this.gui.add(ambientLight, 'intensity', 0,5,0.01).name("Ambient Light");
+        this.gui.add(hemiLight, 'intensity', 0,5,0.01).name("Hemi Light");
+
+        this.gui.addColor(light, 'color').name("Sun Color");
+        this.gui.addColor(ambientLight, 'color').name("Ambient Color");
+        this.gui.addColor(hemiLight, 'color').name("Hemi Color Sky");
+        this.gui.addColor(hemiLight, 'groundColor').name("Hemi Color Ground");
         this.scene.add(hemiLight);
         this.scene.add( light );
 		this.scene.add( ambientLight );
