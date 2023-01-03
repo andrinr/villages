@@ -172,14 +172,14 @@ export class VillageAnimation extends ThreeAnimation {
     
     public update(delta: number): void {
         //console.log(this.camera.position);
-        const dist = this.camera.position.distanceTo(new Vector3(2.0, 2.1, 6.0));
+        const dist = this.camera.position.distanceTo(new Vector3(2.0, 2.1, 4.0));
         //this.controls.panSpeed = 1.0 / (Math.max(1.0, 0.1*dist*dist))
-        if (dist > 5.0 && !this.cameraReset) {
+        if (dist > 6.3 && !this.cameraReset) {
             console.log("dist: " + dist);
             this.animateCamera(0, 1000);
             this.cameraReset = true;
         }
-        else if (dist <= 4.0) {
+        else if (dist <= 6.3) {
             this.cameraReset = false;
         }
         this.controls.update();
