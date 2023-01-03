@@ -15,6 +15,7 @@ export abstract class ThreeAnimation {
 
     protected mouseOnScreen : boolean = false;
     protected mousePosition : Vector2 = new Vector2(0, 0);
+    protected portraitMode : boolean = false;
 
     constructor(canvas : HTMLCanvasElement, wrapper : HTMLElement) {
         ThreeAnimation.threeAnimations.push(this);
@@ -25,12 +26,10 @@ export abstract class ThreeAnimation {
         this.onMouseMove = this.onMouseMove.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseUp = this.onMouseUp.bind(this);
-        this.onWindowResize = this.onWindowResize.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
         this.resize = this.resize.bind(this);
-
-        //window.addEventListener( 'resize', this.onWindowResize );
+        
         canvas.addEventListener( 'mousedown', this.onMouseDown );
         canvas.addEventListener( 'mousemove', this.onMouseMove );
         canvas.addEventListener( 'mouseup', this.onMouseUp );
@@ -73,7 +72,7 @@ export abstract class ThreeAnimation {
         this.init();
         this.startTime = Date.now();
         this.secondsPassed = 0;
-        this.onWindowResize();
+        this.resize(this.wrapper);
         this.loop();
     }
 
@@ -87,15 +86,9 @@ export abstract class ThreeAnimation {
     }
 
     public resize(element : HTMLElement) {
-        this.camera.aspect = element.clientWidth / element.clientHeight;
+        this.camera.aspect = element.offsetWidth / element.offsetHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize( element.offsetWidth, element.offsetHeight );
-    }
-
-    private onWindowResize () {
-        this.camera.aspect = this.wrapper.clientWidth / this.wrapper.clientHeight;
-        console.log(this.wrapper.clientWidth, this.wrapper.clientHeight);
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize( this.wrapper.offsetWidth, this.wrapper.offsetHeight );
+        this.portraitMode = element.offsetHeight > element.offsetWidth;
     }
 }

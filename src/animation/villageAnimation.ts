@@ -16,8 +16,7 @@ import {
     Raycaster,
     Vector2,
     Object3D,
-    Material,
-    MeshBasicMaterial} from 'three';
+    ShaderMaterial} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
@@ -49,14 +48,15 @@ export class VillageAnimation extends ThreeAnimation {
     private sunPosition : Vector3;
 
     private previousHighlightID : number = 0;
-
     private mouseHasMoved : boolean = false;
-    
     private contentIDCallback : (id : number) => void;
+    private highilightMat : ShaderMaterial;
 
-    private highlightMaterial2 : Material;
-
-    public constructor(canvas: HTMLCanvasElement, wrapper: HTMLElement, contentIDCallback : (id : number) => void) {
+    public constructor(
+        canvas: HTMLCanvasElement, 
+        wrapper: HTMLElement, 
+        contentIDCallback : (id : number) => void
+        ) {
         super(canvas, wrapper);
         this.contentIDCallback = contentIDCallback;
     }
@@ -106,7 +106,7 @@ export class VillageAnimation extends ThreeAnimation {
         const theta : number = MathUtils.degToRad( 30 );
         this.sunPosition.setFromSphericalCoords( 1, phi, theta );
 
-        this.highlightMaterial2 = generateGradientMaterial(new Color(0x045e85), 0.5);
+        this.highilightMat = generateGradientMaterial(new Color(0x045e85), 0.5);
 
         this.addLights();
         this.addSky();
@@ -116,6 +116,12 @@ export class VillageAnimation extends ThreeAnimation {
 
     public animateCamera(itemID: number, duration : number) {
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
+        if (!this.portraitMode) {
+            anchor.add(new Vector3(-0.5, 0, 0));
+        }
+        else {
+            anchor.add(new Vector3(0, -0.2, 0));
+        }
         //const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
         const offset = new Vector3(1.0, 0.5, 1.0);
         offset.multiplyScalar(itemID == 0 ? 5.0 : 2.5);
@@ -287,7 +293,7 @@ export class VillageAnimation extends ThreeAnimation {
                 this.cameraPositions[id] = data;
             }
             else if(childMesh.name.includes("GLOW")) {
-                childMesh.material = this.highlightMaterial2;
+                childMesh.material = this.highilightMat;
                 childMesh.castShadow = false;
                 childMesh.receiveShadow = false;
                 childMesh.visible = false;

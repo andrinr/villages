@@ -115,7 +115,9 @@
 
   .wrapper-content {
     position: absolute;
-    top: 0;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
     left: 0;
     z-index: 100;
   }
@@ -125,11 +127,13 @@
     z-index: 100;
   }
 
-  @media only screen and (max-width: 768px) {
+  @media (orientation: portrait) {
     .wrapper-content {
       top: auto;
       bottom: 0;
       width: 100%;
+      transform: none;
+      -ms-transform: none;
     }
 
     .tile {
