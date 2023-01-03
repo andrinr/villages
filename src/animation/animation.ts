@@ -1,4 +1,5 @@
-import { WebGLRenderer, PerspectiveCamera, Vector2 } from "three";
+import { WebGLRenderer, PerspectiveCamera, Vector2, Scene } from "three";
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 export abstract class ThreeAnimation {
     
@@ -12,6 +13,8 @@ export abstract class ThreeAnimation {
     public camera : PerspectiveCamera;
     public canvas : HTMLCanvasElement;
     public wrapper : HTMLElement;
+    protected scene : Scene;
+    protected controls : OrbitControls;
 
     protected mouseOnScreen : boolean = false;
     protected mousePosition : Vector2 = new Vector2(0, 0);
@@ -29,7 +32,7 @@ export abstract class ThreeAnimation {
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
         this.resize = this.resize.bind(this);
-        
+
         canvas.addEventListener( 'mousedown', this.onMouseDown );
         canvas.addEventListener( 'mousemove', this.onMouseMove );
         canvas.addEventListener( 'mouseup', this.onMouseUp );
@@ -66,9 +69,10 @@ export abstract class ThreeAnimation {
                 logarithmicDepthBuffer: true
             }
         );
-
+        this.scene = new Scene();
       
         this.camera = new PerspectiveCamera( 30, this.wrapper.clientWidth / this.wrapper.clientHeight, 0.001, 1000 );
+        this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         this.init();
         this.startTime = Date.now();
         this.secondsPassed = 0;
@@ -83,6 +87,7 @@ export abstract class ThreeAnimation {
 		this.lastTime = Date.now();
         this.secondsPassed = (Date.now() - this.startTime) / 1000;
         this.update(dt);
+        this.renderer.render( this.scene, this.camera );
     }
 
     public resize(element : HTMLElement) {

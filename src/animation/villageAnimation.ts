@@ -20,7 +20,6 @@ import {
     ShaderMaterial} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 // Animaions
 import { Tween, Easing } from "@tweenjs/tween.js";
 // Local imports
@@ -39,7 +38,6 @@ export class VillageAnimation extends ThreeAnimation {
 	scene: Scene;
 	private tweenPos: Tween<Vector3>;
     private tweenLookAt: Tween<Vector3>;
-    private controls : OrbitControls;
     private scale : number = 0.03;
     private raycaster : Raycaster;
 
@@ -71,9 +69,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.renderer.toneMapping = ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 0.45;
         
-        this.scene = new Scene();
         this.scene.fog = new Fog(0xbbb4c2, 20, 70);
-        this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         this.controls.touches.ONE = TOUCH.PAN;
 
         //this.controls.enableDamping = false;
@@ -170,7 +166,6 @@ export class VillageAnimation extends ThreeAnimation {
         this.tweenPos.update();
         this.tweenLookAt.update();
         this.controls.update();
-        this.renderer.render( this.scene, this.camera );
     }
 
     private checkIntersections(mouse : Vector2, action : (object : Object3D) => void) {
