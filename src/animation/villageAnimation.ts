@@ -16,6 +16,7 @@ import {
     Raycaster,
     Vector2,
     Object3D,
+    TOUCH,
     ShaderMaterial} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
@@ -73,6 +74,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.scene = new Scene();
         this.scene.fog = new Fog(0xbbb4c2, 20, 70);
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+        this.controls.touches.ONE = TOUCH.PAN;
 
         //this.controls.enableDamping = false;
         this.controls.enablePan = true;
