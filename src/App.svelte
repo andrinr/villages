@@ -126,22 +126,6 @@
     margin-left: 60px;
     z-index: 100;
   }
-
-  @media (orientation: portrait) {
-    .wrapper-content {
-      top: auto;
-      bottom: 0;
-      width: 100%;
-      transform: none;
-      -ms-transform: none;
-    }
-
-    .tile {
-      margin: 10px;
-      z-index: 100;
-    }
-  }
-
   .buttons {
     position: absolute;
     bottom: 0;
@@ -160,4 +144,25 @@
   .visualization {
     overflow: hidden;
   }
+
+  
+  @media (orientation: portrait) {
+    .wrapper-content {
+      top: auto;
+      bottom: 0;
+      width: 100%;
+      transform: none;
+      -ms-transform: none;
+    }
+
+    .tile {
+      margin: 10px;
+      z-index: 100;
+    }
+
+    .buttons{
+      padding-top: 10px;
+    }
+  }
+
 </style>

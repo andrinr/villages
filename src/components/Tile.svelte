@@ -45,15 +45,6 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-
-  @media screen and (orientation: portrait) {
-    #tile {
-      max-width: 100%;
-      width: 100%;
-      height: 100%;
-      padding-bottom: 20px;
-    }
-  }
   
   /* Hide scrollbar for Chrome, Safari and Opera */
   #tile::-webkit-scrollbar {
@@ -74,5 +65,24 @@
     font-family: "Space Grotesk", sans-serif;
     font-weight: 100;
     margin-bottom: 50px;
+  }
+
+  @media (orientation: portrait) {
+    #tile {
+      max-width: 100%;
+      width: 100%;
+      height: 100%;
+      padding-bottom: 20px;
+    }
+    h1 {
+      font-size: 1.3rem;
+    }
+    p {
+      font-size: 0.8rem;
+    }
+
+    .description {
+      margin-bottom: 30px;
+    }
   }
 </style>
