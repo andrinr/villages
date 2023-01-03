@@ -148,7 +148,7 @@
     display: flex;
     justify-content: flex-start;
     padding-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
 
   .button {
