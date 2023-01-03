@@ -24,6 +24,7 @@ import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import { Tween, Easing } from "@tweenjs/tween.js";
 // Local imports
 import { loadGLTF } from './loader';
+import { Cloud } from './cloud';
 import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
 import * as dat from 'lil-gui'
@@ -46,6 +47,7 @@ export class VillageAnimation extends ThreeAnimation {
     private cameraPositions : Map<Vector3>;
     private highlights : Map<Mesh>;
     private sunPosition : Vector3;
+    private cloud : Cloud;
 
     private previousHighlightID : number = 0;
     private mouseHasMoved : boolean = false;
@@ -53,6 +55,7 @@ export class VillageAnimation extends ThreeAnimation {
     private highilightMat : ShaderMaterial;
     private cameraReset : boolean = false;
     private gui : dat.GUI;
+
 
     public constructor(
         canvas: HTMLCanvasElement, 
@@ -113,6 +116,9 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.highilightMat = generateGradientMaterial(new Color(0x045e85), 0.5);
         this.gui = new dat.GUI();
+        new Cloud(this.scene);
+        new Cloud(this.scene);
+    
 
         this.addLights();
         this.addSky();
