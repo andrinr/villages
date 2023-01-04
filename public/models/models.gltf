@@ -3300,7 +3300,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_02_Retail",
+            "name" : "ANCHOR_16_Retail",
             "rotation" : [
                 0,
                 -0.08237256854772568,
@@ -3319,7 +3319,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_04_Science_Education",
+            "name" : "ANCHOR_03_Science_Education",
             "rotation" : [
                 0,
                 0.3896830379962921,
@@ -3338,7 +3338,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_05_Art_Music",
+            "name" : "ANCHOR_04_Art_Music",
             "rotation" : [
                 0,
                 -0.8253490924835205,
@@ -3357,7 +3357,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_06_Agriculture",
+            "name" : "ANCHOR_05_Agriculture",
             "rotation" : [
                 0.3992486894130707,
                 -0.5836098790168762,
@@ -3376,7 +3376,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_07_Philosophy",
+            "name" : "ANCHOR_06_Philosophy",
             "rotation" : [
                 0.7071068286895752,
                 0,
@@ -3395,7 +3395,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_08_Space",
+            "name" : "ANCHOR_07_Space",
             "rotation" : [
                 0.3403242826461792,
                 0.6198222041130066,
@@ -3414,7 +3414,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_09_Wellness",
+            "name" : "ANCHOR_08_Wellness",
             "rotation" : [
                 0.706601619720459,
                 -0.026723206043243408,
@@ -3433,7 +3433,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_10_Health",
+            "name" : "ANCHOR_09_Health",
             "rotation" : [
                 0.7071068286895752,
                 0,
@@ -3452,7 +3452,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_11_Mobility",
+            "name" : "ANCHOR_10_Mobility",
             "rotation" : [
                 0.7071068286895752,
                 0,
@@ -3471,7 +3471,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_12_Water",
+            "name" : "ANCHOR_11_Water",
             "rotation" : [
                 0,
                 -0.46188241243362427,
@@ -3490,7 +3490,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_13_Solar",
+            "name" : "ANCHOR_12_Solar",
             "rotation" : [
                 0.7071068286895752,
                 0,
@@ -3509,7 +3509,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_14_Cave",
+            "name" : "ANCHOR_13_Cave",
             "rotation" : [
                 0,
                 0.9796022772789001,
@@ -3528,7 +3528,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_15_Waste",
+            "name" : "ANCHOR_14_Waste",
             "rotation" : [
                 0,
                 0.677907407283783,
@@ -3547,7 +3547,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_16_Construction",
+            "name" : "ANCHOR_15_Construction",
             "rotation" : [
                 0.4827823042869568,
                 -0.5166442394256592,
@@ -3586,7 +3586,7 @@
         },
         {
             "mesh" : 167,
-            "name" : "GLOW_13_Solar",
+            "name" : "GLOW_12_Solar",
             "translation" : [
                 -59.941497802734375,
                 0.39057230949401855,
@@ -3595,7 +3595,7 @@
         },
         {
             "mesh" : 168,
-            "name" : "GLOW_14_Cave",
+            "name" : "GLOW_13_Cave",
             "translation" : [
                 -71.60380554199219,
                 -1.4598712921142578,
@@ -3604,7 +3604,7 @@
         },
         {
             "mesh" : 169,
-            "name" : "GLOW_15_Waste",
+            "name" : "GLOW_14_Waste",
             "translation" : [
                 -48.481971740722656,
                 -1.41710364818573,
@@ -3613,7 +3613,7 @@
         },
         {
             "mesh" : 170,
-            "name" : "GLOW_16_Construction",
+            "name" : "GLOW_15_Construction",
             "translation" : [
                 -26,
                 -1,
@@ -3640,7 +3640,7 @@
         },
         {
             "mesh" : 173,
-            "name" : "GLOW_03_Ecconomics",
+            "name" : "GLOW_02_Ecconomics",
             "translation" : [
                 -3.916034698486328,
                 -1.163069248199463,
@@ -3649,7 +3649,7 @@
         },
         {
             "mesh" : 174,
-            "name" : "GLOW_04_Science_Education",
+            "name" : "GLOW_03_Science_Education",
             "translation" : [
                 54.81813049316406,
                 -1.163069248199463,
@@ -3658,7 +3658,7 @@
         },
         {
             "mesh" : 175,
-            "name" : "GLOW_10_Health",
+            "name" : "GLOW_09_Health",
             "translation" : [
                 36.02916717529297,
                 -1.163069248199463,
@@ -3667,7 +3667,7 @@
         },
         {
             "mesh" : 176,
-            "name" : "GLOW_09_Wellbeing",
+            "name" : "GLOW_08_Wellbeing",
             "rotation" : [
                 0,
                 0.12963756918907166,
@@ -3682,7 +3682,7 @@
         },
         {
             "mesh" : 177,
-            "name" : "GLOW_05_Art_Music",
+            "name" : "GLOW_04_Art_Music",
             "translation" : [
                 72.42636108398438,
                 -1.163069248199463,
@@ -3691,7 +3691,7 @@
         },
         {
             "mesh" : 178,
-            "name" : "GLOW_07_Philosophy",
+            "name" : "GLOW_06_Philosophy",
             "translation" : [
                 101.37983703613281,
                 -1.163069248199463,
@@ -3700,7 +3700,7 @@
         },
         {
             "mesh" : 179,
-            "name" : "GLOW_11_Mobility",
+            "name" : "GLOW_10_Mobility",
             "translation" : [
                 -5.121650695800781,
                 -1.163069248199463,
@@ -3731,7 +3731,7 @@
             ]
         },
         {
-            "name" : "ANCHOR_03_Economics",
+            "name" : "ANCHOR_02_Economics",
             "scale" : [
                 1.1981751918792725,
                 1.5750768184661865,
@@ -3745,7 +3745,7 @@
         },
         {
             "mesh" : 182,
-            "name" : "GLOW_02_Retail",
+            "name" : "GLOW_16_Retail",
             "translation" : [
                 1.149261474609375,
                 -1,
@@ -3754,7 +3754,7 @@
         },
         {
             "mesh" : 183,
-            "name" : "GLOW_08_Space",
+            "name" : "GLOW_07_Space",
             "translation" : [
                 103.16462707519531,
                 10.847886085510254,
@@ -3763,11 +3763,11 @@
         },
         {
             "mesh" : 184,
-            "name" : "GLOW_06_Agriculture"
+            "name" : "GLOW_05_Agriculture"
         },
         {
             "mesh" : 185,
-            "name" : "GLOW_12_Water",
+            "name" : "GLOW_11_Water",
             "rotation" : [
                 0,
                 -0.3643295466899872,
@@ -3838,7 +3838,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_02",
+            "name" : "CAMPOS_16",
             "rotation" : [
                 0,
                 -0.1255303919315338,
@@ -3857,7 +3857,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_04",
+            "name" : "CAMPOS_03",
             "rotation" : [
                 0,
                 0.3493628203868866,
@@ -3876,7 +3876,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_05",
+            "name" : "CAMPOS_04",
             "rotation" : [
                 0,
                 -0.8490670323371887,
@@ -3895,7 +3895,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_06",
+            "name" : "CAMPOS_05",
             "rotation" : [
                 0.37355417013168335,
                 -0.6003809571266174,
@@ -3914,7 +3914,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_07",
+            "name" : "CAMPOS_06",
             "rotation" : [
                 0.7064411044120789,
                 -0.03067626990377903,
@@ -3933,7 +3933,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_08",
+            "name" : "CAMPOS_07",
             "rotation" : [
                 0.3668935000896454,
                 0.6044744253158569,
@@ -3952,7 +3952,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_09",
+            "name" : "CAMPOS_08",
             "rotation" : [
                 0.7047771215438843,
                 -0.057352401316165924,
@@ -3971,7 +3971,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_10",
+            "name" : "CAMPOS_09",
             "rotation" : [
                 0.7064411044120789,
                 -0.03067626617848873,
@@ -3990,7 +3990,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_11",
+            "name" : "CAMPOS_10",
             "rotation" : [
                 0.7064411044120789,
                 -0.03067629411816597,
@@ -4009,7 +4009,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_12",
+            "name" : "CAMPOS_11",
             "rotation" : [
                 0,
                 -0.49992549419403076,
@@ -4028,7 +4028,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_13",
+            "name" : "CAMPOS_12",
             "rotation" : [
                 0.7064411044120789,
                 -0.03067629225552082,
@@ -4047,7 +4047,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_14",
+            "name" : "CAMPOS_13",
             "rotation" : [
                 0,
                 0.9699624180793762,
@@ -4066,7 +4066,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_15",
+            "name" : "CAMPOS_14",
             "rotation" : [
                 0,
                 0.645376443862915,
@@ -4085,7 +4085,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_16",
+            "name" : "CAMPOS_18",
             "rotation" : [
                 0.45991435647010803,
                 -0.5371022820472717,
@@ -4104,7 +4104,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_18",
+            "name" : "CAMPOS_15",
             "rotation" : [
                 0.7064411044120789,
                 -0.03067626617848873,
@@ -4123,7 +4123,7 @@
             ]
         },
         {
-            "name" : "CAMPOS_03",
+            "name" : "CAMPOS_02",
             "rotation" : [
                 0,
                 -0.04338279366493225,

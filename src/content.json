@@ -17,15 +17,6 @@
             "highlightPosition" : {"x" : 0, "y" : 1, "z" : 2},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"01"
-        },
-        {
-            "title": "Retail",
-            "description" : "While there were large shopping malls in the past, most things can be showcased in the virtual space. There are just a few boutiques left that sell high-quality and sustainable products. \nLearn more: \n- Circular E-Commerce\n- Sustainable Fashion",
-            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
-            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
-            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
-            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"02"
         },{
             "title": "Economy",
             "description" : "The village operates as a regenerative and highly automated economy that grants an unconditional coverage of basic needs and ensures that we remain within the planetary boundaries. \nLearn more: \n- Circular- and Sharing Economy\n- Regenerative Finance & Tokenomics\n- Automation Economy",
@@ -33,7 +24,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"03"
+            "label":"02"
         },{
             "title": "The Academy",
             "description" : "The Academy is a place for lifelong learning and personal development (cognitively, physically, emotionally and spiritually). For the young generation, there are playgrounds in nature and a school following a hybrid and holistic education approach.\nLearn more: \n- Lifelong Learning\n- Digital Education",
@@ -41,7 +32,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"04"
+            "label":"03"
         },{
             "title": "Art & Music",
             "description" : "The Art District is a stimulating and vivid place with various small art ateliers, cultural cafés, exhibition spaces and a stage hosting plays & concerts. In the park, people read, paint, act, sing, play music or simply enjoy themselves.\nLearn more: \n- Digital & AI-generated Artworks\n- Metaverse Museum (Visual, performing & literary arts)",
@@ -49,7 +40,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"05"
+            "label":"04"
         },{
             "title": "Regenerative Farm",
             "description" : "In the Regenerative Farm, people gather to cultivate and harvest organically grown food in the permaculture garden, food forest, vertical farm and in the dome-shaped greenhouse. These methods ensure a high level of biodiversity & soil health and demonstrate how food security is possible without the use of any pesticides and chemical fertilizers. While agriculture involved hard manual labor in the past, today much of the work can be automated thanks to agricultural robots, ground sensors, autonomous e-trucks and drones.\nLearn more: \n- Permaculture\n- Agroforestry\n- Regenerative Field Farming\n- Agricultural Robotics\n- Soil Health\n- Greenhouses & Airdomes\n- Vertical Farming\n- Aero-, Hydro-, and Aquaponics\n- Plant-based and artificial Meat",
@@ -57,7 +48,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"06"
+            "label":"05"
         },{
             "title": "Philosophy",
             "description" : "At the top of a hill there is the philosopher’s temple. A place dedicated to all truth-seekers aiming to broaden their horizon and attaining wisdom. The place It inhabits a large library, an exhibition space about ancient civilizations & a philosopher’s café where lively and stimulation discussions are taking place. \nLearn more: \n- Meta-Modernism\n- Automation Society\n- Transhumanism",
@@ -65,7 +56,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"07"
+            "label":"06"
         },{
             "title": "Space",
             "description" : "The highest point of the Village is a small observatory where you can marvel at the wonders of the night sky.\nLearn more: \n- Space Exploration",
@@ -73,7 +64,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"08"
+            "label":"07"
         },{
             "title": "Wellness",
             "description" : "Going up the Hill, you enter a new word. Surrounded by rocks and water - the Wellness Oasis “The Spring” connects you with your inner world and nature. Those seeking a quiet place for oneself, find it in the close by forrest with various cabins & tree huts.\nLearn more: \n- Mental Health\n- Yoga & Meditation\n- Consciousness",
@@ -81,7 +72,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"09"
+            "label":"08"
         },{
             "title": "Health",
             "description" : "The Longevity & Preventive health center supports you in becoming the healthiest and most vital version of yourself using breakthrough discoveries in digital health, med- and biotech.\nLearn more: \n- Preventive Health\n- Longevity\n- Digital Health\n- Medtech\n- Biotech",
@@ -89,7 +80,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"10"
+            "label":"09"
         },{
             "title": "Mobility",
             "description" : "The place can be reached by high-speed trains, electric or hydropowered public transport or flying e-cars. Cargo is being distributed via an underground transportation system. Since all the necessities of life are within walking distance, there is no need for personal cars within the village. \nLearn more: \n- Electric & Hydrogen Mobility\n- Autonomous Vehicles\n- Hyperloop\n- Flying Vehicles\n- Sharing Economy\n- Underground Logistics System",
@@ -97,7 +88,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"11"
+            "label":"10"
         },{
             "title": "Water Reservoir",
             "description" : "The drinking water mainly comes from the natural springs and the groundwater reserves. Since there is no use of toxic chemicals the water quality is at the highest level. \nLearn more: \n- Spring, Ground, and Lakewater\nGreywater & Blackwater\n- Circular Water System",
@@ -105,7 +96,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"12"
+            "label":"11"
         },{
             "title": "Energy",
             "description" : "The village is powered with 100% renewable energy from solar panels, wind turbines, the hydro power plant and the local biogas facility. Households take on the role of “prosumers” by generating their own electricity and exchanging it via a smart neighborhood grid, leading to a higher level of resiliency. \n Learn more: \n Solar energy \n Hydropower \n Wind energy \n Biomass",
@@ -113,7 +104,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"13"
+            "label":"12"
         },{
             "title": "Data",
             "description" : "Inside the mountain there is a large datacenter with a quantum computer. Building the facility underground has many advantages such as protection, consistent temperatures and higher energy efficiency.\nLearn more:\n- Quantum Computing\n- Artificial Intelligence\n- Blockchain",
@@ -121,7 +112,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"14"
+            "label":"13"
         },{
             "title": "Resource Waste Management",
             "description" : "The Village functions as a circular and zero-waste economy in which ressource loops (food, material, water, energy) are being closed. All areas of the infrastructure system are connected to the “Internet of Nature” - in which the health state of the ecosystem is being monitored in real-time, ensuring that certain limits of resource extraction and carbon emissions are not exceeded and resources remain in the cycle as long as possible.\nLearn more: \n- Closed-loop System\n- Environmental Monitoring",
@@ -129,10 +120,18 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"15"
+            "label":"14"
         },{
             "title": "Construction Site",
             "description" : "The people live in carbon-neutral, circular and energy-positive homes, built with sustainable materials, such as timber, stone, clay, earth-based mixtures, bamboo or recycled concrete. While construction involved hard manual labor in the past, today large components of the buildings can be 3D-printed or pre-fabricated & assembled on site.\nLearn more: \n- Sustainable Building Materials\n- Life Cycle Design\n- Digital Fabrication & 3D-Printing\n- Modular and Pre-fabricated Buildings\n- Biophilic Architecture\n- Digital Twins",
+            "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
+            "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
+            "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
+            "label":"15"
+        },{
+            "title": "Retail",
+            "description" : "While there were large shopping malls in the past, most things can be showcased in the virtual space. There are just a few boutiques left that sell high-quality and sustainable products. \nLearn more: \n- Circular E-Commerce\n- Sustainable Fashion",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
@@ -153,7 +152,7 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"08"
+            "label":"18"
         }
     ]
     
