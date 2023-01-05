@@ -65,6 +65,7 @@
     font-family: "Space Grotesk", sans-serif;
     font-weight: 100;
     margin-bottom: 50px;
+    white-space: pre-wrap;
   }
 
   @media (orientation: portrait) {
