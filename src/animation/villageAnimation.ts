@@ -17,13 +17,15 @@ import {
     Vector2,
     Object3D,
     TOUCH,
-    ShaderMaterial} from 'three';
+    ShaderMaterial,
+    ArrowHelper} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 // Animaions
 import { Tween, Easing } from "@tweenjs/tween.js";
 // Local imports
 import { loadGLTF } from './loader';
+import { Cloud } from './cloud';
 import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
 import * as dat from 'lil-gui'
@@ -46,6 +48,8 @@ export class VillageAnimation extends ThreeAnimation {
     private cameraPositions : Map<Vector3>;
     private highlights : Map<Mesh>;
     private sunPosition : Vector3;
+    private boundingSphereOrigin : Vector3;
+    private clouds : Cloud[];
 
     private previousHighlightID : number = 0;
     private mouseHasMoved : boolean = false;
@@ -53,6 +57,7 @@ export class VillageAnimation extends ThreeAnimation {
     private highilightMat : ShaderMaterial;
     private cameraReset : boolean = false;
     private gui : dat.GUI;
+
 
     public constructor(
         canvas: HTMLCanvasElement, 
@@ -72,7 +77,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.renderer.toneMapping = ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 0.40;
         
-        this.scene.fog = new Fog(0xb4c1c2, 5, 25);
+        this.scene.fog = new Fog(0xb4c1c2, 10, 25);
         this.controls.touches.ONE = TOUCH.PAN;
 
         //this.controls.enableDamping = false;
@@ -105,6 +110,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.gui.add(this.camera.position, 'y', -10, 10).step(0.1);
         this.gui.add(this.camera.position, 'z', -10, 10).step(0.1);
 
+        this.boundingSphereOrigin = new Vector3(4.0, 2.1, 5.0);
         this.raycaster = new Raycaster();
         this.highlights = {};
 
@@ -117,11 +123,15 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.highilightMat = generateGradientMaterial(new Color(0x045e85), 0.5);
 
-
+        this.gui = new dat.GUI();
+        /*this.clouds = [];
+        for (let i = 0; i < 10; i++) {
+            this.clouds.push(new Cloud(this.scene));
+        }*/
+   
         this.addLights();
         this.addSky();
         this.addModels();
-
     }
 
     public animateCamera(itemID: number, duration : number) {
@@ -137,6 +147,7 @@ export class VillageAnimation extends ThreeAnimation {
         //const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
         const offset = new Vector3(1.0, 0.4, 1.0);
         offset.multiplyScalar(itemID == 0 ? 5.0 : 2.5);
+        offset.multiplyScalar(this.portraitMode ? 1.5 : 1.0);
         const pos = anchor.clone().add(offset);
 
         this.tweenPos.stop();
@@ -150,9 +161,6 @@ export class VillageAnimation extends ThreeAnimation {
             .to(anchor, duration)
             .easing(Easing.Cubic.InOut);
         this.tweenLookAt.start();
-        
-        //this seems unnecessary but is to make sure we always turn off the buttons when itemID = 0
-        this.contentIDCallback(itemID);
     }
 
     public hightlightItem(itemID: number) {
@@ -175,17 +183,19 @@ export class VillageAnimation extends ThreeAnimation {
     }
     
     public update(delta: number): void {
-        //console.log(this.camera.position);
         const dist = this.camera.position.distanceTo(new Vector3(2.0, 2.1, 4.0));
-        //this.controls.panSpeed = 1.0 / (Math.max(1.0, 0.1*dist*dist))
-        if (dist > 6.3 && !this.cameraReset) {
-            console.log("dist: " + dist);
+        const limit = this.portraitMode ? 9.0 : 6.2;
+        if (dist > limit && !this.cameraReset) {
             this.animateCamera(0, 1000);
             this.cameraReset = true;
         }
-        else if (dist <= 6.3) {
+        else if (dist <= limit) 
             this.cameraReset = false;
-        }
+        
+        /*for (let i = 0; i < 10; i++) {
+            this.clouds[i].update(delta);
+        }*/
+
         this.controls.update();
         this.tweenPos.update();
         this.tweenLookAt.update();
