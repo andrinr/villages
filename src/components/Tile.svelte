@@ -37,7 +37,8 @@
     border-radius: 10px;
     max-width: 400px;
     height: 50vh;
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.85);
+
     overflow: scroll;
     scroll-behavior: smooth;
     /* overflow: hidden; */

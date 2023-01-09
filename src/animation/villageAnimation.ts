@@ -119,10 +119,10 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.highilightMat = generateGradientMaterial(new Color(0x045e85), 0.5);
         this.gui = new dat.GUI();
-        this.clouds = [];
+        /*this.clouds = [];
         for (let i = 0; i < 10; i++) {
             this.clouds.push(new Cloud(this.scene));
-        }
+        }*/
     
         this.addLights();
         this.addSky();
@@ -187,9 +187,9 @@ export class VillageAnimation extends ThreeAnimation {
         else if (dist <= limit) 
             this.cameraReset = false;
         
-        for (let i = 0; i < 10; i++) {
+        /*for (let i = 0; i < 10; i++) {
             this.clouds[i].update(delta);
-        }
+        }*/
 
         this.controls.update();
         this.tweenPos.update();
