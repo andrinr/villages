@@ -92,6 +92,7 @@ export class VillageAnimation extends ThreeAnimation {
             MIDDLE: MOUSE.DOLLY,
             RIGHT: MOUSE.PAN
         }
+        this.gui = new dat.GUI();
 
         this.tweenPos = new Tween(this.camera.position);
         this.tweenPos.start();
@@ -105,6 +106,9 @@ export class VillageAnimation extends ThreeAnimation {
         this.camera.position.x = 3.0;
         this.camera.position.y = 3.0;
         this.camera.position.z = 3.0;
+        this.gui.add(this.camera.position, 'x', -10, 10).step(0.1);
+        this.gui.add(this.camera.position, 'y', -10, 10).step(0.1);
+        this.gui.add(this.camera.position, 'z', -10, 10).step(0.1);
 
         this.boundingSphereOrigin = new Vector3(4.0, 2.1, 5.0);
         this.raycaster = new Raycaster();
@@ -118,12 +122,13 @@ export class VillageAnimation extends ThreeAnimation {
         this.sunPosition.setFromSphericalCoords( 1, phi, theta );
 
         this.highilightMat = generateGradientMaterial(new Color(0x045e85), 0.5);
+
         this.gui = new dat.GUI();
         /*this.clouds = [];
         for (let i = 0; i < 10; i++) {
             this.clouds.push(new Cloud(this.scene));
         }*/
-    
+   
         this.addLights();
         this.addSky();
         this.addModels();

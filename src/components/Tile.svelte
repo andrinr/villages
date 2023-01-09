@@ -37,8 +37,8 @@
     border-radius: 10px;
     max-width: 400px;
     height: 50vh;
-    background-color: rgba(255, 255, 255, 0.85);
-
+    background-color: rgb(255, 255, 255);
+    opacity: 0.6;
     overflow: scroll;
     scroll-behavior: smooth;
     /* overflow: hidden; */
@@ -46,7 +46,7 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   #tile::-webkit-scrollbar {
     display: none;
