@@ -18,7 +18,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"01"
         },{
-            "title": "Economy",
+            "title": "Innovation District",
             "description" : "The village operates as a regenerative and highly automated economy that grants an unconditional coverage of basic needs and ensures that we remain within the planetary boundaries. \n\nLearn more: \n- Circular- and Sharing Economy\n- Regenerative Finance & Tokenomics\n- Automation Economy",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -34,7 +34,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"03"
         },{
-            "title": "Art & Music",
+            "title": "Art Quarter",
             "description" : "The Art District is a stimulating and vivid place with various small art ateliers, cultural cafés, exhibition spaces and a stage hosting plays & concerts. In the park, people read, paint, act, sing, play music or simply enjoy themselves.\n\nLearn more: \n- Digital & AI-generated Artworks\n- Metaverse Museum (Visual, performing & literary arts)",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -50,7 +50,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"05"
         },{
-            "title": "Philosophy",
+            "title": "Philosopher's Temple",
             "description" : "At the top of a hill there is the philosopher’s temple. A place dedicated to all truth-seekers aiming to broaden their horizon and attaining wisdom. The place It inhabits a large library, an exhibition space about ancient civilizations & a philosopher’s café where lively and stimulation discussions are taking place. \n\nLearn more: \n- Meta-Modernism\n- Automation Society\n- Transhumanism",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -58,7 +58,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"06"
         },{
-            "title": "Space",
+            "title": "Observatory",
             "description" : "The highest point of the Village is a small observatory where you can marvel at the wonders of the night sky.\n\nLearn more: \n- Space Exploration",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -66,7 +66,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"07"
         },{
-            "title": "Wellness",
+            "title": "Wellness Oasis",
             "description" : "Going up the Hill, you enter a new word. Surrounded by rocks and water - the Wellness Oasis “The Spring” connects you with your inner world and nature. Those seeking a quiet place for oneself, find it in the close by forrest with various cabins & tree huts.\n\nLearn more: \n- Mental Health\n- Yoga & Meditation\n- Consciousness",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -74,7 +74,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"08"
         },{
-            "title": "Health",
+            "title": "Longevity Center",
             "description" : "The Longevity & Preventive health center supports you in becoming the healthiest and most vital version of yourself using breakthrough discoveries in digital health, med- and biotech.\n\nLearn more: \n- Preventive Health\n- Longevity\n- Digital Health\n- Medtech\n- Biotech",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -82,7 +82,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"09"
         },{
-            "title": "Mobility",
+            "title": "Mobility Station",
             "description" : "The place can be reached by high-speed trains, electric or hydropowered public transport or flying e-cars. Cargo is being distributed via an underground transportation system. Since all the necessities of life are within walking distance, there is no need for personal cars within the village. \n\nLearn more: \n- Electric & Hydrogen Mobility\n- Autonomous Vehicles\n- Hyperloop\n- Flying Vehicles\n- Sharing Economy\n- Underground Logistics System",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -98,7 +98,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"11"
         },{
-            "title": "Energy",
+            "title": "Renewable Energy Plant",
             "description" : "The village is powered with 100% renewable energy from solar panels, wind turbines, the hydro power plant and the local biogas facility. Households take on the role of “prosumers” by generating their own electricity and exchanging it via a smart neighborhood grid, leading to a higher level of resiliency. \n Learn more: \n Solar energy \n Hydropower \n Wind energy \n Biomass",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -106,7 +106,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"12"
         },{
-            "title": "Data",
+            "title": "Data Center",
             "description" : "Inside the mountain there is a large datacenter with a quantum computer. Building the facility underground has many advantages such as protection, consistent temperatures and higher energy efficiency.\n\nLearn more:\n- Quantum Computing\n- Artificial Intelligence\n- Blockchain",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -114,7 +114,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"13"
         },{
-            "title": "Resource Waste Management",
+            "title": "Circular Hub",
             "description" : "The Village functions as a circular and zero-waste economy in which ressource loops (food, material, water, energy) are being closed. All areas of the infrastructure system are connected to the “Internet of Nature” - in which the health state of the ecosystem is being monitored in real-time, ensuring that certain limits of resource extraction and carbon emissions are not exceeded and resources remain in the cycle as long as possible.\n\nLearn more: \n- Closed-loop System\n- Environmental Monitoring",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -130,7 +130,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"15"
         },{
-            "title": "Retail",
+            "title": "Marketplace",
             "description" : "While there were large shopping malls in the past, most things can be showcased in the virtual space. There are just a few boutiques left that sell high-quality and sustainable products. \n\nLearn more: \n- Circular E-Commerce\n- Sustainable Fashion",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
@@ -146,7 +146,7 @@
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
             "label":"17"
         },{
-            "title": "Governance",
+            "title": "Governance Metaverse",
             "description" : "The governance system enables a high level of local self-determination and freedom. A digital deliberation- and voting infrastructure leverages the collective intelligence in a more fluid and effective way. \n\nLearn more: \n- Subsidiarity Principle\n- Digital Democracy\n- Policy Simulations",
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
