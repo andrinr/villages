@@ -50,6 +50,7 @@ export class VillageAnimation extends ThreeAnimation {
     private sunPosition : Vector3;
     private boundingSphereOrigin : Vector3;
     private clouds : Cloud[];
+    private displayGui : boolean = false;
 
     private previousHighlightID : number = 0;
     private mouseHasMoved : boolean = false;
@@ -92,7 +93,7 @@ export class VillageAnimation extends ThreeAnimation {
             MIDDLE: MOUSE.DOLLY,
             RIGHT: MOUSE.PAN
         }
-        this.gui = new dat.GUI();
+        if (this.displayGui) this.gui = new dat.GUI();
 
         this.tweenPos = new Tween(this.camera.position);
         this.tweenPos.start();
@@ -106,9 +107,11 @@ export class VillageAnimation extends ThreeAnimation {
         this.camera.position.x = 3.0;
         this.camera.position.y = 3.0;
         this.camera.position.z = 3.0;
-        this.gui.add(this.camera.position, 'x', -10, 10).step(0.1);
-        this.gui.add(this.camera.position, 'y', -10, 10).step(0.1);
-        this.gui.add(this.camera.position, 'z', -10, 10).step(0.1);
+        if (this.displayGui){
+            this.gui.add(this.camera.position, 'x', -10, 10).step(0.1);
+            this.gui.add(this.camera.position, 'y', -10, 10).step(0.1);
+            this.gui.add(this.camera.position, 'z', -10, 10).step(0.1);
+        }
 
         this.boundingSphereOrigin = new Vector3(4.0, 2.1, 5.0);
         this.raycaster = new Raycaster();
@@ -123,7 +126,6 @@ export class VillageAnimation extends ThreeAnimation {
 
         this.highilightMat = generateGradientMaterial(new Color(0x045e85), 0.5);
 
-        this.gui = new dat.GUI();
         /*this.clouds = [];
         for (let i = 0; i < 10; i++) {
             this.clouds.push(new Cloud(this.scene));
@@ -288,14 +290,17 @@ export class VillageAnimation extends ThreeAnimation {
         
         const hemiLight = new HemisphereLight( "#4dc1ff", "#ffdca8", 0.4);
 
-        this.gui.add(light, 'intensity', 0,10,0.01).name("Sun Light");
-        this.gui.add(ambientLight, 'intensity', 0,5,0.01).name("Ambient Light");
-        this.gui.add(hemiLight, 'intensity', 0,5,0.01).name("Hemi Light");
+        if (this.gui) {
+            
+            this.gui.add(light, 'intensity', 0,10,0.01).name("Sun Light");
+            this.gui.add(ambientLight, 'intensity', 0,5,0.01).name("Ambient Light");
+            this.gui.add(hemiLight, 'intensity', 0,5,0.01).name("Hemi Light");
 
-        this.gui.addColor(light, 'color').name("Sun Color");
-        this.gui.addColor(ambientLight, 'color').name("Ambient Color");
-        this.gui.addColor(hemiLight, 'color').name("Hemi Color Sky");
-        this.gui.addColor(hemiLight, 'groundColor').name("Hemi Color Ground");
+            this.gui.addColor(light, 'color').name("Sun Color");
+            this.gui.addColor(ambientLight, 'color').name("Ambient Color");
+            this.gui.addColor(hemiLight, 'color').name("Hemi Color Sky");
+            this.gui.addColor(hemiLight, 'groundColor').name("Hemi Color Ground");
+        }
         this.scene.add(hemiLight);
         this.scene.add( light );
 		this.scene.add( ambientLight );
