@@ -17,15 +17,13 @@ import {
     Vector2,
     Object3D,
     TOUCH,
-    ShaderMaterial,
-    ArrowHelper} from 'three';
+    ShaderMaterial} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 // Animaions
 import { Tween, Easing } from "@tweenjs/tween.js";
 // Local imports
 import { loadGLTF } from './loader';
-import { Cloud } from './cloud';
 import { ThreeAnimation } from "./animation";
 import { generateGradientMaterial } from './gradientMaterial';
 import * as dat from 'lil-gui'
@@ -41,15 +39,13 @@ export class VillageAnimation extends ThreeAnimation {
 	scene: Scene;
 	private tweenPos: Tween<Vector3>;
     private tweenLookAt: Tween<Vector3>;
-    private scale : number = 0.03;
+    private scale : number;
     private raycaster : Raycaster;
 
     private cameraAnchors : Map<Vector3>;
     private cameraPositions : Map<Vector3>;
     private highlights : Map<Mesh>;
     private sunPosition : Vector3;
-    private boundingSphereOrigin : Vector3;
-    private clouds : Cloud[];
     private displayGui : boolean = false;
 
     private previousHighlightID : number = 0;
@@ -58,7 +54,6 @@ export class VillageAnimation extends ThreeAnimation {
     private highilightMat : ShaderMaterial;
     private cameraReset : boolean = false;
     private gui : dat.GUI;
-
 
     public constructor(
         canvas: HTMLCanvasElement, 
@@ -70,6 +65,8 @@ export class VillageAnimation extends ThreeAnimation {
     }
 
     public init(): void {
+        this.scale = 0.002;
+
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = VSMShadowMap; // THREE.PCFShadowMap
 
@@ -78,15 +75,16 @@ export class VillageAnimation extends ThreeAnimation {
         this.renderer.toneMapping = ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 0.40;
         
-        this.scene.fog = new Fog(0xb4c1c2, 10, 25);
+        this.scene.fog = new Fog(0xb4c1c2, 20 * this.scale / 0.03, 45 * this.scale / 0.03);
         this.controls.touches.ONE = TOUCH.PAN;
 
         //this.controls.enableDamping = false;
         this.controls.enablePan = true;
-        this.controls.enableZoom = false;
+        this.controls.enableZoom = true;
         this.controls.enableRotate = false;
         this.controls.screenSpacePanning = false;
         this.controls.panSpeed = 0.5;
+        this.controls.maxDistance = 30 * this.scale / 0.03;
     
         this.controls.mouseButtons = {
             LEFT: MOUSE.PAN,
@@ -112,8 +110,6 @@ export class VillageAnimation extends ThreeAnimation {
             this.gui.add(this.camera.position, 'y', -10, 10).step(0.1);
             this.gui.add(this.camera.position, 'z', -10, 10).step(0.1);
         }
-
-        this.boundingSphereOrigin = new Vector3(4.0, 2.1, 5.0);
         this.raycaster = new Raycaster();
         this.highlights = {};
 
@@ -130,26 +126,30 @@ export class VillageAnimation extends ThreeAnimation {
         for (let i = 0; i < 10; i++) {
             this.clouds.push(new Cloud(this.scene));
         }*/
-   
+        console.log(this);
+        console.log(this.scale);
         this.addLights();
         this.addSky();
-        this.addModels();
+        this.addModels(); 
     }
 
     public animateCamera(itemID: number, duration : number) {
         const anchor = this.cameraAnchors[itemID].data.clone().multiplyScalar(this.scale);
-        if (!this.portraitMode) {
-            anchor.add(new Vector3(-0.5, 0, 0));
+        if (itemID != 0) {
+            if (!this.portraitMode ) {
+                anchor.add(new Vector3(-0.5, 0, 0).multiplyScalar(this.scale / 0.03));
+            }
+            else {
+                anchor.add(new Vector3(0, -0.2, 0).multiplyScalar(this.scale / 0.03));
+            }
         }
-        else {
-            anchor.add(new Vector3(0, -0.2, 0));
-        }
+  
         this.hightlightItem(itemID);
 
         //const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
-        const offset = new Vector3(1.0, 0.4, 1.0);
-        offset.multiplyScalar(itemID == 0 ? 5.0 : 2.5);
-        offset.multiplyScalar(this.portraitMode ? 1.5 : 1.0);
+        const offset = new Vector3(0.6, 0.4, 1.0).multiplyScalar(this.scale / 0.03);
+        offset.multiplyScalar(itemID == 0 ? 10.0 : 4.5);
+        offset.multiplyScalar(this.portraitMode ? 2.0 : 1.0);
         const pos = anchor.clone().add(offset);
 
         this.tweenPos.stop();
@@ -185,8 +185,8 @@ export class VillageAnimation extends ThreeAnimation {
     }
     
     public update(delta: number): void {
-        const dist = this.camera.position.distanceTo(new Vector3(2.0, 2.1, 4.0));
-        const limit = this.portraitMode ? 9.0 : 6.2;
+        const dist = this.camera.position.distanceTo(new Vector3(2.0, 2.1, 4.0).multiplyScalar(this.scale / 0.03));
+        const limit = this.portraitMode ? 9.0 * this.scale / 0.03 : 6.2 * this.scale / 0.03;
         if (dist > limit && !this.cameraReset) {
             this.animateCamera(0, 1000);
             this.cameraReset = true;
@@ -194,10 +194,6 @@ export class VillageAnimation extends ThreeAnimation {
         else if (dist <= limit) 
             this.cameraReset = false;
         
-        /*for (let i = 0; i < 10; i++) {
-            this.clouds[i].update(delta);
-        }*/
-
         this.controls.update();
         this.tweenPos.update();
         this.tweenLookAt.update();
@@ -260,7 +256,8 @@ export class VillageAnimation extends ThreeAnimation {
 
 	private addSky () {
 		const sky : Sky = new Sky();
-		sky.scale.setScalar( 20 );
+		sky.scale.setScalar( 20 * this.scale / 0.03 );
+        console.log(this.scale)
 		this.scene.add( sky );
 
 		const uniforms = sky.material.uniforms;
@@ -274,7 +271,7 @@ export class VillageAnimation extends ThreeAnimation {
 	private addLights() {
 		const light = new DirectionalLight( "#ffd1d1", 3.5 );
 		const scale : number = 4.0;
-	    light.position.multiplyScalar(0).add(this.sunPosition.clone().multiplyScalar(scale));
+	    light.position.multiplyScalar(0).add(this.sunPosition.clone().multiplyScalar(this.scale));
 
 		light.castShadow = true;
 
@@ -302,8 +299,8 @@ export class VillageAnimation extends ThreeAnimation {
             this.gui.addColor(hemiLight, 'groundColor').name("Hemi Color Ground");
         }
         this.scene.add(hemiLight);
-        this.scene.add( light );
-		this.scene.add( ambientLight );
+        this.scene.add(light);
+		this.scene.add(ambientLight);
 	}
 
 	private async addModels() {
