@@ -85,6 +85,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.controls.screenSpacePanning = false;
         this.controls.panSpeed = 0.5;
         this.controls.maxDistance = 30 * this.scale / 0.03;
+        this.controls.minDistance = 3 * this.scale / 0.03;
     
         this.controls.mouseButtons = {
             LEFT: MOUSE.PAN,
@@ -148,6 +149,7 @@ export class VillageAnimation extends ThreeAnimation {
 
         //const pos = this.cameraPositions[itemID].data.clone().multiplyScalar(this.scale);
         const offset = new Vector3(0.6, 0.4, 1.0).multiplyScalar(this.scale / 0.03);
+        //const offset = new Vector3(0, 0.4,0).multiplyScalar(this.scale / 0.03);
         offset.multiplyScalar(itemID == 0 ? 10.0 : 4.5);
         offset.multiplyScalar(this.portraitMode ? 2.0 : 1.0);
         const pos = anchor.clone().add(offset);
@@ -185,8 +187,8 @@ export class VillageAnimation extends ThreeAnimation {
     }
     
     public update(delta: number): void {
-        const dist = this.camera.position.distanceTo(new Vector3(2.0, 2.1, 4.0).multiplyScalar(this.scale / 0.03));
-        const limit = this.portraitMode ? 9.0 * this.scale / 0.03 : 6.2 * this.scale / 0.03;
+        const dist = this.controls.target.distanceTo(new Vector3(0,0,0));
+        const limit = this.portraitMode ? 3.7 * this.scale / 0.03 : 3.2 * this.scale / 0.03;
         if (dist > limit && !this.cameraReset) {
             this.animateCamera(0, 1000);
             this.cameraReset = true;
@@ -270,7 +272,6 @@ export class VillageAnimation extends ThreeAnimation {
 
 	private addLights() {
 		const light = new DirectionalLight( "#ffd1d1", 3.5 );
-		const scale : number = 4.0;
 	    light.position.multiplyScalar(0).add(this.sunPosition.clone().multiplyScalar(this.scale));
 
 		light.castShadow = true;
