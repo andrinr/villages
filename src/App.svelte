@@ -17,8 +17,8 @@
 
   let villageAnimation: VillageAnimation;
 
-  const resize = (element : HTMLElement) => {
-    if (villageAnimation){
+  const resize = (element: HTMLElement) => {
+    if (villageAnimation) {
       villageAnimation.resize(element);
     }
   };
@@ -54,7 +54,9 @@
   }
 
   onMount(async () => {
-    const canvas: HTMLCanvasElement = document.getElementById("three") as HTMLCanvasElement;
+    const canvas: HTMLCanvasElement = document.getElementById(
+      "three"
+    ) as HTMLCanvasElement;
     const wrapper: HTMLElement = document.getElementById("wrapper");
     buttons = document.getElementById("buttons");
     villageAnimation = new VillageAnimation(canvas, wrapper, contentIDCallback);
@@ -65,39 +67,44 @@
   <div id="wrapper" class="wrapper" use:watchResize={resize}>
     <canvas id="three" />
     <div class="wrapper-content">
-      <div class='tile'>
+      <div class="tile">
         <Tile
           title={data.content[contentId].title}
+          subtitle={data.content[contentId].subtitle}
           description={data.content[contentId].description}
         >
           <!--<div class='minimize-button'>
             <Button iconSource="icons/minus.svg" callback={backtoMain} />
           </div>-->
-        
+
           <div class="buttons">
             <div class="button">
               <Button iconSource="icons/home-line.svg" callback={backtoMain} />
             </div>
-      
+
             <div class="button">
-              <Button iconSource="icons/arrow-left-s-line.svg" callback={decreementContentId} />
+              <Button
+                iconSource="icons/arrow-left-s-line.svg"
+                callback={decreementContentId}
+              />
             </div>
-      
+
             <div class="button">
-              <Button iconSource="icons/arrow-right-s-line.svg" callback={increementContentId} />
+              <Button
+                iconSource="icons/arrow-right-s-line.svg"
+                callback={increementContentId}
+              />
             </div>
           </div>
         </Tile>
       </div>
-    </div> 
+    </div>
   </div>
-
 </main>
 
 <svelte:window on:keydown={onKeyDown} />
 
 <style>
-
   .wrapper {
     position: absolute;
     transition: 0.3s ease-in-out;
@@ -152,7 +159,6 @@
     z-index: 100;
   }
 
-  
   @media (orientation: portrait) {
     .wrapper-content {
       top: auto;
@@ -167,9 +173,8 @@
       z-index: 100;
     }
 
-    .buttons{
+    .buttons {
       padding-top: 10px;
     }
   }
-
 </style>
