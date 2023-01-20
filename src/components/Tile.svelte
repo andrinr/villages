@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   export let title = "";
+  export let subtitle = "";
   export let description = "";
 
   onMount(async () => {
@@ -14,6 +15,9 @@
     <div id="content">
       <div class="title">
         <h1>{title}</h1>
+      </div>
+      <div class="subtitle">
+        <p>{subtitle}</p>
       </div>
       <div class="description">
         <p>{description}</p>
@@ -62,10 +66,16 @@
     font-weight: 700;
   }
 
+  .subtitle {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 500;
+
+    white-space: pre-wrap;
+  }
+
   .description {
     font-family: "Space Grotesk", sans-serif;
-    font-weight: 100;
-    margin-bottom: 50px;
+    font-weight: 200;
     white-space: pre-wrap;
   }
 
