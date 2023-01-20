@@ -20,6 +20,9 @@
         },{
             "title": "Innovation District",
             "description" : "The village operates as a regenerative and highly automated economy that grants an unconditional coverage of basic needs and ensures that we remain within the planetary boundaries. \n\nLearn more: \n- Circular- and Sharing Economy\n- Regenerative Finance & Tokenomics\n- Automation Economy",
+            "learnMore" : {
+                "Item" : "https://www.youtube.com/watch?v=Q8tHYzJ4PaM"
+            },
             "cameraPosition" : {"x" : 2, "y" : 1, "z" : 0},
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
