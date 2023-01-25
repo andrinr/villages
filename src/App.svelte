@@ -72,6 +72,8 @@
           title={data.content[contentId].title}
           subtitle={data.content[contentId].subtitle}
           description={data.content[contentId].description}
+          learnMoreTitle={data.content[contentId].learnMoreTitle}
+          learnMoreContent={data.content[contentId].learnMoreContent}
         >
           <!--<div class='minimize-button'>
             <Button iconSource="icons/minus.svg" callback={backtoMain} />
