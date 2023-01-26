@@ -9,6 +9,7 @@ import {
     AmbientLight,
     MathUtils,
     VSMShadowMap,
+    PCFShadowMap,
     Mesh,
     Color,
     MOUSE,
@@ -17,7 +18,8 @@ import {
     Vector2,
     Object3D,
     TOUCH,
-    ShaderMaterial} from 'three';
+    ShaderMaterial,
+    DirectionalLightHelper} from 'three';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 // Animaions
@@ -68,7 +70,7 @@ export class VillageAnimation extends ThreeAnimation {
         this.scale = 0.002;
 
         this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = VSMShadowMap; // THREE.PCFShadowMap
+        this.renderer.shadowMap.type = VSMShadowMap; // 
 
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         this.renderer.outputEncoding = sRGBEncoding;
@@ -117,18 +119,13 @@ export class VillageAnimation extends ThreeAnimation {
         this.previousHighlightID = 0;
 
         this.sunPosition = new Vector3(0, 0, 0);
-        const phi : number = MathUtils.degToRad( 90 - 20 );
+        const phi : number = MathUtils.degToRad( 90 - 30 );
         const theta : number = MathUtils.degToRad( 80 );
         this.sunPosition.setFromSphericalCoords( 1, phi, theta );
+        this.sunPosition.multiplyScalar( this.scale );
 
         this.highilightMat = generateGradientMaterial(new Color(0x045e85), 0.5);
 
-        /*this.clouds = [];
-        for (let i = 0; i < 10; i++) {
-            this.clouds.push(new Cloud(this.scene));
-        }*/
-        console.log(this);
-        console.log(this.scale);
         this.addLights();
         this.addSky();
         this.addModels(); 
@@ -188,7 +185,7 @@ export class VillageAnimation extends ThreeAnimation {
     
     public update(delta: number): void {
         const dist = this.controls.target.distanceTo(new Vector3(0,0,0));
-        const limit = this.portraitMode ? 3.7 * this.scale / 0.03 : 3.2 * this.scale / 0.03;
+        const limit = this.portraitMode ? 3.9 * this.scale / 0.03 : 3.6 * this.scale / 0.03;
         if (dist > limit && !this.cameraReset) {
             this.animateCamera(0, 1000);
             this.cameraReset = true;
@@ -259,7 +256,6 @@ export class VillageAnimation extends ThreeAnimation {
 	private addSky () {
 		const sky : Sky = new Sky();
 		sky.scale.setScalar( 20 * this.scale / 0.03 );
-        console.log(this.scale)
 		this.scene.add( sky );
 
 		const uniforms = sky.material.uniforms;
@@ -272,16 +268,19 @@ export class VillageAnimation extends ThreeAnimation {
 
 	private addLights() {
 		const light = new DirectionalLight( "#ffd1d1", 3.5 );
-	    light.position.multiplyScalar(0).add(this.sunPosition.clone().multiplyScalar(this.scale));
+	    light.position.multiplyScalar(0).add(this.sunPosition.clone().multiplyScalar(200));
 
 		light.castShadow = true;
 
-		light.shadow.mapSize.width = 1024; 
-		light.shadow.mapSize.height = 1024;
-		light.shadow.camera.near = 0.5;
-		light.shadow.camera.far = 20;
-		light.shadow.bias = -0.001;
-        light.shadow.radius = 3.0;
+		light.shadow.mapSize.width = 2048; 
+		light.shadow.mapSize.height = 2048;
+		light.shadow.camera.near = 0.1;
+		light.shadow.camera.far = 3;
+		light.shadow.bias = -0.00001;
+        light.shadow.radius = 0.7;
+
+        //const helper = new DirectionalLightHelper( light, 5 );
+        //this.scene.add( helper );
 
 		const ambientLight = new AmbientLight( "0xa68195");
         ambientLight.intensity = 0.3;
