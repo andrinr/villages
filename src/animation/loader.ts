@@ -4,7 +4,8 @@ import type THREE from 'three';
 
 const loadGLTF = async (modelPath, dracoPath, scene : THREE.Scene) => {
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath(dracoPath);
+    dracoLoader.setDecoderConfig({ type: 'js' });
+    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
         
