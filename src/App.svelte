@@ -5,6 +5,7 @@
   import Tile from "./components/Tile.svelte";
   import Button from "./components/Button.svelte";
   import Notification from "./components/Notification.svelte";
+  import Loader from "./components/Loader.svelte";
 
   // @ts-ignore
   import * as data from "./content.json";
@@ -42,6 +43,11 @@
     getAndSetCamera();
   };
 
+  const loadedScene = () => {
+    console.log("loaded scene");
+    document.getElementById("loading-screen").style.display = "none";
+  };
+
   function onKeyDown(e) {
     switch (e.keyCode) {
       case 39:
@@ -59,13 +65,18 @@
     ) as HTMLCanvasElement;
     const wrapper: HTMLElement = document.getElementById("wrapper");
     buttons = document.getElementById("buttons");
-    villageAnimation = new VillageAnimation(canvas, wrapper, contentIDCallback);
+    villageAnimation = new VillageAnimation(canvas, wrapper, contentIDCallback, loadedScene);
   });
 </script>
 
 <main>
   <div id="wrapper" class="wrapper" use:watchResize={resize}>
     <canvas id="three" />
+    <div class="loading-screen" id="loading-screen">
+      <div class=loader>
+        <Loader />
+      </div>
+    </div>
     <div class="wrapper-content">
       <div class="tile">
         <Tile
@@ -126,6 +137,10 @@
     left: 0;
   }
 
+  .hidden {
+    display: none;
+  }
+
   .wrapper-content {
     position: absolute;
     top: 50%;
@@ -133,6 +148,23 @@
     transform: translateY(-50%);
     left: 0;
     z-index: 100;
+  }
+
+  .loading-screen{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    background-color: #ffffff;
+  }
+
+  .loader {
+    /* Center vertically and horizontally */
+    position: absolute;
+    top: 50%;
+    left: 50%;
   }
 
   .tile {

@@ -53,6 +53,7 @@ export class VillageAnimation extends ThreeAnimation {
     private previousHighlightID : number = 0;
     private mouseHasMoved : boolean = false;
     private contentIDCallback : (id : number) => void;
+    private loadedCallback : () => void;
     private highilightMat : ShaderMaterial;
     private cameraReset : boolean = false;
     private gui : dat.GUI;
@@ -60,10 +61,12 @@ export class VillageAnimation extends ThreeAnimation {
     public constructor(
         canvas: HTMLCanvasElement, 
         wrapper: HTMLElement, 
-        contentIDCallback : (id : number) => void
+        contentIDCallback : (id : number) => void,
+        loadedCallback : () => void
         ) {
         super(canvas, wrapper);
         this.contentIDCallback = contentIDCallback;
+        this.loadedCallback = loadedCallback;
     }
 
     public init(): void {
@@ -349,5 +352,9 @@ export class VillageAnimation extends ThreeAnimation {
         });
 
         this.animateCamera(0, 0);
+
+        setTimeout(() => {
+            this.loadedCallback();
+        }, 10);
 	}
 }
