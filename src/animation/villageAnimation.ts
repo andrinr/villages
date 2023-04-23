@@ -308,7 +308,7 @@ export class VillageAnimation extends ThreeAnimation {
 
 	private async addModels() {
 		const id = this.scene.children.length;
-		await loadGLTF('models/models.gltf', 'models/draco/', this.scene);
+		await loadGLTF('models/models3.gltf', this.scene);
 
 		this.scene.children[id].children.forEach((child) => {
 			child.castShadow = true;
