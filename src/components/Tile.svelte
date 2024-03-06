@@ -5,6 +5,7 @@
   export let description = "";
   export let learnMoreTitle = "";
   export let learnMoreContent = "";
+  export let slug = "";
 
   onMount(async () => {
     const parentDiv: HTMLElement = document.getElementById("tile");
@@ -24,12 +25,17 @@
       <div class="description">
         <p>{description}</p>
       </div>
-      <div class="learnMoreTitle">
+      <!-- <div class="learnMoreTitle">
         <p>{learnMoreTitle}</p>
       </div>
       <div class="learnMoreContent">
         <p>{learnMoreContent}</p>
-      </div>
+      </div> -->
+      {#if slug}
+        <button class="learnMoreButton">
+          <a href={"https://www.nextgenvillage.com/areas/" + slug}>Learn more</a>
+        </button>
+      {/if}
       <slot />
     </div>
   </div>
@@ -45,12 +51,31 @@
     font-weight: 500;
   }
 
+  button {
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 0.1px solid #121212;
+    opacity: 1.0;
+    background-color: white;
+    border-radius: 5px;
+    background-color: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background-color: white;
+    opacity: 1.0;
+    color: white;
+  }
+
   #tile {
     border-radius: 10px;
     max-width: 400px;
     height: 50vh;
     background-color: rgb(255, 255, 255);
-    opacity: 0.6;
+    opacity: 0.8;
     overflow: scroll;
     scroll-behavior: smooth;
     /* overflow: hidden; */

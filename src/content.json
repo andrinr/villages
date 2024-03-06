@@ -10,10 +10,11 @@
             "cameraTarget" : {"x" : 0, "y" : 0, "z" : 0},
             "highlightPosition" :  {"x" : 0, "y" : 0, "z" : 0},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"00"
+            "label":"00",
+            "slug" : ""
         },
         {   
-            "title":"Society",
+            "title":"Governance",
             "subtitle": "Agora",
             "description" : "The agora is the center of the social and cultural life where people meet, debate, perform music & arts or celebrate. Automation in various sectors has the potential to pave the path to an age of freedom. But what will people do with their newfound freedom? What is the next fronteer? This is where the collective quest for meaning - the evolution of a new culture begins.",
             "learnMoreTitle": "",
@@ -22,7 +23,8 @@
             "cameraTarget" : {"x" : 0, "y" : 1, "z" : 2},
             "highlightPosition" : {"x" : 0, "y" : 1, "z" : 2},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"01"
+            "label":"01",
+            "slug" : "governance"
         },{
             "title":"Economy",
             "subtitle": "Innovation District",
@@ -33,7 +35,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"02"
+            "label":"02",
+            "slug" : "economy"
         },{
             "title":"Science & Education",
             "subtitle": "The Academy",
@@ -44,9 +47,11 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"03"
+            "label":"03",
+            "slug" : "education-science"
+
         },{
-            "title":"Art & Music",
+            "title":"Art",
             "subtitle": "Art Quarter",
             "description" : "The Art District is a stimulating and vivid place with various small art ateliers, cultural cafés, exhibition spaces and a stage hosting plays & concerts. In the park, people read, paint, act, sing, play music or simply enjoy themselves.",
             "learnMoreTitle": "Learn More:",
@@ -55,7 +60,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"04"
+            "label":"04",
+            "slug" : "art"
         },{
             "title":"Food",
             "subtitle": "Regenerative Farm",
@@ -66,7 +72,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"05"
+            "label":"05",
+            "slug" : "food"
         },{
             "title":"Philosophy",
             "subtitle": "Philosopher's Temple",
@@ -77,7 +84,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"06"
+            "label":"06",
+            "slug" : "philosophy"
         },{
             "title":"Space",
             "subtitle": "Observatory",
@@ -88,9 +96,10 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"07"
+            "label":"07",
+            "slug" : "space-exploration"
         },{
-            "title":"Wellbeing",
+            "title":"Health",
             "subtitle": "Wellness Oasis",
             "description" : "Going up the Hill, you enter a new word. Surrounded by rocks and water - the Wellness Oasis “The Spring” connects you with your inner world and nature. Those seeking a quiet place for oneself, find it in the close by forrest with various cabins & tree huts.",
             "learnMoreTitle": "Learn More:",
@@ -99,9 +108,11 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"08"
+            "label":"08",
+            "slug" : "healt"
+
         },{
-            "title":"Health",
+            "title":"New Work",
             "subtitle": "Longevity Center",
             "description" : "The Longevity & Preventive health center supports you in becoming the healthiest and most vital version of yourself using breakthrough discoveries in digital health, med- and biotech.",
             "learnMoreTitle": "Learn More:",
@@ -110,7 +121,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"09"
+            "label":"09",
+            "slug" : "new-work"
         },{
             "title":"Mobility",
             "subtitle": "Mobility Station",
@@ -121,7 +133,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"10"
+            "label":"10",
+            "slug" : "mobility"
         },{
             "title":"Water",
             "subtitle": "Water Reservoir",
@@ -132,7 +145,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"11"
+            "label":"11",
+            "slug" : "water"
         },{
             "title":"Energy",
             "subtitle": "Renewable Energy Plant",
@@ -143,7 +157,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"12"
+            "label":"12",
+            "slug" : "energy"
         },{
             "title":"Data",
             "subtitle": "Data Center",
@@ -154,7 +169,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"13"
+            "label":"13",
+            "slug" : "data-computing"
         },{
             "title":"Resource- and Waste Management",
             "subtitle": "Circular Hub",
@@ -165,9 +181,10 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"14"
+            "label":"14",
+            "slug" : "resource-waste-management"
         },{
-            "title":"Construction",
+            "title":"Construction & Housing",
             "subtitle": "Construction Site",
             "description" : "The people live in carbon-neutral, circular and energy-positive homes, built with sustainable materials, such as timber, stone, clay, earth-based mixtures, bamboo or recycled concrete. While construction involved hard manual labor in the past, today large components of the buildings can be 3D-printed or pre-fabricated & assembled on site.",
             "learnMoreTitle": "Learn More:",
@@ -176,9 +193,11 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"15"
+            "label":"15",
+            "slug" : "construction-housing"
+
         },{
-            "title":"Retail",
+            "title":"Retail & Commerce",
             "subtitle": "Marketplace",
             "description" : "While there were large shopping malls in the past, most things can be showcased in the virtual space. There are just a few boutiques left that sell high-quality and sustainable products.",
             "learnMoreTitle": "Learn More:",
@@ -187,9 +206,10 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"16"
+            "label":"16",
+            "slug" : "retail-commerce"
         },{
-            "title":"Manufacturing",
+            "title":"Manufacturing & Robotics",
             "subtitle": "Fabrication Lab",
             "description" : "In the Fabrication Lab various objects, such as machinery, tools, furniture and everyday items can be manufactured and repaired on site using 3d-printers, robots and other advanced manufacturing machines. Most objects are made of local biodegradable & recyclable materials.",
             "learnMoreTitle": "Learn More:",
@@ -198,7 +218,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"17"
+            "label":"17",
+            "slug" : "manufacturing-robotics"
         },{
             "title":"Governance",
             "subtitle": "Governance Metaverse",
@@ -209,7 +230,8 @@
             "cameraTarget" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightPosition" : {"x" : 1, "y" : 0, "z" : -4},
             "highlightSize" : {"x" : 1, "y" : 1, "z" : 1},
-            "label":"18"
+            "label":"18",
+            "slug" : "governance"
         }
     ]
     
