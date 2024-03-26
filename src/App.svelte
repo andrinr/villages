@@ -5,14 +5,14 @@
   import Tile from "./components/Tile.svelte";
   import Icon from "./components/Icon.svelte";
   import Button from "./components/Button.svelte";
-  import Notification from "./components/Notification.svelte";
   import Loader from "./components/Loader.svelte";
 
   // @ts-ignore
   import * as data from "./content.json";
-    import { text } from "svelte/internal";
   let contentId = 0;
   let buttons: HTMLElement;
+
+  let horizontal = window.innerWidth > window.innerHeight;
 
   const contentIDCallback = (id: number) => {
     contentId = id;
@@ -80,27 +80,24 @@
       </div>
     </div>
 
-    <!--Iterate over all data.content-->
     <div class="navigation">
       {#each data.content as content, i}
-      <Button callback={() => {contentId = i; getAndSetCamera();}} text={content.title} />
+        <Button callback={() => {contentId = i; getAndSetCamera();}} text={content.title} />
       {/each}
-
     </div>
+
+    <div class="navigation-mobile">
+      <Button callback={backtoMain} text="Home" />
+    </div>
+
     <div class="wrapper-content">
       <div class="tile">
         <Tile
           title={data.content[contentId].title}
           subtitle={data.content[contentId].subtitle}
           description={data.content[contentId].description}
-          learnMoreTitle={data.content[contentId].learnMoreTitle}
-          learnMoreContent={data.content[contentId].learnMoreContent}
           slug={data.content[contentId].slug}
         >
-          <!--<div class='minimize-button'>
-            <Button iconSource="icons/minus.svg" callback={backtoMain} />
-          </div>-->
-
           <div class="buttons">
             <div class="button">
               <Icon iconSource="icons/home-line.svg" callback={backtoMain} />
@@ -213,7 +210,25 @@
     z-index: 100;
   }
 
+  .navigation-mobile {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px;
+    display: none;
+  }
+
   @media (orientation: portrait) {
+
+    .navigation {
+      display: none;
+    }
+
+    .navigation-mobile {
+      display: block;
+    }
+
     .wrapper-content {
       top: auto;
       bottom: 0;

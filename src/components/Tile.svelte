@@ -4,8 +4,6 @@
   export let title = "";
   export let subtitle = "";
   export let description = "";
-  export let learnMoreTitle = "";
-  export let learnMoreContent = "";
   export let slug = "";
 
   onMount(async () => {
@@ -26,12 +24,6 @@
       <div class="description">
         <p>{description}</p>
       </div>
-      <!-- <div class="learnMoreTitle">
-        <p>{learnMoreTitle}</p>
-      </div>
-      <div class="learnMoreContent">
-        <p>{learnMoreContent}</p>
-      </div> -->
       {#if slug}
         <Button text="Learn More" callback={() => {window.location.href = "https://www.nextgenvillage.com/areas/" + slug;}}/>
       {/if}
@@ -85,19 +77,7 @@
     white-space: pre-wrap;
   }
 
-  .learnMoreTitle {
-    font-family: "Space Grotesk", sans-serif;
-    font-weight: 500;
-    white-space: pre-wrap;
-  }
-
   .description {
-    font-family: "Space Grotesk", sans-serif;
-    font-weight: 200;
-    white-space: pre-wrap;
-  }
-
-  .learnMoreContent {
     font-family: "Space Grotesk", sans-serif;
     font-weight: 200;
     white-space: pre-wrap;
