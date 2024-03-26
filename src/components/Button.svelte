@@ -1,35 +1,31 @@
 <script lang="ts">
 
-  export let iconSource: string;
+  export let text: string;
   export let callback: (event) => void;
 
 </script>
 
-<button class="button" style="background-image: url({iconSource});" on:click={callback}/>
+<button class="button" on:click={callback}>
+  {text}
+</button>
 
 <style>
   .button {
-    position: relative;
-    z-index: 100;
-    width: 35px;
-    height: 35px;
-    outline: none;
-    border: none;
-    background-size: cover;
-    background-repeat: no-repeat;
-    transition: 0.1s ease-in-out;
-    background-color: transparent;
+    background-color: #333;
     cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    padding:10px 20px;
+    margin: 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
   }
 
   .button:hover {
-    transform: scale(1.1);
+    transform: scale(1.03);
   }
 
-  @media screen and (orientation: portrait) {
-    .button {
-      width: 30px;
-      height: 30px;
-    }
-  }
 </style>

@@ -3,12 +3,14 @@
   import { watchResize } from "svelte-watch-resize";
   import { VillageAnimation } from "./animation/villageAnimation";
   import Tile from "./components/Tile.svelte";
+  import Icon from "./components/Icon.svelte";
   import Button from "./components/Button.svelte";
   import Notification from "./components/Notification.svelte";
   import Loader from "./components/Loader.svelte";
 
   // @ts-ignore
   import * as data from "./content.json";
+    import { text } from "svelte/internal";
   let contentId = 0;
   let buttons: HTMLElement;
 
@@ -77,6 +79,14 @@
         <Loader />
       </div>
     </div>
+
+    <!--Iterate over all data.content-->
+    <div class="navigation">
+      {#each data.content as content, i}
+      <Button callback={() => {contentId = i; getAndSetCamera();}} text={content.title} />
+      {/each}
+
+    </div>
     <div class="wrapper-content">
       <div class="tile">
         <Tile
@@ -93,18 +103,18 @@
 
           <div class="buttons">
             <div class="button">
-              <Button iconSource="icons/home-line.svg" callback={backtoMain} />
+              <Icon iconSource="icons/home-line.svg" callback={backtoMain} />
             </div>
 
             <div class="button">
-              <Button
+              <Icon
                 iconSource="icons/arrow-left-s-line.svg"
                 callback={decreementContentId}
               />
             </div>
 
             <div class="button">
-              <Button
+              <Icon
                 iconSource="icons/arrow-right-s-line.svg"
                 callback={increementContentId}
               />
@@ -149,6 +159,14 @@
     transform: translateY(-50%);
     left: 0;
     z-index: 100;
+  }
+
+  .navigation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    padding: 10px;
   }
 
   .loading-screen{

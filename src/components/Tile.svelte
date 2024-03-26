@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import Button from "./Button.svelte";
   export let title = "";
   export let subtitle = "";
   export let description = "";
@@ -32,9 +33,7 @@
         <p>{learnMoreContent}</p>
       </div> -->
       {#if slug}
-        <button class="learnMoreButton">
-          <a href={"https://www.nextgenvillage.com/areas/" + slug}>Learn more</a>
-        </button>
+        <Button text="Learn More" callback={() => {window.location.href = "https://www.nextgenvillage.com/areas/" + slug;}}/>
       {/if}
       <slot />
     </div>
@@ -49,25 +48,6 @@
     font-family: "MyFont";
     src: url("/fonts/Chillax-Variable.ttf") format("truetype");
     font-weight: 500;
-  }
-
-  button {
-    font-weight: 500;
-    font-size: 1rem;
-    padding: 10px 20px;
-    border: 0.1px solid #121212;
-    opacity: 1.0;
-    background-color: white;
-    border-radius: 5px;
-    background-color: none;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  button:hover {
-    background-color: white;
-    opacity: 1.0;
-    color: white;
   }
 
   #tile {
