@@ -13,7 +13,7 @@
   .button {
     background-color: #333;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 5px;
     border: none;
     color: white;
     padding:10px 20px;
@@ -26,6 +26,7 @@
 
   .button:hover {
     transform: scale(1.03);
+    color: aqua;
   }
 
 </style>
