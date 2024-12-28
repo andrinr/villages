@@ -1,6 +1,6 @@
 # Villages
 
-Naviage, explore and discover this virtual village.
+Navigate, explore and discover this virtual village.
 
 ![Villages](villages.png)
 
